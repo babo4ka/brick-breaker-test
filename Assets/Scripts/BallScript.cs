@@ -12,6 +12,25 @@ public class BallScript : MonoBehaviour
     [SerializeField]
     private float speed = 500f;
 
+    [SerializeField]
+    private float damage = 10f;
+
+    public delegate void Attack(float damage, string name);
+
+    public Attack attack;
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision == null) return;
+
+        if(collision.gameObject.tag == "Brick")
+        {
+            attack?.Invoke(damage, collision.gameObject.name);
+        }
+    }
+
+
     void Awake()
     {
         this.rigidbody = GetComponent<Rigidbody2D>();       
