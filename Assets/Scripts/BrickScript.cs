@@ -8,6 +8,8 @@ public class BrickScript : MonoBehaviour
 
     [SerializeField]
     private float health;
+    
+    private float mul = 1.0f;
 
     [SerializeField]
     private List<GameObject> balls = new List<GameObject>();
@@ -27,11 +29,24 @@ public class BrickScript : MonoBehaviour
     }
 
 
-    private void getDamage(float damage, string name)
+    private void getDamage(float damage, DamageType type, string name)
     {
         if(gameObject.name == name)
         {
-            this.health -= damage;
+            switch (type)
+            {
+                case DamageType.DAMAGE:
+                    this.health -= damage * mul;
+                    break;
+
+                case DamageType.POISON:
+                    if(this.mul == 1.0f)
+                    {
+                        this.mul += damage;
+                    }
+                    break;
+            }
+            
         }
     }
 

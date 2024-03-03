@@ -2,46 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallScript : MonoBehaviour
+public abstract class BallScript : MonoBehaviour
 {
    
-    public Rigidbody2D rigidbody { get; private set; }
+    public Rigidbody2D rigidbody { get;  set; }
 
-    public Vector2 direction {  get; private set; }
-
-    [SerializeField]
-    private float speed = 500f;
+    public Vector2 direction {  get;  set; }
 
     [SerializeField]
-    private float damage = 10f;
+    private protected float speed {  get; set; }
 
-    public delegate void Attack(float damage, string name);
+    [SerializeField]
+    private protected float damage {  get; set; }
+
+    public delegate void Attack(float damage, DamageType type, string name);
 
     public Attack attack;
 
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision == null) return;
+    public abstract void OnCollisionEnter2D(Collision2D collision);
 
-        if(collision.gameObject.tag == "Brick")
-        {
-            attack?.Invoke(damage, collision.gameObject.name);
-        }
-    }
-
-
-    void Awake()
-    {
-        this.rigidbody = GetComponent<Rigidbody2D>();       
-    }
-
-    void Start()
-    {
-        setTrajectory();
-    }
-
-    private void setTrajectory()
+    private protected void setTrajectory()
     {
         Vector2 force = Vector2.zero;
         force.x = Random.Range(-1f, 1f);
@@ -50,9 +31,5 @@ public class BallScript : MonoBehaviour
         this.rigidbody.AddForce(force.normalized * this.speed);
     }
 
-    
-    void Update()
-    {
-        
-    }
+   
 }
