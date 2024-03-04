@@ -14,6 +14,9 @@ public class BrickScript : MonoBehaviour
     [SerializeField]
     private List<GameObject> balls = new List<GameObject>();
 
+    public delegate void Destroyed(GameObject brick);
+    public Destroyed destroyed;
+
 
 
     // Start is called before the first frame update
@@ -34,6 +37,8 @@ public class BrickScript : MonoBehaviour
         {
             ball.GetComponent<BallScript>().attack -= getDamage;
         }
+
+        destroyed?.Invoke(gameObject);
     }
 
 
