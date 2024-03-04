@@ -20,7 +20,7 @@ public class BrickScript : MonoBehaviour
     void Start()
     {
         balls.Clear();
-        balls = GameObject.FindGameObjectsWithTag("Circle").ToList();
+        balls = GameObject.FindGameObjectsWithTag("Ball").ToList();
 
         foreach(GameObject ball in balls)
         {
@@ -28,10 +28,18 @@ public class BrickScript : MonoBehaviour
         }
     }
 
-
-    private void getDamage(float damage, DamageType type, string name)
+    private void OnDestroy()
     {
-        if(gameObject.name == name)
+        foreach (GameObject ball in balls)
+        {
+            ball.GetComponent<BallScript>().attack -= getDamage;
+        }
+    }
+
+
+    private void getDamage(float damage, DamageType type, GameObject objToDamage)
+    {
+        if(gameObject == objToDamage)
         {
             switch (type)
             {

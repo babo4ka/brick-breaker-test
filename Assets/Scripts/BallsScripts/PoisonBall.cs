@@ -12,7 +12,7 @@ public class PoisonBall : BallScript
         
         if (collision.gameObject.tag == "Brick")
         {
-            attack?.Invoke(damage, DamageType.POISON, collision.gameObject.name);
+            attack?.Invoke(damage, DamageType.POISON, collision.gameObject);
         }
     }
 

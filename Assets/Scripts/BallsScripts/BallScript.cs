@@ -15,7 +15,7 @@ public abstract class BallScript : MonoBehaviour
     [SerializeField]
     private protected float damage {  get; set; }
 
-    public delegate void Attack(float damage, DamageType type, string name);
+    public delegate void Attack(float damage, DamageType type, GameObject gameObject);
 
     public Attack attack;
 

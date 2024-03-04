@@ -23,7 +23,7 @@ public class BasicBall : BallScript
 
         if (collision.gameObject.tag == "Brick")
         {
-            attack?.Invoke(damage, DamageType.DAMAGE, collision.gameObject.name);
+            attack?.Invoke(damage, DamageType.DAMAGE, collision.gameObject);
         }
     }
 }
