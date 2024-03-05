@@ -7,8 +7,28 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject[] levelPrefabs;
 
-    private GameObject currentLevel;
+    private int currentLevel;
+
+
+    private GameObject currentLevelObject;
     private int currentLevelBricksCount;
+
+    private float baseBrickHp = 1f;
+    private float bigBrickHp = 5f;
+    private float multiplier = 1.2f;
+    private const float maxMultiplier = 9f;
+
+    private void IncreaseHp()
+    {
+        if(currentLevel % 50 == 0 && multiplier < maxMultiplier)
+        {
+            multiplier += 0.1f;
+        }
+
+        baseBrickHp *= multiplier;
+        bigBrickHp *= multiplier;
+    }
+
 
 
     void Start()
@@ -29,20 +49,22 @@ public class GameManager : MonoBehaviour
 
         if(currentLevelBricksCount == 0)
         {
-            Destroy(currentLevel);
+            Destroy(currentLevelObject);
+            IncreaseHp();
             InstantiateLevel(1);
         }
     }
 
     void InstantiateLevel(int levelNum)
     {
-        currentLevel = Instantiate(levelPrefabs[levelNum], new Vector2(0, 0), Quaternion.identity);
+        currentLevelObject = Instantiate(levelPrefabs[levelNum], new Vector2(0, 0), Quaternion.identity);
         GameObject[] bricks = GameObject.FindGameObjectsWithTag("Brick");
         currentLevelBricksCount = bricks.Length;
 
         foreach(GameObject brick in bricks)
         {
             brick.GetComponent<BrickScript>().destroyed += decreaseBricksCount;
+            brick.GetComponent<BrickScript>().health = baseBrickHp;
         }
     }
 }

@@ -7,7 +7,12 @@ public class BrickScript : MonoBehaviour
 {
 
     [SerializeField]
-    private float health;
+    private float _health;
+    
+    public float health {
+        get { return _health; }
+        set { _health = value; } 
+    }
     
     private float mul = 1.0f;
 
@@ -49,7 +54,7 @@ public class BrickScript : MonoBehaviour
             switch (type)
             {
                 case DamageType.DAMAGE:
-                    this.health -= damage * mul;
+                    this._health -= damage * mul;
                     break;
 
                 case DamageType.POISON:
@@ -66,7 +71,7 @@ public class BrickScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(health <= 0f)
+        if(_health <= 0f)
         {
             Destroy(gameObject);
         }
