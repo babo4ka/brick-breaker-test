@@ -5,15 +5,25 @@ using UnityEngine;
 
 public class BrickScript : MonoBehaviour
 {
+    public const int BASIC = 1;
+    public const int BIG = 2;
+    public const int HEX = 3;
+
+    [SerializeField]
+    private int _type;
+
+    public int type {  get { return _type; } }
 
     [SerializeField]
     private float _health;
+
     
     public float health {
         get { return _health; }
         set { _health = value; } 
     }
-    
+
+
     private float mul = 1.0f;
 
     [SerializeField]

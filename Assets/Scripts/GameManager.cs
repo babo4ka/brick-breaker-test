@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     private float baseBrickHp = 1f;
     private float bigBrickHp = 5f;
+    private float hexBrickHp = 10f;
     private float multiplier = 1.2f;
     private const float maxMultiplier = 9f;
 
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
 
         baseBrickHp *= multiplier;
         bigBrickHp *= multiplier;
+        hexBrickHp *= multiplier;
     }
 
 
@@ -63,8 +65,22 @@ public class GameManager : MonoBehaviour
 
         foreach(GameObject brick in bricks)
         {
-            brick.GetComponent<BrickScript>().destroyed += decreaseBricksCount;
-            brick.GetComponent<BrickScript>().health = baseBrickHp;
+            BrickScript bs = brick.GetComponent<BrickScript>();
+            bs.destroyed += decreaseBricksCount;
+            switch(bs.type)
+            {
+                case 1:
+                    bs.health = baseBrickHp;
+                    break;
+
+                case 2:
+                    bs.health = bigBrickHp;
+                    break;
+
+                case 3:
+                    bs.health = hexBrickHp;
+                    break;
+            }
         }
     }
 }
