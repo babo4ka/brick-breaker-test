@@ -34,7 +34,6 @@ public class BrickScript : MonoBehaviour
 
 
 
-    // Start is called before the first frame update
     void Start()
     {
         balls.Clear();
@@ -52,7 +51,7 @@ public class BrickScript : MonoBehaviour
         {
             ball.GetComponent<BallScript>().attack -= getDamage;
         }
-
+       
         destroyed?.Invoke(gameObject);
     }
 
@@ -74,16 +73,15 @@ public class BrickScript : MonoBehaviour
                     }
                     break;
             }
-            
+
+            if (_health <= 0f)
+            {
+                Destroy(gameObject);
+            }
         }
     }
-
-    // Update is called once per frame
     void Update()
     {
-        if(_health <= 0f)
-        {
-            Destroy(gameObject);
-        }
+       
     }
 }
