@@ -9,6 +9,8 @@ public class BrickScript : MonoBehaviour
     public const int BIG = 2;
     public const int HEX = 3;
 
+    private const float value = 1f;
+
     [SerializeField]
     private int _type;
 
@@ -31,6 +33,17 @@ public class BrickScript : MonoBehaviour
 
     public delegate void Destroyed(GameObject brick);
     public Destroyed destroyed;
+
+
+    private Dictionary<int, float> multipliers = new Dictionary<int, float>
+    {
+        {1, 1f}, {2, 2f}, {3, 25f}
+    };
+
+    public float reward
+    {
+        get { return value * multipliers[type];}
+    }
 
 
 

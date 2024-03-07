@@ -6,14 +6,13 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
-    #region Cash
+    #region Cash fields
     private CashManager cashManager = new CashManager();
     #endregion
 
 
-    #region Bricks
+    #region Bricks fields
     private BrickManager brickManager = new BrickManager();
-
     #endregion
 
     [SerializeField]
@@ -29,6 +28,7 @@ public class GameManager : MonoBehaviour
     {
         brickManager.levelDone += OnLevelDone;
         InstantiateLevel(0);
+        brickManager.dropCash += ClaimCash;
     }
 
     
@@ -36,6 +36,13 @@ public class GameManager : MonoBehaviour
     {
         
     }
+
+    #region Cash methods
+    private void ClaimCash(float amount)
+    {
+        cashManager.AddCash(amount);
+    }
+    #endregion
 
     private void OnLevelDone()
     {
@@ -51,5 +58,6 @@ public class GameManager : MonoBehaviour
         currentLevelObject = Instantiate(levelPrefabs[levelNum], new Vector2(0, 0), Quaternion.identity);
         List<GameObject> bricks = GameObject.FindGameObjectsWithTag("Brick").ToList();
         brickManager.currentBricks = bricks;
+
     }
 }

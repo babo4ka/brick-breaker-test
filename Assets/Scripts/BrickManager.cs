@@ -37,9 +37,14 @@ public class BrickManager
     public delegate void LevelDone();
     public LevelDone levelDone;
 
+    public delegate void DropCash(float amount);
+    public DropCash dropCash;
+
     private void OnBrickDestroyed(GameObject brick)
     {
-        brick.GetComponent<BrickScript>().destroyed -= OnBrickDestroyed;
+        BrickScript bs = brick.GetComponent<BrickScript>();
+        bs.destroyed -= OnBrickDestroyed;
+        dropCash?.Invoke(bs.reward);
 
         _currentBricks.Remove(brick);
 
