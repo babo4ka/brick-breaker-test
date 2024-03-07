@@ -1,44 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class BrickManager
-{
+public class BrickManager : MonoBehaviour {
+
+    #region Level objects
+    [SerializeField]
+    private GameObject[] levelPrefabs;
+
+    private GameObject currentLevelObject;
+    private List<GameObject> _currentBricks = new List<GameObject>();
+    #endregion
+
+    #region Bricks HP
     private float _baseBrickHp = 1f;
     private float _bigBrickHp = 5f;
     private float _hexBrickHp = 10f;
 
-    public float baseBrickHp
-    {
-        get { return _baseBrickHp; }
-    }
-
-    public float bigBrickHp
-    {
-        get { return _bigBrickHp; }
-    }
-
-    public float hexBrickHp
-    {
-        get { return _hexBrickHp; }
-    }
-
     private float multiplier = 1.2f;
     private const float maxMultiplier = 9f;
+    #endregion
 
-    private List<GameObject> _currentBricks = new List<GameObject>();
-
-    public List<GameObject> currentBricks
-    {
-        get { return _currentBricks;}
-        set { SetBricks(value); }
-    }
-
+    #region Delegates
     public delegate void LevelDone();
     public LevelDone levelDone;
 
     public delegate void DropCash(float amount);
     public DropCash dropCash;
+    #endregion
+
+    public void InstantiateLevel(int levelNum)
+    {
+        IncreaseHp(levelNum);
+        currentLevelObject = Instantiate(levelPrefabs[1], new Vector2(0, 0), Quaternion.identity);
+        SetBricks(GameObject.FindGameObjectsWithTag("Brick").ToList());
+    }
+
 
     private void OnBrickDestroyed(GameObject brick)
     {
@@ -48,7 +46,8 @@ public class BrickManager
 
         _currentBricks.Remove(brick);
 
-        if(_currentBricks.Count == 0) {
+        if(_currentBricks.Count == 0) { 
+            Destroy(currentLevelObject);
             levelDone?.Invoke();
         }
     }

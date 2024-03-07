@@ -2,30 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CashManager
-{
+public class CashManager : MonoBehaviour {
+
+    [SerializeField]
     private float _amount;
 
-    public float amount
+
+    private void Start()
     {
-        get { return _amount; }
+        gameObject.GetComponent<BrickManager>().dropCash += AddCash;
     }
 
 
     public void AddCash(float amount)
     {
-        this._amount += amount;
+        _amount += amount;
+        Debug.Log(_amount);
     }
 
 
     public bool SpendCash(float amount)
     {
-        if(this._amount < amount)
+        if(_amount < amount)
         {
             return false;
         }
 
-        this._amount -= amount;
+        _amount -= amount;
         return true;
     }
 }
