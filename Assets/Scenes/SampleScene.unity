@@ -648,6 +648,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 267d921f1fab1b34994d6cd2db90dd4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  basicBallPrefab: {fileID: 6843552485204989541, guid: 6e09fab8c7938ba47b51c5ecb0f8a94b, type: 3}
+  poisonBallPrefab: {fileID: 5219189732464851253, guid: d91859a7722c401479917176fc5f1a89, type: 3}
 --- !u!114 &1152358834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -660,6 +662,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 931e65cb0ec382241b6cd0fbba1ad1b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _amount: 0
 --- !u!114 &1152358835
 MonoBehaviour:
   m_ObjectHideFlags: 0

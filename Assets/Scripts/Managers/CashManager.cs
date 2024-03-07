@@ -17,7 +17,6 @@ public class CashManager : MonoBehaviour {
     public void AddCash(float amount)
     {
         _amount += amount;
-        Debug.Log(_amount);
     }
 
 
