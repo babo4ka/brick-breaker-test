@@ -13,9 +13,36 @@ public class BallManager : MonoBehaviour {
     private GameObject poisonBallPrefab;
     #endregion
 
+    #region Balls lists
     List<BasicBall> basicBalls = new List<BasicBall>();
     List<PoisonBall> poisonBalls = new List<PoisonBall>();
+    #endregion
 
+
+    #region Base stats
+    private Dictionary<int, Dictionary<BallType, float>> powerBaseStats =
+        new Dictionary<int, Dictionary<BallType, float>>
+        {
+            {1 ,  new Dictionary<BallType, float> {
+                { BallType.BASIC, 1f} } },
+            {2, new Dictionary<BallType, float>{
+                { BallType.POISON, 1.5f}
+            }}
+        };
+
+    private Dictionary<int, Dictionary<BallType, float>> speedBaseStats =
+        new Dictionary<int, Dictionary<BallType, float>>
+        {
+            {1 ,  new Dictionary<BallType, float> {
+                { BallType.BASIC, 1f} } },
+            {2, new Dictionary<BallType, float>{
+                { BallType.POISON, 1.08f}
+            }}
+        };
+
+    #endregion
+
+    private int currentStage = 1;
 
 
     public void BuyNewBall(BallType type)

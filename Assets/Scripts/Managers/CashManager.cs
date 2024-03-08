@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class CashManager : MonoBehaviour {
 
     [SerializeField]
     private float _amount;
+
+    [SerializeField]
+    private TMP_Text softCashText;
 
 
     private void Start()
@@ -17,6 +21,7 @@ public class CashManager : MonoBehaviour {
     public void AddCash(float amount)
     {
         _amount += amount;
+        CashUpdated();
     }
 
 
@@ -28,6 +33,12 @@ public class CashManager : MonoBehaviour {
         }
 
         _amount -= amount;
+        CashUpdated();
         return true;
+    }
+
+    private void CashUpdated()
+    {
+        softCashText.text = _amount.ToString() + "$";
     }
 }
