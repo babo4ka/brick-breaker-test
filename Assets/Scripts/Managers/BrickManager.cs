@@ -41,7 +41,7 @@ public class BrickManager : MonoBehaviour {
     private void OnBrickDestroyed(GameObject brick)
     {
         BrickScript bs = brick.GetComponent<BrickScript>();
-        bs.destroyed -= OnBrickDestroyed;
+       // bs.destroyed -= OnBrickDestroyed;
         dropCash?.Invoke(bs.reward);
 
         _currentBricks.Remove(brick);

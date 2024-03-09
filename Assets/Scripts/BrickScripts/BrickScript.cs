@@ -29,7 +29,7 @@ public class BrickScript : MonoBehaviour
     private float mul = 1.0f;
 
     [SerializeField]
-    private List<GameObject> balls = new List<GameObject>();
+    private List<BallScript> balls = new List<BallScript>();
 
     public delegate void Destroyed(GameObject brick);
     public Destroyed destroyed;
@@ -46,31 +46,20 @@ public class BrickScript : MonoBehaviour
     }
 
 
-
-    void Start()
-    {
-        balls.Clear();
-        balls = GameObject.FindGameObjectsWithTag("Ball").ToList();
-
-        foreach(GameObject ball in balls)
-        {
-            ball.GetComponent<BallScript>().attack += getDamage;
-        }
-    }
-
     private void OnDestroy()
     {
-        foreach (GameObject ball in balls)
+        foreach (BallScript ball in balls)
         {
-            ball.GetComponent<BallScript>().attack -= getDamage;
+            ball.attack -= getDamage;
         }
-       
+
         destroyed?.Invoke(gameObject);
     }
 
     public void SubscribeToBall(BallScript bs)
     {
         bs.attack += getDamage;
+        balls.Add(bs);
     }
 
     private void getDamage(float damage, DamageType type, GameObject objToDamage)
@@ -96,9 +85,5 @@ public class BrickScript : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-    }
-    void Update()
-    {
-       
     }
 }

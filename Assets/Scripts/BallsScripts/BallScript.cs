@@ -16,7 +16,7 @@ public abstract class BallScript : MonoBehaviour
 
     public float speed {
         get { return _speed; }
-        set { _speed = value; } 
+        set { UpdateSpeed(value); } 
     }
 
     public float damage {
@@ -37,7 +37,13 @@ public abstract class BallScript : MonoBehaviour
         force.x = Random.Range(-1f, 1f);
         force.y = Random.Range(-1f, 1f);
 
-        rigidbody.AddForce(force.normalized * speed * 100f);
+        rigidbody.AddForce(force.normalized * speed);
+    }
+
+    private void UpdateSpeed(float speed)
+    {
+        _speed = speed;
+        rigidbody.AddForce(rigidbody.velocity.normalized * this.speed);
     }
 
    

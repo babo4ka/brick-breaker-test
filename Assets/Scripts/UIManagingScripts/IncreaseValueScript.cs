@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,8 @@ public class IncreaseValueScript : MonoBehaviour
 
     [SerializeField]
     private GameObject gameManager;
+    [SerializeField]
+    private TMP_Text valueText;
 
 
     void Start()
@@ -26,7 +29,13 @@ public class IncreaseValueScript : MonoBehaviour
         switch(valueType)
         {
             case ValueType.COUNT:
-                bm.BuyNewBall(ballType);
+                int count = bm.BuyNewBall(ballType);
+                valueText.text = count.ToString();
+                break;
+
+            case ValueType.SPEED:
+                float speed = bm.UpgradeSpeed(ballType);
+                valueText.text = speed.ToString();
                 break;
         }
     }

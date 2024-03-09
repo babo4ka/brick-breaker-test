@@ -16,6 +16,20 @@ public class BallManager : MonoBehaviour {
     #region Balls lists
     List<BasicBall> basicBalls = new List<BasicBall>();
     List<PoisonBall> poisonBalls = new List<PoisonBall>();
+
+    private int BallsCount(BallType ballType)
+    {
+        switch (ballType)
+        {
+            case BallType.BASIC:
+                return basicBalls.Count;
+
+            case BallType.POISON:
+                return poisonBalls.Count;
+        }
+
+        return -1;
+    }
     #endregion
 
 
@@ -46,11 +60,13 @@ public class BallManager : MonoBehaviour {
 
     #region Stats dynamics
     private Dictionary<BallType, float> currentDamage = new Dictionary<BallType, float>();
+    private Dictionary<BallType, float> damageIncrement = new Dictionary<BallType, float>();
     private float allBallsDamageIncrementMultiplier = 1.00969f * 1.00997f;
     private float poisonBallDamageIncrementMultiplier = 0.434783f * 0.9925f;
     private float cashBallDamageIncrementMultiplier = 0.434783f * 0.9967f;
 
     private Dictionary<BallType, float> currentSpeed = new Dictionary<BallType, float>();
+    private Dictionary<BallType, float> speedIncrement = new Dictionary<BallType, float>();
     private float allBallsSpeedIncrementMultiplier = 0.62787f * 0.9944711f;
     private float demoBallSpeedIncrementMultiplier = 0.33039f * 0.99446999f;
     
@@ -64,14 +80,52 @@ public class BallManager : MonoBehaviour {
         {1, 0f }, {2, 175f}, {3, 7500f}, {4, 175000f}, {5, 15f * (float)Math.Pow(10, 6)}
     };
 
+    private Dictionary<BallType, float> newBallPrice = new Dictionary<BallType, float>();
+    private Dictionary<BallType, float> damageUpgradePrice = new Dictionary<BallType, float>();
+    private Dictionary<BallType, float> speedUpgradePrice = new Dictionary<BallType, float>();
 
-    public void BuyNewBall(BallType type)
+    private const float priceMultiplier = 0.95f;
+
+    public int BuyNewBall(BallType type)
     {
         CashManager cm = GetComponent<CashManager>();
-        if (cm.SpendCash(0f))
+        float price = newBallPrice[type];
+        
+        if (cm.SpendCash(price))
         {
+            newBallPrice[type] += price * priceMultiplier;
             InstantiateBall(type);
         }
+
+        return BallsCount(type);
+    }
+
+    public float UpgradeSpeed(BallType type)
+    {
+        CashManager cm = GetComponent<CashManager>();
+        float price = speedUpgradePrice[type];
+        
+        if (cm.SpendCash(price))
+        {
+            speedUpgradePrice[type] += price * priceMultiplier;
+
+           
+
+            switch (type)
+            {
+                case BallType.BASIC:
+                    speedIncrement[type] += speedIncrement[type] * allBallsSpeedIncrementMultiplier;
+
+                    currentSpeed[type] += speedIncrement[type];
+                    foreach (BasicBall bb in basicBalls)
+                    {
+                        bb.speed = currentSpeed[type];
+                    }
+                    return currentSpeed[type];
+            }
+        }
+
+        return -1f;
     }
 
     public void OpenNewBall(BallType ballType)
@@ -81,8 +135,19 @@ public class BallManager : MonoBehaviour {
         if (cm.SpendCash(stagePrice[currentStage + 1]))
         {
             currentStage++;
+
             currentDamage.Add(ballType, powerBaseStats[currentStage][ballType]);
             currentSpeed.Add(ballType, speedBaseStats[currentStage][ballType]);
+
+            damageIncrement.Add(ballType, powerBaseStats[currentStage][ballType]);
+            speedIncrement.Add(ballType, speedBaseStats[currentStage][ballType]);
+
+            damageUpgradePrice.Add(ballType, stagePrice[currentStage] == 0f ? 6f : stagePrice[currentStage]);
+            speedUpgradePrice.Add(ballType, stagePrice[currentStage] == 0f ? 6f : stagePrice[currentStage]);
+            newBallPrice.Add(ballType, stagePrice[currentStage] == 0f? 6f:
+                stagePrice[currentStage] + (stagePrice[currentStage] * priceMultiplier));
+
+
             InstantiateBall(ballType);
         }
     }
