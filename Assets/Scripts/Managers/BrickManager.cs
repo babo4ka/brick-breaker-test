@@ -90,4 +90,12 @@ public class BrickManager : MonoBehaviour {
         _bigBrickHp *= multiplier;
         _hexBrickHp *= multiplier;
     }
+
+    public void SubscribeBricks(BallScript bs)
+    {
+        foreach(GameObject brick in _currentBricks)
+        {
+            brick.GetComponent<BrickScript>().SubscribeToBall(bs);
+        }
+    }
 }

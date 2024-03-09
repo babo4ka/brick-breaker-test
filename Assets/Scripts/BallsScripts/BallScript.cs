@@ -10,10 +10,19 @@ public abstract class BallScript : MonoBehaviour
     public Vector2 direction {  get;  set; }
 
     [SerializeField]
-    private protected float speed {  get; set; }
-
+    private float _speed;
     [SerializeField]
-    private protected float damage {  get; set; }
+    private float _damage;
+
+    public float speed {
+        get { return _speed; }
+        set { _speed = value; } 
+    }
+
+    public float damage {
+        get { return _damage; }
+        set { _damage = value; } 
+    }
 
     public delegate void Attack(float damage, DamageType type, GameObject gameObject);
 
@@ -22,13 +31,13 @@ public abstract class BallScript : MonoBehaviour
 
     public abstract void OnCollisionEnter2D(Collision2D collision);
 
-    private protected void setTrajectory()
+    public void setTrajectory()
     {
         Vector2 force = Vector2.zero;
         force.x = Random.Range(-1f, 1f);
         force.y = Random.Range(-1f, 1f);
 
-        this.rigidbody.AddForce(force.normalized * this.speed);
+        rigidbody.AddForce(force.normalized * speed * 100f);
     }
 
    

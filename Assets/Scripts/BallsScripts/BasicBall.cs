@@ -8,14 +8,9 @@ public class BasicBall : BallScript
     void Awake()
     {
         this.rigidbody = GetComponent<Rigidbody2D>();
-        this.speed = 500f;
-        this.damage = 10f;
+        
     }
 
-    void Start()
-    {
-        this.setTrajectory();
-    }
 
     public override void OnCollisionEnter2D(Collision2D collision)
     {

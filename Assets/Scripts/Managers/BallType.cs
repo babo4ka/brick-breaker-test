@@ -4,5 +4,5 @@ using UnityEngine;
 
 public enum BallType
 {
-    BASIC, POISON
+    BASIC, POISON, DEMO, CASH
 }

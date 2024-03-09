@@ -68,6 +68,10 @@ public class BrickScript : MonoBehaviour
         destroyed?.Invoke(gameObject);
     }
 
+    public void SubscribeToBall(BallScript bs)
+    {
+        bs.attack += getDamage;
+    }
 
     private void getDamage(float damage, DamageType type, GameObject objToDamage)
     {
