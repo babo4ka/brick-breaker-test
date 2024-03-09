@@ -67,7 +67,11 @@ public class BallManager : MonoBehaviour {
 
     public void BuyNewBall(BallType type)
     {
-
+        CashManager cm = GetComponent<CashManager>();
+        if (cm.SpendCash(0f))
+        {
+            InstantiateBall(type);
+        }
     }
 
     public void OpenNewBall(BallType ballType)
