@@ -2135,6 +2135,7 @@ GameObject:
   - component: {fileID: 1248560409}
   - component: {fileID: 1248560408}
   - component: {fileID: 1248560407}
+  - component: {fileID: 1248560410}
   m_Layer: 5
   m_Name: IncreaseButton
   m_TagString: Untagged
@@ -2244,6 +2245,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1248560405}
   m_CullTransparentMesh: 1
+--- !u!114 &1248560410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1248560405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0daab7a9a7af2944890ac3a82c76454, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ballType: 0
+  valueType: 1
+  gameManager: {fileID: 1152358830}
+  valueText: {fileID: 100371090}
 --- !u!1 &1272574710
 GameObject:
   m_ObjectHideFlags: 0

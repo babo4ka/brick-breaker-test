@@ -120,8 +120,35 @@ public class BallManager : MonoBehaviour {
                     foreach (BasicBall bb in basicBalls)
                     {
                         bb.speed = currentSpeed[type];
+                        bb.UpdateSpeed();
                     }
                     return currentSpeed[type];
+            }
+        }
+
+        return -1f;
+    }
+
+    public float UpgraadeDamage(BallType type)
+    {
+        CashManager cm = GetComponent<CashManager>();
+        float price = damageUpgradePrice[type];
+
+        if (cm.SpendCash(price))
+        {
+            damageUpgradePrice[type] += price * priceMultiplier;
+            switch (type)
+            {
+                case BallType.BASIC :
+                    damageIncrement[type] += damageIncrement[type] * allBallsDamageIncrementMultiplier;
+
+                    currentDamage[type] += damageIncrement[type];
+
+                    foreach(BasicBall bb  in basicBalls)
+                    {
+                        bb.damage = currentDamage[type];
+                    }
+                    return currentDamage[type];
             }
         }
 
@@ -225,7 +252,7 @@ public class BallManager : MonoBehaviour {
 
     private void InstantiateBall(BallType ballType)
     {
-        GameObject ballPrefab = new GameObject();
+        GameObject ballPrefab = null;
         switch (ballType)
         {
             case BallType.BASIC:
@@ -256,7 +283,7 @@ public class BallManager : MonoBehaviour {
                 break;
         }
 
-        GetComponent<BrickManager>().SubscribeBricks(bs);
+        GetComponent<BrickManager>().SubscribeBricks(ball);
     }
 
 

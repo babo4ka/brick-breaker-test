@@ -56,9 +56,15 @@ public class BrickManager : MonoBehaviour {
     {
         _currentBricks.Clear();
         _currentBricks = bricks;
-        
+
+        List<GameObject> balls = GameObject.FindGameObjectsWithTag("Ball").ToList();
+
         foreach(GameObject brick in _currentBricks)
         {
+            foreach(GameObject ball in balls) {
+                SubscribeBrick(ball, brick);
+            }
+
             BrickScript bs = brick.GetComponent<BrickScript>();
             bs.destroyed += OnBrickDestroyed;
 
@@ -91,11 +97,16 @@ public class BrickManager : MonoBehaviour {
         _hexBrickHp *= multiplier;
     }
 
-    public void SubscribeBricks(BallScript bs)
+    private void SubscribeBrick(GameObject ball, GameObject brick)
+    {
+        brick.GetComponent<BrickScript>().SubscribeToBall(ball.GetComponent<BallScript>());
+    }
+
+    public void SubscribeBricks(GameObject ball)
     {
         foreach(GameObject brick in _currentBricks)
         {
-            brick.GetComponent<BrickScript>().SubscribeToBall(bs);
+            SubscribeBrick(ball, brick);
         }
     }
 }
