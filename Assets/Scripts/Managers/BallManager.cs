@@ -14,8 +14,9 @@ public class BallManager : MonoBehaviour {
     #endregion
 
     #region Balls lists
-    List<BasicBall> basicBalls = new List<BasicBall>();
-    List<PoisonBall> poisonBalls = new List<PoisonBall>();
+    private List<BasicBall> basicBalls = new List<BasicBall>();
+    private List<PoisonBall> poisonBalls = new List<PoisonBall>();
+
 
     private int BallsCount(BallType ballType)
     {
@@ -120,7 +121,6 @@ public class BallManager : MonoBehaviour {
                     foreach (BasicBall bb in basicBalls)
                     {
                         bb.speed = currentSpeed[type];
-                        bb.UpdateSpeed();
                     }
                     return currentSpeed[type];
             }
@@ -166,6 +166,7 @@ public class BallManager : MonoBehaviour {
             currentDamage.Add(ballType, powerBaseStats[currentStage][ballType]);
             currentSpeed.Add(ballType, speedBaseStats[currentStage][ballType]);
 
+
             damageIncrement.Add(ballType, powerBaseStats[currentStage][ballType]);
             speedIncrement.Add(ballType, speedBaseStats[currentStage][ballType]);
 
@@ -178,7 +179,7 @@ public class BallManager : MonoBehaviour {
             InstantiateBall(ballType);
         }
     }
-
+    
 
     #region Update stats
     public void UpdateDamage(BallType ballType)
@@ -269,7 +270,7 @@ public class BallManager : MonoBehaviour {
         BallScript bs = ball.GetComponent<BallScript>();
         bs.damage = currentDamage[ballType];
         bs.speed = currentSpeed[ballType];
-        bs.setTrajectory();
+        bs.SetTrajectory();
 
 
         switch (ballType)

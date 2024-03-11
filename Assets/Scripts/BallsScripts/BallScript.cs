@@ -10,13 +10,13 @@ public abstract class BallScript : MonoBehaviour
     public Vector2 direction {  get;  set; }
 
     [SerializeField]
-    private float _speed;
+    private float _speed = 0f;
     [SerializeField]
     private float _damage;
 
     public float speed {
         get { return _speed; }
-        set { _speed = value; } 
+        set { UpdateSpeed(value); } 
     }
 
     public float damage {
@@ -31,25 +31,29 @@ public abstract class BallScript : MonoBehaviour
 
     public abstract void OnCollisionEnter2D(Collision2D collision);
 
-    public void setTrajectory()
+    public void SetTrajectory()
     {
         Vector2 force = Vector2.zero;
+
         force.x = Random.Range(-1f, 1f);
         force.y = Random.Range(-1f, 1f);
-        Debug.Log(force.normalized + " " + speed);
+        direction = force;
+        
         rigidbody.AddForce(force.normalized * speed);
+
     }
 
-    public void UpdateSpeed()
+    public void UpdateSpeed(float newSpeed)
     {
-        
-        
+        if (this._speed != 0f) {
+            float diff = newSpeed - this._speed;
+            //Vector2 direction = rigidbody.velocity.normalized;
 
-        //rigidbody.velocity *= speed;
-        Debug.Log(rigidbody.velocity.normalized);
-        //rigidbody.AddForce(rigidbody.velocity.normalized * this.speed);
-        rigidbody.totalForce += rigidbody.velocity.normalized * this.speed;
-        Debug.Log(rigidbody.velocity.normalized);
+            rigidbody.AddForce(rigidbody.velocity.normalized * diff);
+        }
+
+        this._speed = newSpeed;
+        
     }
 
    

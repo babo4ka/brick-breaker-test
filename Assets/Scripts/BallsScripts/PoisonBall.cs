@@ -21,9 +21,5 @@ public class PoisonBall : BallScript
         this.rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    void Start()
-    {
-        this.setTrajectory();
-    }
 
 }
