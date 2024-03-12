@@ -35,12 +35,18 @@ public class IncreaseValueScript : MonoBehaviour
 
             case ValueType.SPEED:
                 float speed = bm.UpgradeSpeed(ballType);
-                valueText.text = speed.ToString();
+                if(speed != -1f)
+                {
+                    valueText.text = speed.ToString();
+                }
                 break;
 
             case ValueType.DAMAGE:
-                float damage = bm.UpgraadeDamage(ballType);
-                valueText.text = damage.ToString();
+                float damage = bm.UpgradeDamage(ballType);
+                if(damage != -1f)
+                {
+                    valueText.text = damage.ToString();
+                }
                 break;
         }
     }

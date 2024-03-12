@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicBall : BallScript
+public class CrushBall : BallScript
 {
-
-
 
 
     public override void OnCollisionEnter2D(Collision2D collision)
@@ -15,6 +13,11 @@ public class BasicBall : BallScript
         if (collision.gameObject.tag == "Brick")
         {
             attack?.Invoke(damage, DamageType.DAMAGE, collision.gameObject);
+        }
+
+        if(collision.gameObject.tag == "Wall")
+        {
+
         }
     }
 }

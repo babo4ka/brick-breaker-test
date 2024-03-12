@@ -16,10 +16,7 @@ public class PoisonBall : BallScript
         }
     }
 
-    void Awake()
-    {
-        this.rigidbody = GetComponent<Rigidbody2D>();
-    }
+    
 
 
 }

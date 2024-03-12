@@ -47,7 +47,6 @@ public abstract class BallScript : MonoBehaviour
     {
         if (this._speed != 0f) {
             float diff = newSpeed - this._speed;
-            //Vector2 direction = rigidbody.velocity.normalized;
 
             rigidbody.AddForce(rigidbody.velocity.normalized * diff);
         }
@@ -56,5 +55,10 @@ public abstract class BallScript : MonoBehaviour
         
     }
 
-   
+    void Awake()
+    {
+        this.rigidbody = GetComponent<Rigidbody2D>();
+    }
+
+
 }
