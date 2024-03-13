@@ -15,12 +15,18 @@ public class BallManager : MonoBehaviour {
     private GameObject crushBallPrefab;
     [SerializeField]
     private GameObject smallCrushBallPrefab;
+    [SerializeField]
+    private GameObject demoBallPrefab;
+    [SerializeField]
+    private GameObject sniperBallPrefab;
     #endregion
 
     #region Balls lists
     private List<BasicBall> basicBalls = new List<BasicBall>();
     private List<PoisonBall> poisonBalls = new List<PoisonBall>();
     private List<CrushBall> crushBalls = new List<CrushBall>();
+    private List<DemoBall> demoBalls = new List<DemoBall>();
+    private List<SniperBall> sniperBalls = new List<SniperBall>();
 
 
     private int BallsCount(BallType ballType)
@@ -303,6 +309,14 @@ public class BallManager : MonoBehaviour {
             case BallType.POISON:
                 ballPrefab = poisonBallPrefab;
                 break;
+
+            case BallType.DEMO:
+                ballPrefab = demoBallPrefab;
+                break;
+
+            case BallType.SNIPER:
+                ballPrefab = sniperBallPrefab;
+                break;
         }
         
 
@@ -332,5 +346,6 @@ public class BallManager : MonoBehaviour {
     private void Start()
     {
         OpenNewBall(BallType.BASIC);
+        
     }
 }

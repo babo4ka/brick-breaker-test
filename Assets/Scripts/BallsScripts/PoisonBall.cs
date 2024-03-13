@@ -5,7 +5,6 @@ using UnityEngine;
 public class PoisonBall : BallScript
 {
 
-
     public override void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision == null) return;
@@ -15,8 +14,5 @@ public class PoisonBall : BallScript
             attack?.Invoke(damage, DamageType.POISON, collision.gameObject);
         }
     }
-
-    
-
 
 }
