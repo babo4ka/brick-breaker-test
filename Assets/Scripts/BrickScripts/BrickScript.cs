@@ -25,8 +25,7 @@ public class BrickScript : MonoBehaviour
         set { _health = value; } 
     }
 
-
-    private float mul = 1.0f;
+    private float poisoned = 1.0f;
 
     [SerializeField]
     private List<BallScript> balls = new List<BallScript>();
@@ -69,13 +68,13 @@ public class BrickScript : MonoBehaviour
             switch (type)
             {
                 case DamageType.DAMAGE:
-                    this._health -= damage * mul;
+                    this._health -= damage * poisoned;
                     break;
 
                 case DamageType.POISON:
-                    if(this.mul == 1.0f)
+                    if(this.poisoned == 1.0f)
                     {
-                        this.mul += damage;
+                        this.poisoned = damage;
                     }
                     break;
             }

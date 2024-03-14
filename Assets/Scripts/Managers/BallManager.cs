@@ -19,6 +19,8 @@ public class BallManager : MonoBehaviour {
     private GameObject demoBallPrefab;
     [SerializeField]
     private GameObject sniperBallPrefab;
+    [SerializeField]
+    private GameObject splashBallPrefab;
     #endregion
 
     #region Balls lists
@@ -27,6 +29,7 @@ public class BallManager : MonoBehaviour {
     private List<CrushBall> crushBalls = new List<CrushBall>();
     private List<DemoBall> demoBalls = new List<DemoBall>();
     private List<SniperBall> sniperBalls = new List<SniperBall>();
+    private List<SplashBall> splashBalls = new List<SplashBall>();
 
 
     private int BallsCount(BallType ballType)

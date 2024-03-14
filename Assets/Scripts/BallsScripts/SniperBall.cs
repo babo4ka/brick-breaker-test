@@ -38,8 +38,4 @@ public class SniperBall : BallScript
         }
     }
 
-    private void Start()
-    {
-        SetTrajectory();
-    }
 }
