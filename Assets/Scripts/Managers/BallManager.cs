@@ -14,13 +14,13 @@ public class BallManager : MonoBehaviour {
     [SerializeField]
     private GameObject crushBallPrefab;
     [SerializeField]
-    private GameObject smallCrushBallPrefab;
-    [SerializeField]
     private GameObject demoBallPrefab;
     [SerializeField]
     private GameObject sniperBallPrefab;
     [SerializeField]
     private GameObject splashBallPrefab;
+    [SerializeField]
+    private GameObject cashBallPrefab;
     #endregion
 
     #region Balls lists
@@ -30,6 +30,7 @@ public class BallManager : MonoBehaviour {
     private List<DemoBall> demoBalls = new List<DemoBall>();
     private List<SniperBall> sniperBalls = new List<SniperBall>();
     private List<SplashBall> splashBalls = new List<SplashBall>();
+    private List<CashBall> cashBalls = new List<CashBall>();
 
 
     private int BallsCount(BallType ballType)
@@ -183,8 +184,9 @@ public class BallManager : MonoBehaviour {
     private float allBallsSpeedIncrementMultiplier = 0.62787f * 0.9944711f;
     private float demoBallSpeedIncrementMultiplier = 0.33039f * 0.99446999f;
     
-    private Dictionary<BallType, float> damageMultipliers = new Dictionary<BallType, float>();
-    private Dictionary<BallType, float> speedMultipliers = new Dictionary<BallType, float>();
+    //не помню зачем их добавил
+    //private Dictionary<BallType, float> damageMultipliers = new Dictionary<BallType, float>();
+    //private Dictionary<BallType, float> speedMultipliers = new Dictionary<BallType, float>();
     #endregion
 
 
@@ -254,17 +256,65 @@ public class BallManager : MonoBehaviour {
         {
             speedUpgradePrice[type] += price * priceMultiplier;
 
+            if(type == BallType.DEMO)
+            {
+                speedIncrement[type] *= demoBallSpeedIncrementMultiplier;
+            }
+            else
+            {
+                speedIncrement[type] *= allBallsSpeedIncrementMultiplier;
+            }
 
+            currentSpeed[type] += speedIncrement[type];
 
             switch (type)
             {
                 case BallType.BASIC:
-                    speedIncrement[type] += speedIncrement[type] * allBallsSpeedIncrementMultiplier;
-
-                    currentSpeed[type] += speedIncrement[type];
                     foreach (BasicBall bb in basicBalls)
                     {
                         bb.speed = currentSpeed[type];
+                    }
+                    return currentSpeed[type];
+
+                case BallType.SNIPER:
+                    foreach(SniperBall sb in sniperBalls)
+                    {
+                        sb.speed = currentSpeed[type];
+                    }
+                    return currentSpeed[type];
+                  
+                case BallType.SPLASH:
+                    foreach(SplashBall sb in splashBalls)
+                    {
+                        sb.speed = currentSpeed[type];
+                    }
+                    return currentSpeed[type];
+
+                case BallType.POISON:
+                    foreach(PoisonBall pb in poisonBalls)
+                    {
+                        pb.speed = currentSpeed[type];
+                    }
+                    return currentSpeed[type];
+
+                case BallType.DEMO:
+                    foreach(DemoBall db in demoBalls)
+                    {
+                        db.speed = currentSpeed[type];
+                    }
+                    return currentSpeed[type];
+
+                case BallType.CRUSH:
+                    foreach(CrushBall cb  in crushBalls)
+                    {
+                        cb.speed = currentSpeed[type];
+                    }
+                    return currentSpeed[type];
+
+                case BallType.CASH:
+                    foreach(CashBall cb in cashBalls)
+                    {
+                        cb.speed = currentSpeed[type];
                     }
                     return currentSpeed[type];
             }
@@ -281,16 +331,70 @@ public class BallManager : MonoBehaviour {
         if (cm.SpendCash(price))
         {
             damageUpgradePrice[type] += price * priceMultiplier;
+
+            if(type == BallType.POISON)
+            {
+                damageIncrement[type] *= poisonBallDamageIncrementMultiplier;
+            }
+            else if(type == BallType.CASH)
+            {
+                damageIncrement[type] *= cashBallDamageIncrementMultiplier;
+            }
+            else
+            {
+                damageIncrement[type] *= allBallsDamageIncrementMultiplier;
+            }
+
+            currentDamage[type] += damageIncrement[type];
+
             switch (type)
             {
                 case BallType.BASIC:
-                    damageIncrement[type] += damageIncrement[type] * allBallsDamageIncrementMultiplier;
-
-                    currentDamage[type] += damageIncrement[type];
-
                     foreach (BasicBall bb in basicBalls)
                     {
                         bb.damage = currentDamage[type];
+                    }
+                    return currentDamage[type];
+
+                case BallType.SNIPER:
+                    foreach (SniperBall sb in sniperBalls)
+                    {
+                        sb.damage = currentDamage[type];
+                    }
+                    return currentDamage[type];
+
+                case BallType.SPLASH:
+                    foreach (SplashBall sb in splashBalls)
+                    {
+                        sb.damage = currentDamage[type];
+                    }
+                    return currentDamage[type];
+
+                case BallType.POISON:
+                    foreach (PoisonBall pb in poisonBalls)
+                    {
+                        pb.damage = currentDamage[type];
+                    }
+                    return currentDamage[type];
+
+                case BallType.DEMO:
+                    foreach (DemoBall db in demoBalls)
+                    {
+                        db.damage = currentDamage[type];
+                    }
+                    return currentDamage[type];
+
+                case BallType.CRUSH:
+                    foreach (CrushBall cb in crushBalls)
+                    {
+                        cb.damage = currentDamage[type];
+                    }
+                    return currentDamage[type];
+
+                case BallType.CASH:
+                    foreach (CashBall cb in cashBalls)
+                    {
+                        cb.damage = currentDamage[type];
                     }
                     return currentDamage[type];
             }
@@ -309,6 +413,14 @@ public class BallManager : MonoBehaviour {
                 ballPrefab = basicBallPrefab;
                 break;
 
+            case BallType.SNIPER:
+                ballPrefab = sniperBallPrefab;
+                break;
+
+            case BallType.SPLASH:
+                ballPrefab = splashBallPrefab;
+                break;
+
             case BallType.POISON:
                 ballPrefab = poisonBallPrefab;
                 break;
@@ -317,9 +429,14 @@ public class BallManager : MonoBehaviour {
                 ballPrefab = demoBallPrefab;
                 break;
 
-            case BallType.SNIPER:
-                ballPrefab = sniperBallPrefab;
+            case BallType.CRUSH:
+                ballPrefab = crushBallPrefab;
                 break;
+
+            case BallType.CASH:
+                ballPrefab = cashBallPrefab;
+                break;
+
         }
         
 
@@ -342,6 +459,20 @@ public class BallManager : MonoBehaviour {
         }
 
         GetComponent<BrickManager>().SubscribeBricks(ball);
+    }
+
+    public void DestroyBall(BallType ballType)
+    {
+        GameObject toDestroy = null;
+        switch (ballType)
+        {
+            case BallType.BASIC:
+                toDestroy = basicBalls[basicBalls.Count - 1].gameObject;
+                basicBalls.Remove(toDestroy.GetComponent<BasicBall>());
+                break;
+        }
+
+        GetComponent<BrickManager>().UnsubscribeBricks(toDestroy);
     }
 
 

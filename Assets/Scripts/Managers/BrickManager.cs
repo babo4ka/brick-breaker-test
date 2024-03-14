@@ -102,11 +102,24 @@ public class BrickManager : MonoBehaviour {
         brick.GetComponent<BrickScript>().SubscribeToBall(ball.GetComponent<BallScript>());
     }
 
+    private void UnsubscribeBrick(GameObject ball, GameObject brick)
+    {
+        brick.GetComponent<BrickScript>().UnsubscribeBall(ball.GetComponent<BallScript>());
+    }
+
     public void SubscribeBricks(GameObject ball)
     {
         foreach(GameObject brick in _currentBricks)
         {
             SubscribeBrick(ball, brick);
+        }
+    }
+
+    public void UnsubscribeBricks(GameObject ball)
+    {
+        foreach (GameObject brick in _currentBricks)
+        {
+            UnsubscribeBrick(ball, brick);
         }
     }
 }

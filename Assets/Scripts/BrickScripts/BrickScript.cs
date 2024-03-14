@@ -55,6 +55,12 @@ public class BrickScript : MonoBehaviour
         destroyed?.Invoke(gameObject);
     }
 
+    public void UnsubscribeBall(BallScript bs)
+    {
+        bs.attack -= getDamage;
+        balls.Remove(bs);
+    }
+
     public void SubscribeToBall(BallScript bs)
     {
         bs.attack += getDamage;
