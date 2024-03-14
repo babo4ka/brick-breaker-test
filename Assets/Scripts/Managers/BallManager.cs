@@ -21,6 +21,8 @@ public class BallManager : MonoBehaviour {
     private GameObject splashBallPrefab;
     [SerializeField]
     private GameObject cashBallPrefab;
+    [SerializeField]
+    private GameObject fireBallPrefab;
     #endregion
 
     #region Balls lists
@@ -31,6 +33,7 @@ public class BallManager : MonoBehaviour {
     private List<SniperBall> sniperBalls = new List<SniperBall>();
     private List<SplashBall> splashBalls = new List<SplashBall>();
     private List<CashBall> cashBalls = new List<CashBall>();
+    private List<FireBall> fireBalls = new List<FireBall>();
 
 
     private int BallsCount(BallType ballType)
@@ -40,11 +43,37 @@ public class BallManager : MonoBehaviour {
             case BallType.BASIC:
                 return basicBalls.Count;
 
+            case BallType.SNIPER:
+                return sniperBalls.Count;
+
+            case BallType.SPLASH:
+                return splashBalls.Count;
+
             case BallType.POISON:
                 return poisonBalls.Count;
+
+            case BallType.DEMO:
+                return demoBalls.Count;
+
+            case BallType.CRUSH:
+                return crushBalls.Count;
+
+            case BallType.CASH:
+                return cashBalls.Count;
+
+            case BallType.FIRE:
+                return fireBalls.Count;
         }
 
         return -1;
+    }
+
+    public int AllBallsCount()
+    {
+        return BallsCount(BallType.BASIC) + BallsCount(BallType.SNIPER) + 
+            BallsCount(BallType.SPLASH) + BallsCount(BallType.POISON) +
+            BallsCount(BallType.DEMO) + BallsCount(BallType.CRUSH) + 
+            BallsCount(BallType.CASH) + BallsCount(BallType.FIRE);
     }
     #endregion
 
@@ -317,6 +346,13 @@ public class BallManager : MonoBehaviour {
                         cb.speed = currentSpeed[type];
                     }
                     return currentSpeed[type];
+
+                case BallType.FIRE:
+                    foreach (FireBall fb in fireBalls)
+                    {
+                        fb.speed = currentSpeed[type];
+                    }
+                    return currentSpeed[type];
             }
         }
 
@@ -397,6 +433,13 @@ public class BallManager : MonoBehaviour {
                         cb.damage = currentDamage[type];
                     }
                     return currentDamage[type];
+
+                case BallType.FIRE:
+                    foreach (FireBall fb in fireBalls)
+                    {
+                        fb.damage = currentDamage[type];
+                    }
+                    return currentDamage[type];
             }
         }
 
@@ -437,6 +480,10 @@ public class BallManager : MonoBehaviour {
                 ballPrefab = cashBallPrefab;
                 break;
 
+            case BallType.FIRE:
+                ballPrefab = fireBallPrefab;
+                break;
+
         }
         
 
@@ -453,8 +500,32 @@ public class BallManager : MonoBehaviour {
                 basicBalls.Add((BasicBall)bs);
                 break;
 
+            case BallType.SNIPER:
+                sniperBalls.Add((SniperBall)bs);
+                break;
+
+            case BallType.SPLASH:
+                splashBalls.Add((SplashBall)bs);
+                break;
+
             case BallType.POISON:
                 poisonBalls.Add((PoisonBall)bs);
+                break;
+
+            case BallType.DEMO:
+                demoBalls.Add((DemoBall)bs);
+                break;
+
+            case BallType.CRUSH:
+                crushBalls.Add((CrushBall)bs);
+                break;
+
+            case BallType.CASH:
+                cashBalls.Add((CashBall)bs);
+                break;
+
+            case BallType.FIRE:
+                fireBalls.Add((FireBall)bs);
                 break;
         }
 
@@ -470,6 +541,42 @@ public class BallManager : MonoBehaviour {
                 toDestroy = basicBalls[basicBalls.Count - 1].gameObject;
                 basicBalls.Remove(toDestroy.GetComponent<BasicBall>());
                 break;
+
+            case BallType.SNIPER:
+                toDestroy = sniperBalls[sniperBalls.Count - 1].gameObject;
+                sniperBalls.Remove(toDestroy.GetComponent<SniperBall>());
+                break;
+
+            case BallType.SPLASH:
+                toDestroy = splashBalls[splashBalls.Count - 1].gameObject;
+                splashBalls.Remove(toDestroy.GetComponent<SplashBall>());
+                break;
+
+            case BallType.POISON:
+                toDestroy = poisonBalls[poisonBalls.Count - 1].gameObject;
+                poisonBalls.Remove(toDestroy.GetComponent<PoisonBall>());
+                break;
+
+            case BallType.DEMO:
+                toDestroy = demoBalls[demoBalls.Count - 1].gameObject;
+                demoBalls.Remove(toDestroy.GetComponent<DemoBall>());
+                break;
+
+            case BallType.CRUSH:
+                toDestroy = crushBalls[crushBalls.Count - 1].gameObject;
+                crushBalls.Remove(toDestroy.GetComponent<CrushBall>());
+                break;
+
+            case BallType.CASH:
+                toDestroy = cashBalls[cashBalls.Count - 1].gameObject;
+                cashBalls.Remove(toDestroy.GetComponent<CashBall>());
+                break;
+
+            case BallType.FIRE:
+                toDestroy = fireBalls[fireBalls.Count - 1].gameObject;
+                fireBalls.Remove(toDestroy.GetComponent<FireBall>());
+                break;
+
         }
 
         GetComponent<BrickManager>().UnsubscribeBricks(toDestroy);

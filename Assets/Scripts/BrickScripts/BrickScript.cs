@@ -26,6 +26,7 @@ public class BrickScript : MonoBehaviour
     }
 
     private float poisoned = 1.0f;
+    private float burning = 0.0f;
 
     [SerializeField]
     private List<BallScript> balls = new List<BallScript>();
@@ -67,6 +68,16 @@ public class BrickScript : MonoBehaviour
         balls.Add(bs);
     }
 
+    private void Burn()
+    {
+        this._health -= burning * poisoned;
+
+        if (_health <= 0f)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void getDamage(float damage, DamageType type, GameObject objToDamage)
     {
         if(gameObject == objToDamage)
@@ -81,6 +92,15 @@ public class BrickScript : MonoBehaviour
                     if(this.poisoned == 1.0f)
                     {
                         this.poisoned = damage;
+                    }
+                    break;
+
+                case DamageType.FIRE:
+                    this._health -= damage * poisoned;
+                    if(this.burning == 0.0f)
+                    {
+                        this.burning = damage * 0.5f;
+                        InvokeRepeating("Burn", 0f, 1f);
                     }
                     break;
             }
