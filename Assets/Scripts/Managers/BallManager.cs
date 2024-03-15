@@ -248,7 +248,7 @@ public class BallManager : MonoBehaviour {
 
     
 
-    public void OpenNewBall(BallType ballType)
+    public bool OpenNewBall(BallType ballType)
     {
        
         CashManager cm = GetComponent<CashManager>();
@@ -270,7 +270,11 @@ public class BallManager : MonoBehaviour {
 
 
             InstantiateBall(ballType);
+
+            return true;
         }
+
+        return false;
     }
     #endregion
 
