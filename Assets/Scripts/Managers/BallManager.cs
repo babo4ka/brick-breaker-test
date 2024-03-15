@@ -70,10 +70,10 @@ public class BallManager : MonoBehaviour {
 
     public int AllBallsCount()
     {
-        return BallsCount(BallType.BASIC) + BallsCount(BallType.SNIPER) + 
-            BallsCount(BallType.SPLASH) + BallsCount(BallType.POISON) +
-            BallsCount(BallType.DEMO) + BallsCount(BallType.CRUSH) + 
-            BallsCount(BallType.CASH) + BallsCount(BallType.FIRE);
+        return basicBalls.Count + sniperBalls.Count +
+            splashBalls.Count + poisonBalls.Count +
+            demoBalls.Count + crushBalls.Count +
+            cashBalls.Count + fireBalls.Count;
     }
     #endregion
 
@@ -212,7 +212,7 @@ public class BallManager : MonoBehaviour {
     private Dictionary<BallType, float> speedIncrement = new Dictionary<BallType, float>();
     private float allBallsSpeedIncrementMultiplier = 0.62787f * 0.9944711f;
     private float demoBallSpeedIncrementMultiplier = 0.33039f * 0.99446999f;
-    
+
     //не помню зачем их добавил
     //private Dictionary<BallType, float> damageMultipliers = new Dictionary<BallType, float>();
     //private Dictionary<BallType, float> speedMultipliers = new Dictionary<BallType, float>();
@@ -223,6 +223,45 @@ public class BallManager : MonoBehaviour {
     private Dictionary<int, float> stagePrice = new Dictionary<int, float> {
         {1, 0f }, {2, 175f}, {3, 7500f}, {4, 175000f}, {5, 15f * (float)Math.Pow(10, 6)}
     };
+
+    public float NextStagePrice()
+    {
+        if (currentStage < 8)
+        {
+            return stagePrice[currentStage + 1];
+        }
+        return -1f;
+    }
+
+    private Dictionary<BallType, int> ballTypesOnStage = new Dictionary<BallType, int>
+    {
+        { BallType.BASIC, 1}, { BallType.SNIPER, 2}, { BallType.SPLASH, 2},
+        { BallType.POISON, 3}, { BallType.DEMO, 3}, { BallType.CRUSH, 4},
+        { BallType.CASH, 5}, { BallType.FIRE, 6}
+    };
+
+    private Dictionary<BallType, bool> ballOpened = new Dictionary<BallType, bool> {
+        {BallType.BASIC, false}, {BallType.SPLASH, false}, {BallType.SNIPER, false},
+        {BallType.POISON, false}, {BallType.DEMO, false}, {BallType.CRUSH, false},
+        {BallType.CASH, false}, {BallType.FIRE, false}
+    };
+
+    public List<BallType> AllowedTypes()
+    {
+        List<BallType> types = new List<BallType>();
+
+        int nextStage = currentStage + 1;
+
+        foreach(BallType t in ballTypesOnStage.Keys)
+        {
+            if (ballTypesOnStage[t] <= nextStage && !ballOpened[t])
+            {
+                types.Add(t);
+            }
+        }
+
+        return types;
+    }
 
     private Dictionary<BallType, float> newBallPrice = new Dictionary<BallType, float>();
     private Dictionary<BallType, float> damageUpgradePrice = new Dictionary<BallType, float>();
@@ -259,6 +298,7 @@ public class BallManager : MonoBehaviour {
         CashManager cm = GetComponent<CashManager>();
         if (cm.SpendCash(stagePrice[currentStage + 1]))
         {
+            ballOpened[ballType] = true;
             Dictionary<string, float> returnValues = new Dictionary<string, float>();
 
             currentStage++;

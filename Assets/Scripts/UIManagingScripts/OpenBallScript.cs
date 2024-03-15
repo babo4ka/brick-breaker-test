@@ -46,6 +46,7 @@ public class OpenBallScript : MonoBehaviour
 
         if(opened != null)
         {
+            ballManagingPanel.SetActive(true);
             countText.text = ((int)opened["count"]).ToString();
             speedText.text = opened["speed"].ToString();
             damageText.text = opened["damage"].ToString();
