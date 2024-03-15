@@ -232,10 +232,12 @@ public class BallManager : MonoBehaviour {
 
 
     #region New Balls
-    public int BuyNewBall(BallType type)
+    public Dictionary<string, float> BuyNewBall(BallType type)
     {
         CashManager cm = GetComponent<CashManager>();
         float price = newBallPrice[type];
+
+        Dictionary<string, float> returnValues = new Dictionary<string, float>();
         
         if (cm.SpendCash(price))
         {
@@ -243,17 +245,22 @@ public class BallManager : MonoBehaviour {
             InstantiateBall(type);
         }
 
-        return BallsCount(type);
+        returnValues.Add("value", (float)BallsCount(type));
+        returnValues.Add("price", newBallPrice[type]);
+
+        return returnValues;
     }
 
     
 
-    public bool OpenNewBall(BallType ballType)
+    public Dictionary<string, float> OpenNewBall(BallType ballType)
     {
        
         CashManager cm = GetComponent<CashManager>();
         if (cm.SpendCash(stagePrice[currentStage + 1]))
         {
+            Dictionary<string, float> returnValues = new Dictionary<string, float>();
+
             currentStage++;
 
             currentDamage.Add(ballType, powerBaseStats[currentStage][ballType]);
@@ -271,19 +278,29 @@ public class BallManager : MonoBehaviour {
 
             InstantiateBall(ballType);
 
-            return true;
+            returnValues.Add("damage", currentDamage[ballType]);
+            returnValues.Add("speed", currentSpeed[ballType]);
+            returnValues.Add("count", 1);
+
+            returnValues.Add("damagePrice", damageUpgradePrice[ballType]);
+            returnValues.Add("speedPrice", speedUpgradePrice[ballType]);
+            returnValues.Add("countPrice", newBallPrice[ballType]);
+
+            return returnValues;
         }
 
-        return false;
+        return null;
     }
     #endregion
 
 
     #region Update stats
-    public float UpgradeSpeed(BallType type)
+    public Dictionary<string, float> UpgradeSpeed(BallType type)
     {
         CashManager cm = GetComponent<CashManager>();
         float price = speedUpgradePrice[type];
+
+        Dictionary<string,float> returnValues = new Dictionary<string,float>();
 
         if (cm.SpendCash(price))
         {
@@ -307,66 +324,72 @@ public class BallManager : MonoBehaviour {
                     {
                         bb.speed = currentSpeed[type];
                     }
-                    return currentSpeed[type];
+                    break;
 
                 case BallType.SNIPER:
                     foreach(SniperBall sb in sniperBalls)
                     {
                         sb.speed = currentSpeed[type];
                     }
-                    return currentSpeed[type];
-                  
+                    break;
+
                 case BallType.SPLASH:
                     foreach(SplashBall sb in splashBalls)
                     {
                         sb.speed = currentSpeed[type];
                     }
-                    return currentSpeed[type];
+                    break;
 
                 case BallType.POISON:
                     foreach(PoisonBall pb in poisonBalls)
                     {
                         pb.speed = currentSpeed[type];
                     }
-                    return currentSpeed[type];
+                    break;
 
                 case BallType.DEMO:
                     foreach(DemoBall db in demoBalls)
                     {
                         db.speed = currentSpeed[type];
                     }
-                    return currentSpeed[type];
+                    break;
 
                 case BallType.CRUSH:
                     foreach(CrushBall cb  in crushBalls)
                     {
                         cb.speed = currentSpeed[type];
                     }
-                    return currentSpeed[type];
+                    break;
 
                 case BallType.CASH:
                     foreach(CashBall cb in cashBalls)
                     {
                         cb.speed = currentSpeed[type];
                     }
-                    return currentSpeed[type];
+                    break;
 
                 case BallType.FIRE:
                     foreach (FireBall fb in fireBalls)
                     {
                         fb.speed = currentSpeed[type];
                     }
-                    return currentSpeed[type];
+                    break;
             }
         }
 
-        return -1f;
+        returnValues.Add("value", currentSpeed[type]);
+        returnValues.Add("price", speedUpgradePrice[type]);
+
+
+        return returnValues;
     }
 
-    public float UpgradeDamage(BallType type)
+    public Dictionary<string, float> UpgradeDamage(BallType type)
     {
         CashManager cm = GetComponent<CashManager>();
         float price = damageUpgradePrice[type];
+
+        Dictionary<string, float> returnValues = new Dictionary<string, float>();
 
         if (cm.SpendCash(price))
         {
@@ -394,60 +417,66 @@ public class BallManager : MonoBehaviour {
                     {
                         bb.damage = currentDamage[type];
                     }
-                    return currentDamage[type];
+                    break;
 
                 case BallType.SNIPER:
                     foreach (SniperBall sb in sniperBalls)
                     {
                         sb.damage = currentDamage[type];
                     }
-                    return currentDamage[type];
+                    break;
 
                 case BallType.SPLASH:
                     foreach (SplashBall sb in splashBalls)
                     {
                         sb.damage = currentDamage[type];
                     }
-                    return currentDamage[type];
+                    break;
 
                 case BallType.POISON:
                     foreach (PoisonBall pb in poisonBalls)
                     {
                         pb.damage = currentDamage[type];
                     }
-                    return currentDamage[type];
+                    break;
 
                 case BallType.DEMO:
                     foreach (DemoBall db in demoBalls)
                     {
                         db.damage = currentDamage[type];
                     }
-                    return currentDamage[type];
+                    break;
 
                 case BallType.CRUSH:
                     foreach (CrushBall cb in crushBalls)
                     {
                         cb.damage = currentDamage[type];
                     }
-                    return currentDamage[type];
+                    break;
 
                 case BallType.CASH:
                     foreach (CashBall cb in cashBalls)
                     {
                         cb.damage = currentDamage[type];
                     }
-                    return currentDamage[type];
+                    break;
 
                 case BallType.FIRE:
                     foreach (FireBall fb in fireBalls)
                     {
                         fb.damage = currentDamage[type];
                     }
-                    return currentDamage[type];
+                    break;
             }
         }
 
-        return -1f;
+
+
+        returnValues.Add("value", currentDamage[type]);
+        returnValues.Add("price", damageUpgradePrice[type]);
+
+
+        return returnValues;
     }
     #endregion
 
@@ -590,7 +619,7 @@ public class BallManager : MonoBehaviour {
 
     private void Start()
     {
-        OpenNewBall(BallType.BASIC);
+        //OpenNewBall(BallType.BASIC);
         
     }
 }

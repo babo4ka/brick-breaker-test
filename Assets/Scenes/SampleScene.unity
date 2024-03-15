@@ -582,6 +582,7 @@ MonoBehaviour:
   valueType: 1
   gameManager: {fileID: 1152358830}
   valueText: {fileID: 115691223}
+  priceText: {fileID: 0}
 --- !u!114 &233554470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -855,6 +856,7 @@ MonoBehaviour:
   valueType: 0
   gameManager: {fileID: 1152358830}
   valueText: {fileID: 1745572573}
+  priceText: {fileID: 99913235}
 --- !u!114 &308055572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1203,6 +1205,7 @@ MonoBehaviour:
   valueType: 1
   gameManager: {fileID: 1152358830}
   valueText: {fileID: 1545300592}
+  priceText: {fileID: 0}
 --- !u!114 &421997047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2072,6 +2075,7 @@ MonoBehaviour:
   valueType: 2
   gameManager: {fileID: 1152358830}
   valueText: {fileID: 1556731787}
+  priceText: {fileID: 0}
 --- !u!114 &555881087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2211,6 +2215,7 @@ MonoBehaviour:
   valueType: 2
   gameManager: {fileID: 1152358830}
   valueText: {fileID: 840212292}
+  priceText: {fileID: 12295763}
 --- !u!114 &564005972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2350,6 +2355,7 @@ MonoBehaviour:
   valueType: 0
   gameManager: {fileID: 1152358830}
   valueText: {fileID: 447426845}
+  priceText: {fileID: 0}
 --- !u!114 &688028944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2619,6 +2625,7 @@ MonoBehaviour:
   valueType: 2
   gameManager: {fileID: 1152358830}
   valueText: {fileID: 2058045654}
+  priceText: {fileID: 0}
 --- !u!114 &770738843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3574,6 +3581,7 @@ MonoBehaviour:
   valueType: 1
   gameManager: {fileID: 1152358830}
   valueText: {fileID: 495846282}
+  priceText: {fileID: 243480451}
 --- !u!114 &1072952182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3667,6 +3675,7 @@ GameObject:
   - component: {fileID: 1094469953}
   - component: {fileID: 1094469955}
   - component: {fileID: 1094469954}
+  - component: {fileID: 1094469956}
   m_Layer: 5
   m_Name: BasicBallManagingPanel
   m_TagString: Untagged
@@ -3735,6 +3744,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1094469952}
   m_CullTransparentMesh: 1
+--- !u!114 &1094469956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1094469952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a04c27e2ad9a30747b8da771e7f5a9a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 1152358830}
+  ballManagingPanel: {fileID: 1094469952}
+  ballType: 0
+  countText: {fileID: 840212292}
+  speedText: {fileID: 1745572573}
+  damageText: {fileID: 495846282}
+  countPriceText: {fileID: 12295763}
+  speedPriceText: {fileID: 99913235}
+  damagePriceText: {fileID: 243480451}
 --- !u!1 &1120033348
 GameObject:
   m_ObjectHideFlags: 0
@@ -4661,10 +4691,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
+  m_fontSize: 72
   m_fontSizeBase: 24
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -6239,7 +6269,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1152358830}
-  sniperBallManagingPanel: {fileID: 1190798752}
+  ballManagingPanel: {fileID: 0}
+  ballType: 0
+  countText: {fileID: 0}
+  speedText: {fileID: 0}
+  damageText: {fileID: 0}
+  countPriceText: {fileID: 0}
+  speedPriceText: {fileID: 0}
+  damagePriceText: {fileID: 0}
 --- !u!114 &2066030829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6379,6 +6416,7 @@ MonoBehaviour:
   valueType: 0
   gameManager: {fileID: 1152358830}
   valueText: {fileID: 1243697782}
+  priceText: {fileID: 0}
 --- !u!114 &2088839527
 MonoBehaviour:
   m_ObjectHideFlags: 0

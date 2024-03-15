@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class IncreaseValueScript : MonoBehaviour
 {
     [SerializeField]
@@ -16,6 +17,8 @@ public class IncreaseValueScript : MonoBehaviour
     private GameObject gameManager;
     [SerializeField]
     private TMP_Text valueText;
+    [SerializeField]
+    private TMP_Text priceText;
 
 
     void Start()
@@ -29,24 +32,21 @@ public class IncreaseValueScript : MonoBehaviour
         switch(valueType)
         {
             case ValueType.COUNT:
-                int count = bm.BuyNewBall(ballType);
-                valueText.text = count.ToString();
+                Dictionary<string, float> count = bm.BuyNewBall(ballType);
+                valueText.text = ((int)count["value"]).ToString();
+                priceText.text = System.Math.Round(count["price"], 2).ToString() + "$";
                 break;
 
             case ValueType.SPEED:
-                float speed = bm.UpgradeSpeed(ballType);
-                if(speed != -1f)
-                {
-                    valueText.text = speed.ToString();
-                }
+                Dictionary<string, float> speed = bm.UpgradeSpeed(ballType);
+                valueText.text = System.Math.Round(speed["value"], 2).ToString();
+                priceText.text = System.Math.Round(speed["price"], 2).ToString() + "$";
                 break;
 
             case ValueType.DAMAGE:
-                float damage = bm.UpgradeDamage(ballType);
-                if(damage != -1f)
-                {
-                    valueText.text = damage.ToString();
-                }
+                Dictionary<string, float> damage = bm.UpgradeDamage(ballType);
+                valueText.text = System.Math.Round(damage["value"], 2).ToString();
+                priceText.text = System.Math.Round(damage["price"], 2).ToString() + "$";
                 break;
         }
     }
