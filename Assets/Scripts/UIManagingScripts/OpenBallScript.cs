@@ -11,6 +11,8 @@ public class OpenBallScript : MonoBehaviour
 
     [SerializeField]
     private GameObject ballManagingPanel;
+    [SerializeField]
+    private GameObject newBallsPanel;
 
     [SerializeField]
     private BallType ballType;
@@ -48,6 +50,7 @@ public class OpenBallScript : MonoBehaviour
             speedPriceText.text = System.Math.Round(opened["speedPrice"], 2).ToString() + "$";
             damagePriceText.text = System.Math.Round(opened["damagePrice"], 2).ToString() + "$";
 
+            newBallsPanel.SetActive(false);
             gameObject.SetActive(false);
         }
     }
