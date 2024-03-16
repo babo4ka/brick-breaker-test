@@ -9,6 +9,9 @@ public class NewBallsPanelToggler : MonoBehaviour
     [SerializeField]
     private GameObject newBallsPanel;
     [SerializeField]
+    private GameObject newBallsContent;
+    private float height = 136f;
+    [SerializeField]
     private GameObject gameManager;
     private BallManager ballManager;
     [SerializeField]
@@ -66,6 +69,18 @@ public class NewBallsPanelToggler : MonoBehaviour
             {
                 ballPanels[type].SetActive(true);
             }
+
+            Vector2 min = newBallsContent.GetComponent<RectTransform>().offsetMin;
+
+            if (allowedTypes.Count > 3)
+            {
+                min.y = 4f - (height * allowedTypes.Count - 3);
+            }
+            else
+            {
+                min.y = 4f;
+            }
+            newBallsContent.GetComponent<RectTransform>().offsetMin = min;
         }
     }
 

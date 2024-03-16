@@ -15,7 +15,7 @@ public class CashManager : MonoBehaviour {
     private void Start()
     {
         gameObject.GetComponent<BrickManager>().dropCash += AddCash;
-        AddCash(110600f);
+        AddCash(1106000000f);
     }
 
 

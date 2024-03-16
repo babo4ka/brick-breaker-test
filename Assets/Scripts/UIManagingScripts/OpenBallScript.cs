@@ -8,11 +8,15 @@ public class OpenBallScript : MonoBehaviour
 {
     [SerializeField]
     private GameObject gameManager;
+    private BallManager ballManager;
 
     [SerializeField]
     private GameObject ballManagingPanel;
     [SerializeField]
     private GameObject newBallsPanel;
+    [SerializeField]
+    private GameObject allBallsPanelContent;
+    private float height = 171f;
 
     [SerializeField]
     private BallType ballType;
@@ -33,11 +37,12 @@ public class OpenBallScript : MonoBehaviour
     void Awake()
     {
          GetComponent<Button>().onClick.AddListener(OpenNewBall);
+        ballManager = gameManager.GetComponent<BallManager>();
     }
 
     private void OpenNewBall()
     {
-        Dictionary<string, float> opened = gameManager.GetComponent<BallManager>().OpenNewBall(ballType);
+        Dictionary<string, float> opened = ballManager.OpenNewBall(ballType);
 
         if(opened != null)
         {
@@ -52,6 +57,14 @@ public class OpenBallScript : MonoBehaviour
 
             newBallsPanel.SetActive(false);
             gameObject.SetActive(false);
+
+            if(ballManager.GetCurrentStage() >= 4)
+            {
+                Vector2 min = allBallsPanelContent.GetComponent<RectTransform>().offsetMin;
+                min.y -= height;
+                allBallsPanelContent.GetComponent<RectTransform>().offsetMin = min;
+            }
+            
         }
     }
 }

@@ -7,6 +7,8 @@ public class MenuButtonsController : MonoBehaviour
 {
     [SerializeField]
     private GameObject ballsManagingPanel;
+    [SerializeField]
+    private GameObject newBallsPanel;
 
 
     [SerializeField]
@@ -22,6 +24,10 @@ public class MenuButtonsController : MonoBehaviour
     {
         if(ballsManagingPanel.activeSelf)
         {
+            if (newBallsPanel.activeSelf)
+            {
+                newBallsPanel.SetActive(false);
+            }
             ballsManagingPanel.SetActive(false);
         }
         else

@@ -232,6 +232,8 @@ public class BallManager : MonoBehaviour {
         {1, 0f }, {2, 175f}, {3, 7500f}, {4, 175000f}, {5, 15f * (float)Math.Pow(10, 6)}
     };
 
+    public int GetCurrentStage() { return currentStage;}
+
     public float NextStagePrice()
     {
         if (currentStage < 8)
@@ -686,5 +688,7 @@ public class BallManager : MonoBehaviour {
     {
         cashManager = GetComponent<CashManager>();
         OpenNewBall(BallType.BASIC);
+
+       
     }
 }
