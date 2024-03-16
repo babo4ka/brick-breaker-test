@@ -10,6 +10,7 @@ public class NewBallsPanelToggler : MonoBehaviour
     private GameObject newBallsPanel;
     [SerializeField]
     private GameObject gameManager;
+    private BallManager ballManager;
     [SerializeField]
     private TMP_Text newBallPriceText;
 
@@ -37,6 +38,7 @@ public class NewBallsPanelToggler : MonoBehaviour
     private void Start()
     {
         GetComponent<Button>().onClick.AddListener(TogglePanel);
+        ballManager = gameManager.GetComponent<BallManager>();
         ballPanels.Add(BallType.SNIPER, sniperPanel);
         ballPanels.Add(BallType.SPLASH, splashPanel);
         ballPanels.Add(BallType.POISON, poisonPanel);
@@ -54,18 +56,16 @@ public class NewBallsPanelToggler : MonoBehaviour
         else
         {
             newBallsPanel.SetActive(true);
-            BallManager bm = gameManager.GetComponent<BallManager>();
-            float nextStageprice = bm.NextStagePrice();
+            float nextStageprice = ballManager.NextStagePrice();
             newBallPriceText.text = nextStageprice.ToString() + "$";
 
             allowedTypes.Clear();
-            allowedTypes = bm.AllowedTypes();
+            allowedTypes = ballManager.AllowedTypes();
 
             foreach (BallType type in allowedTypes)
             {
                 ballPanels[type].SetActive(true);
             }
-
         }
     }
 

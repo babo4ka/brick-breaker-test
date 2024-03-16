@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class BallManager : MonoBehaviour {
 
+    private CashManager cashManager;
+
     #region Balls prefabs
     [SerializeField]
     private GameObject basicBallPrefab;
@@ -36,7 +38,7 @@ public class BallManager : MonoBehaviour {
     private List<FireBall> fireBalls = new List<FireBall>();
 
 
-    private int BallsCount(BallType ballType)
+    public int BallsCount(BallType ballType)
     {
         switch (ballType)
         {
@@ -213,12 +215,18 @@ public class BallManager : MonoBehaviour {
     private float allBallsSpeedIncrementMultiplier = 0.62787f * 0.9944711f;
     private float demoBallSpeedIncrementMultiplier = 0.33039f * 0.99446999f;
 
+    public float GetCurrentDamage(BallType type){ return currentDamage[type];}
+
+    public float GetCurrentSpeed(BallType type) { return currentSpeed[type]; }
+
     //не помню зачем их добавил
     //private Dictionary<BallType, float> damageMultipliers = new Dictionary<BallType, float>();
     //private Dictionary<BallType, float> speedMultipliers = new Dictionary<BallType, float>();
     #endregion
 
 
+
+    #region Stage data
     private int currentStage = 0;
     private Dictionary<int, float> stagePrice = new Dictionary<int, float> {
         {1, 0f }, {2, 175f}, {3, 7500f}, {4, 175000f}, {5, 15f * (float)Math.Pow(10, 6)}
@@ -252,7 +260,7 @@ public class BallManager : MonoBehaviour {
 
         int nextStage = currentStage + 1;
 
-        foreach(BallType t in ballTypesOnStage.Keys)
+        foreach (BallType t in ballTypesOnStage.Keys)
         {
             if (ballTypesOnStage[t] <= nextStage && !ballOpened[t])
             {
@@ -269,16 +277,34 @@ public class BallManager : MonoBehaviour {
 
     private const float priceMultiplier = 0.95f;
 
+    public float GetNewBallPrice(BallType ballType)
+    {
+        return newBallPrice[ballType];
+    }
+
+    public float GetDamageUpgradePrice(BallType ballType)
+    {
+        return damageUpgradePrice[ballType];
+    }
+
+    public float GetSpeedUpgradePrice(BallType ballType)
+    {
+        return speedUpgradePrice[ballType];
+    }
+
+    #endregion
+
+   
+
 
     #region New Balls
     public Dictionary<string, float> BuyNewBall(BallType type)
     {
-        CashManager cm = GetComponent<CashManager>();
         float price = newBallPrice[type];
 
         Dictionary<string, float> returnValues = new Dictionary<string, float>();
         
-        if (cm.SpendCash(price))
+        if (cashManager.SpendCash(price))
         {
             newBallPrice[type] += price * priceMultiplier;
             InstantiateBall(type);
@@ -294,9 +320,7 @@ public class BallManager : MonoBehaviour {
 
     public Dictionary<string, float> OpenNewBall(BallType ballType)
     {
-       
-        CashManager cm = GetComponent<CashManager>();
-        if (cm.SpendCash(stagePrice[currentStage + 1]))
+        if (cashManager.SpendCash(stagePrice[currentStage + 1]))
         {
             ballOpened[ballType] = true;
             Dictionary<string, float> returnValues = new Dictionary<string, float>();
@@ -337,12 +361,11 @@ public class BallManager : MonoBehaviour {
     #region Update stats
     public Dictionary<string, float> UpgradeSpeed(BallType type)
     {
-        CashManager cm = GetComponent<CashManager>();
         float price = speedUpgradePrice[type];
 
         Dictionary<string,float> returnValues = new Dictionary<string,float>();
 
-        if (cm.SpendCash(price))
+        if (cashManager.SpendCash(price))
         {
             speedUpgradePrice[type] += price * priceMultiplier;
 
@@ -426,12 +449,11 @@ public class BallManager : MonoBehaviour {
 
     public Dictionary<string, float> UpgradeDamage(BallType type)
     {
-        CashManager cm = GetComponent<CashManager>();
         float price = damageUpgradePrice[type];
 
         Dictionary<string, float> returnValues = new Dictionary<string, float>();
 
-        if (cm.SpendCash(price))
+        if (cashManager.SpendCash(price))
         {
             damageUpgradePrice[type] += price * priceMultiplier;
 
@@ -520,6 +542,8 @@ public class BallManager : MonoBehaviour {
     }
     #endregion
 
+
+    #region Balls appearing
     private void InstantiateBall(BallType ballType)
     {
         GameObject ballPrefab = null;
@@ -655,11 +679,12 @@ public class BallManager : MonoBehaviour {
         GetComponent<BrickManager>().UnsubscribeBricks(toDestroy);
     }
 
+    #endregion
 
 
     private void Start()
     {
-        //OpenNewBall(BallType.BASIC);
-        
+        cashManager = GetComponent<CashManager>();
+        OpenNewBall(BallType.BASIC);
     }
 }

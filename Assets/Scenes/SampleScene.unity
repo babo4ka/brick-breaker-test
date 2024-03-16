@@ -5661,7 +5661,6 @@ GameObject:
   - component: {fileID: 1094469953}
   - component: {fileID: 1094469955}
   - component: {fileID: 1094469954}
-  - component: {fileID: 1094469956}
   m_Layer: 5
   m_Name: BasicBallManagingPanel
   m_TagString: Untagged
@@ -5730,27 +5729,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1094469952}
   m_CullTransparentMesh: 1
---- !u!114 &1094469956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1094469952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a04c27e2ad9a30747b8da771e7f5a9a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameManager: {fileID: 1152358830}
-  ballManagingPanel: {fileID: 1094469952}
-  ballType: 0
-  countText: {fileID: 840212292}
-  speedText: {fileID: 1745572573}
-  damageText: {fileID: 495846282}
-  countPriceText: {fileID: 12295763}
-  speedPriceText: {fileID: 99913235}
-  damagePriceText: {fileID: 243480451}
 --- !u!1 &1106009794
 GameObject:
   m_ObjectHideFlags: 0

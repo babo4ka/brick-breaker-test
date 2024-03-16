@@ -28,16 +28,9 @@ public class OpenBallScript : MonoBehaviour
     [SerializeField]
     private TMP_Text damagePriceText;
 
-    void Start()
+    void Awake()
     {
-        if(ballType == BallType.BASIC)
-        {
-            OpenNewBall();
-        }
-        else
-        {
-            GetComponent<Button>().onClick.AddListener(OpenNewBall);
-        }
+         GetComponent<Button>().onClick.AddListener(OpenNewBall);
     }
 
     private void OpenNewBall()
@@ -54,6 +47,8 @@ public class OpenBallScript : MonoBehaviour
             countPriceText.text = System.Math.Round(opened["countPrice"], 2).ToString() + "$";
             speedPriceText.text = System.Math.Round(opened["speedPrice"], 2).ToString() + "$";
             damagePriceText.text = System.Math.Round(opened["damagePrice"], 2).ToString() + "$";
+
+            gameObject.SetActive(false);
         }
     }
 }
