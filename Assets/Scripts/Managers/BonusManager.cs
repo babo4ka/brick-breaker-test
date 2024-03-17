@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class BonusManager : MonoBehaviour
 {
-    //private List<Bonus> bonuses = new List<Bonus>();
+    public delegate void UpdateBonus(BonusType type, float value);
+    public UpdateBonus updateBonus;
+
 
     private Dictionary<BonusType, Bonus> bonuses = new Dictionary<BonusType, Bonus>();
+
+    private List<BonusType> activeBonuses = new List<BonusType>();
 
     public void AddNewBonus(BonusType type)
     {
@@ -18,14 +22,37 @@ public class BonusManager : MonoBehaviour
         }
     }
 
+    public void ActivateBonus(BonusType type)
+    {
+        if(!activeBonuses.Contains(type)){
+            activeBonuses.Add(type);
+            updateBonus?.Invoke(type, bonuses[type].value);
+        }
+    }
+
+    public void DeactivateBonus(BonusType type)
+    {
+        activeBonuses.Remove(type);
+    }
+
+
     public void AddCountToBonus(BonusType type, int count)
     {
         bonuses[type].AddCount(count);
+        if (activeBonuses.Contains(type))
+        {
+            updateBonus?.Invoke(type, bonuses[type].value);
+        }
+        
     }
 
-    public Bonus GetBonus(BonusType type)
+    public float GetBonusValue(BonusType type)
     {
-        return bonuses[type];
+        if (activeBonuses.Contains(type))
+        {
+            return bonuses[type].value;
+        }
+        return -1f;
     }
 }
 

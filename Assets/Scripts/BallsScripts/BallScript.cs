@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class BallScript : MonoBehaviour
 {
+    private GameObject gameManager;
+
    
     public Rigidbody2D rigidbody { get;  set; }
 
@@ -13,6 +15,7 @@ public abstract class BallScript : MonoBehaviour
     private float _speed = 0f;
     [SerializeField]
     private float _damage;
+    private float _damageMultiplier;
 
     public float speed {
         get { return _speed; }
@@ -22,6 +25,12 @@ public abstract class BallScript : MonoBehaviour
     public float damage {
         get { return _damage; }
         set { _damage = value; } 
+    }
+
+    public float damageMultiplier
+    {
+        get { return _damageMultiplier; }
+        set { _damageMultiplier = value; }
     }
 
     public delegate void Attack(float damage, DamageType type, GameObject gameObject);
@@ -55,9 +64,34 @@ public abstract class BallScript : MonoBehaviour
         
     }
 
+    void UpdateBonus(BonusType type, float value)
+    {
+        if(type == BonusType.BALLDAMAGE)
+        {
+            if (value != -1f)
+            {
+                _damageMultiplier = 1f;
+            }
+            else
+            {
+                _damageMultiplier = value;
+            }
+        }
+    }
+
     void Awake()
     {
         this.rigidbody = GetComponent<Rigidbody2D>();
+        gameManager = GameObject.Find("GameManager");
+        gameManager.GetComponent<BonusManager>().updateBonus += UpdateBonus;
+        float mul = gameManager.GetComponent<BonusManager>().GetBonusValue(BonusType.BALLDAMAGE);
+        if (mul != -1f)
+        {
+            _damageMultiplier = 1f;
+        }
+        else{
+            _damageMultiplier = mul;
+        }
     }
 
 
