@@ -4,18 +4,21 @@ using UnityEngine;
 
 public abstract class BallScript : MonoBehaviour
 {
-    private GameObject gameManager;
+    private protected GameObject gameManager;
 
    
     public Rigidbody2D rigidbody { get;  set; }
 
-    public Vector2 direction {  get;  set; }
+    public Vector3 direction {  get;  set; }
+    private Vector3 lastPos;
 
     [SerializeField]
     private float _speed = 0f;
+    private float _speedMultiplier;
     [SerializeField]
     private float _damage;
     private float _damageMultiplier;
+    
 
     public float speed {
         get { return _speed; }
@@ -53,34 +56,54 @@ public abstract class BallScript : MonoBehaviour
         force.y = Random.Range(-1f, 1f);
         direction = force;
         
-        rigidbody.AddForce(force.normalized * speed);
-
+        rigidbody.AddForce(force.normalized * speed * (_speedMultiplier == 0 ? 1 : _speedMultiplier));
     }
 
     public void UpdateSpeed(float newSpeed)
     {
+        this._speed = newSpeed;
+        rigidbody.velocity = Vector2.zero;
+        rigidbody.AddForce(direction.normalized * newSpeed * (_speedMultiplier == 0 ? 1 : _speedMultiplier));
+
+
+        /*//newSpeed *= _speedMultiplier==0?1:_speedMultiplier;
         if (this._speed != 0f) {
-            float diff = newSpeed - this._speed;
+
+            float diff = (newSpeed - this._speed) *(_speedMultiplier == 0 ? 1 : _speedMultiplier);
 
             rigidbody.AddForce(rigidbody.velocity.normalized * diff);
         }
 
-        this._speed = newSpeed;
-        
+        this._speed = newSpeed;*/
     }
+
 
     void UpdateBonus(BonusType type, BonusStats<float> bs)
     {
-        if(type == BonusType.BALLDAMAGE)
+        switch (type)
         {
-            if (bs.activate)
-            {
-                _damageMultiplier += bs.value;
-            }
-            else
-            {
-                _damageMultiplier -= bs.value;
-            }
+            case BonusType.BALLDAMAGE:
+                if (bs.activate)
+                {
+                    _damageMultiplier += bs.value;
+                }
+                else
+                {
+                    _damageMultiplier -= bs.value;
+                }
+                break;
+
+            case BonusType.BALLSPEED:
+                if (bs.activate)
+                {
+                    _speedMultiplier += bs.value;
+                }
+                else
+                {
+                    _speedMultiplier -= bs.value;
+                }
+                UpdateSpeed(this.speed);
+                break;
         }
     }
 
@@ -90,13 +113,31 @@ public abstract class BallScript : MonoBehaviour
         gameManager = GameObject.Find("GameManager");
         gameManager.GetComponent<BonusManager>().updateBonus += UpdateBonus;
 
-        BonusStats<float> mul = gameManager.GetComponent<BonusManager>().GetBonusValue(BonusType.BALLDAMAGE);
-
-        if (mul.activate)
+        List<BonusStats<float>> bonuses = new List<BonusStats<float>>
         {
-            _damageMultiplier += mul.value;
+            gameManager.GetComponent<BonusManager>().GetBonusValue(BonusType.BALLDAMAGE),
+            gameManager.GetComponent<BonusManager>().GetBonusValue(BonusType.BALLSPEED)
+        };
+
+
+        if (bonuses[0].activate)
+        {
+            _damageMultiplier += bonuses[0].value;
+        }
+
+        if (bonuses[1].activate)
+        {
+            _speedMultiplier += bonuses[1].value;
         }
     }
 
-
+    private void FixedUpdate()
+    {
+        Vector3 position = transform.position;
+        if(lastPos != null)
+        {
+            direction = position - lastPos;
+        }
+        lastPos = position;
+    }
 }

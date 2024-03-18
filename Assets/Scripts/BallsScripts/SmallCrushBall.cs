@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class SmallCrushBall : BallScript
 {
-    [SerializeField]
-    private GameObject gameManager;
     private BrickManager brickManager;
 
     void Start()
