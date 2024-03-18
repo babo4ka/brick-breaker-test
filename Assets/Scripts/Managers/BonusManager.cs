@@ -19,6 +19,14 @@ public class BonusManager : MonoBehaviour
             case BonusType.BALLDAMAGE:
                 bonuses.Add(BonusType.BALLDAMAGE, new DamageBonus(1));
                 break;
+
+            case BonusType.BALLSPEED:
+                bonuses.Add(BonusType.BALLSPEED, new SpeedBonus(1));
+                break;
+
+            case BonusType.CRITDAMAGE:
+                bonuses.Add(BonusType.CRITDAMAGE, new CritDamageBonus(1));
+                break;
         }
     }
 
@@ -33,6 +41,7 @@ public class BonusManager : MonoBehaviour
     public void DeactivateBonus(BonusType type)
     {
         activeBonuses.Remove(type);
+        updateBonus?.Invoke(type, -1f);
     }
 
 

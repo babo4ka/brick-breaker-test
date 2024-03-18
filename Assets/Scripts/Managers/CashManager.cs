@@ -6,40 +6,66 @@ using UnityEngine;
 public class CashManager : MonoBehaviour {
 
     [SerializeField]
-    private float _amount;
+    private float _softCashAmount;
+    [SerializeField]
+    private float _hardCashAmount;
 
     [SerializeField]
     private TMP_Text softCashText;
+    [SerializeField]
+    private TMP_Text hardCashText;
 
 
     private void Start()
     {
-        gameObject.GetComponent<BrickManager>().dropCash += AddCash;
-        AddCash(1106000000f);
+        gameObject.GetComponent<BrickManager>().dropCash += AddSoftCash;
+        AddSoftCash(1106000000f);
     }
 
 
-    public void AddCash(float amount)
+    public void AddSoftCash(float amount)
     {
-        _amount += amount;
-        CashUpdated();
+        _softCashAmount += amount;
+        SoftCashUpdated();
+    }
+
+    public void AddHardCash(float amount)
+    {
+        _hardCashAmount += amount;
+        HardCashUpdated();
     }
 
 
-    public bool SpendCash(float amount)
+    public bool SpendSoftCash(float amount)
     {
-        if(_amount < amount)
+        if(_softCashAmount < amount)
         {
             return false;
         }
 
-        _amount -= amount;
-        CashUpdated();
+        _softCashAmount -= amount;
+        SoftCashUpdated();
         return true;
     }
 
-    private void CashUpdated()
+    public bool SpendHardCash(float amount)
     {
-        softCashText.text = _amount.ToString() + "$";
+        if(_hardCashAmount < amount)
+        {
+            return false;
+        }
+        _hardCashAmount -= amount;
+        HardCashUpdated();
+        return true;
+    }
+
+    private void SoftCashUpdated()
+    {
+        softCashText.text = _softCashAmount.ToString() + "$";
+    }
+
+    private void HardCashUpdated()
+    {
+        hardCashText.text = _hardCashAmount.ToString();
     }
 }

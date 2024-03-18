@@ -306,7 +306,7 @@ public class BallManager : MonoBehaviour {
 
         Dictionary<string, float> returnValues = new Dictionary<string, float>();
         
-        if (cashManager.SpendCash(price))
+        if (cashManager.SpendSoftCash(price))
         {
             newBallPrice[type] += price * priceMultiplier;
             InstantiateBall(type);
@@ -322,7 +322,7 @@ public class BallManager : MonoBehaviour {
 
     public Dictionary<string, float> OpenNewBall(BallType ballType)
     {
-        if (cashManager.SpendCash(stagePrice[currentStage + 1]))
+        if (cashManager.SpendSoftCash(stagePrice[currentStage + 1]))
         {
             ballOpened[ballType] = true;
             Dictionary<string, float> returnValues = new Dictionary<string, float>();
@@ -367,7 +367,7 @@ public class BallManager : MonoBehaviour {
 
         Dictionary<string,float> returnValues = new Dictionary<string,float>();
 
-        if (cashManager.SpendCash(price))
+        if (cashManager.SpendSoftCash(price))
         {
             speedUpgradePrice[type] += price * priceMultiplier;
 
@@ -455,7 +455,7 @@ public class BallManager : MonoBehaviour {
 
         Dictionary<string, float> returnValues = new Dictionary<string, float>();
 
-        if (cashManager.SpendCash(price))
+        if (cashManager.SpendSoftCash(price))
         {
             damageUpgradePrice[type] += price * priceMultiplier;
 
