@@ -45,17 +45,25 @@ public abstract class Bonus : MonoBehaviour
 
     public abstract void OnCreate(int level);
 
-    public void AddCount(int count)
+    private void UpdateLevel(int newLevel)
+    {
+        value = values[newLevel];
+    }
+
+    public bool AddCount(int count)
     {
         if(this.count + count >= stageCounts[level])
         {
             _count = count - (stageCounts[level] - _count);
 
             level++;
+            UpdateLevel(level);
+            return true;
         }
         else
         {
             _count += count;
+            return false;
         }
     }
 }

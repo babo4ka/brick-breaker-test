@@ -15,7 +15,7 @@ public class PoisonBall : BallScript
         
         if (collision.gameObject.tag == "Brick")
         {
-            attack?.Invoke(damage, DamageType.POISON, collision.gameObject);
+            attack?.Invoke(CountDamage(), DamageType.POISON, collision.gameObject);
         }
 
         Vector2 circleCenter = transform.position;
@@ -28,7 +28,7 @@ public class PoisonBall : BallScript
 
         foreach (Collider2D c in around)
         {
-            attack?.Invoke(damage, DamageType.POISON, c.gameObject);
+            attack?.Invoke(CountDamage(), DamageType.POISON, c.gameObject);
         }
     }
 

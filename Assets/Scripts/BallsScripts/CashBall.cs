@@ -20,7 +20,7 @@ public class CashBall : BallScript
 
         if (collision.gameObject.tag == "Brick")
         {
-            cashManager.AddSoftCash(collision.gameObject.GetComponent<BrickScript>().health * damage);
+            cashManager.AddSoftCash(collision.gameObject.GetComponent<BrickScript>().health * CountDamage());
         }
     }
 }

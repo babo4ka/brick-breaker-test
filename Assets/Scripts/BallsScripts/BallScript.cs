@@ -33,6 +33,11 @@ public abstract class BallScript : MonoBehaviour
         set { _damageMultiplier = value; }
     }
 
+    private protected float CountDamage()
+    {
+        return _damage * (_damageMultiplier==0?1:_damageMultiplier);
+    }
+
     public delegate void Attack(float damage, DamageType type, GameObject gameObject);
 
     public Attack attack;
@@ -64,17 +69,17 @@ public abstract class BallScript : MonoBehaviour
         
     }
 
-    void UpdateBonus(BonusType type, float value)
+    void UpdateBonus(BonusType type, BonusStats<float> bs)
     {
         if(type == BonusType.BALLDAMAGE)
         {
-            if (value != -1f)
+            if (bs.activate)
             {
-                _damageMultiplier = 1f;
+                _damageMultiplier += bs.value;
             }
             else
             {
-                _damageMultiplier = value;
+                _damageMultiplier -= bs.value;
             }
         }
     }
@@ -84,13 +89,12 @@ public abstract class BallScript : MonoBehaviour
         this.rigidbody = GetComponent<Rigidbody2D>();
         gameManager = GameObject.Find("GameManager");
         gameManager.GetComponent<BonusManager>().updateBonus += UpdateBonus;
-        float mul = gameManager.GetComponent<BonusManager>().GetBonusValue(BonusType.BALLDAMAGE);
-        if (mul != -1f)
+
+        BonusStats<float> mul = gameManager.GetComponent<BonusManager>().GetBonusValue(BonusType.BALLDAMAGE);
+
+        if (mul.activate)
         {
-            _damageMultiplier = 1f;
-        }
-        else{
-            _damageMultiplier = mul;
+            _damageMultiplier += mul.value;
         }
     }
 

@@ -10,7 +10,7 @@ public class DemoBall : BallScript
 
         if (collision.gameObject.tag == "Brick")
         {
-            attack?.Invoke(damage, DamageType.DAMAGE, collision.gameObject);
+            attack?.Invoke(CountDamage(), DamageType.DAMAGE, collision.gameObject);
         }
     }
 }

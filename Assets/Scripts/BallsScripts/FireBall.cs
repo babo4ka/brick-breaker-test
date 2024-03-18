@@ -10,7 +10,7 @@ public class FireBall : BallScript
 
         if (collision.gameObject.tag == "Brick")
         {
-            attack?.Invoke(damage, DamageType.FIRE, collision.gameObject);
+            attack?.Invoke(CountDamage(), DamageType.FIRE, collision.gameObject);
         }
     }
 }

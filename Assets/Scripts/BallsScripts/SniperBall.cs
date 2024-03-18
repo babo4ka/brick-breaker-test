@@ -10,7 +10,7 @@ public class SniperBall : BallScript
 
         if (collision.gameObject.tag == "Brick")
         {
-            attack?.Invoke(damage, DamageType.DAMAGE, collision.gameObject);
+            attack?.Invoke(CountDamage(), DamageType.DAMAGE, collision.gameObject);
         }
 
         if(collision.gameObject.tag == "Wall")

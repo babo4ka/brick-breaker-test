@@ -15,7 +15,7 @@ public class SplashBall : BallScript
 
         if (collision.gameObject.tag == "Brick")
         {
-            attack?.Invoke(damage, DamageType.DAMAGE, collision.gameObject);
+            attack?.Invoke(CountDamage(), DamageType.DAMAGE, collision.gameObject);
         }
 
         Vector2 circleCenter = transform.position;
@@ -28,7 +28,7 @@ public class SplashBall : BallScript
 
         foreach(Collider2D c in around)
         {
-            attack?.Invoke(damage * 0.4f, DamageType.DAMAGE, c.gameObject);
+            attack?.Invoke(CountDamage() * 0.4f, DamageType.DAMAGE, c.gameObject);
         }
     }
 }
