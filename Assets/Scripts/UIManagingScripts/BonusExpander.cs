@@ -18,17 +18,17 @@ public class BonusExpander : MonoBehaviour
     {
         bonusManager = gameManager.GetComponent<BonusManager>();
 
-        bonusesCountExpander.GetComponent<Button>().onClick.AddListener(ExpandBonusesCount);
+        bonusesCountExpander.GetComponent<Button>().onClick.AddListener(ExpandCardsCount);
         newBonusBuyer.GetComponent<Button>().onClick.AddListener(BuyNewBonus);
     }
 
-    private void ExpandBonusesCount()
+    private void ExpandCardsCount()
     {
-        bonusManager.ExpandMaxBonuses();
+        bonusManager.ExpandMaxCards();
     }
 
     private void BuyNewBonus()
     {
-        bonusManager.OpenNewBonus();
+        bonusManager.OpenNewCard();
     }
 }

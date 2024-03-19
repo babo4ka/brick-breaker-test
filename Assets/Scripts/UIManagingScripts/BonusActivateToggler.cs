@@ -12,25 +12,25 @@ public class BonusActivateToggler : MonoBehaviour
     private bool isActive = false;
 
     [SerializeField]
-    private BonusType bonusType;
+    private CardType bonusType;
 
     void Start()
     {
         bonusManager = gameManager.GetComponent<BonusManager>();
 
-        GetComponent<Button>().onClick.AddListener(ActivateBonus);
+        GetComponent<Button>().onClick.AddListener(ActivateCard);
     }
 
-    private void ActivateBonus()
+    private void ActivateCard()
     {
         if(isActive)
         {
-            bonusManager.DeactivateBonus(bonusType);
+            bonusManager.DeactivateCard(bonusType);
             isActive = false;
         }
         else
         {
-            bonusManager.ActivateBonus(bonusType);
+            bonusManager.ActivateCard(bonusType);
             isActive = true;
         }
         

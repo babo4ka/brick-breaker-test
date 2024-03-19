@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class CashBall : BallScript
 {
-    [SerializeField]
-    private GameObject gameManager;
     private CashManager cashManager;
 
     void Start()
     {
-        gameManager = GameObject.Find("GameManager");
         cashManager = gameManager.GetComponent<CashManager>();
     }
 

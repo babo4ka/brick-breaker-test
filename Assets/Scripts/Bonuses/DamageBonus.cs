@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageBonus : Bonus
+public class DamageBonus : Card
 {
     public DamageBonus(int level) : base(level)
     {

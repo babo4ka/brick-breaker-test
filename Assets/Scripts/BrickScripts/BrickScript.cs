@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class BrickScript : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject gameManager;
+
     public const int BASIC = 1;
     public const int BIG = 2;
     public const int HEX = 3;
@@ -39,10 +42,16 @@ public class BrickScript : MonoBehaviour
     {
         {1, 1f}, {2, 2f}, {3, 25f}
     };
+    private float _rewardMultiplier;
 
     public float reward
     {
-        get { return value * multipliers[type];}
+        get { return CountCashReward();}
+    }
+
+    private float CountCashReward()
+    {
+        return value * multipliers[type] * (_rewardMultiplier==0f?1:_rewardMultiplier);
     }
 
 
@@ -109,6 +118,35 @@ public class BrickScript : MonoBehaviour
             {
                 Destroy(gameObject);
             }
+        }
+    }
+
+    private void UpdateRewardMultiplier(CardType type, BonusStats<float> bs)
+    {
+        if(type == CardType.CASH)
+        {
+            if (bs.activate)
+            {
+                _rewardMultiplier += bs.value;
+            }
+            else
+            {
+                _rewardMultiplier -= bs.value;
+            }
+        }
+    }
+
+    void Start()
+    {
+        gameManager = GameObject.Find("GameManager");
+
+        gameManager.GetComponent<BonusManager>().updateCard += UpdateRewardMultiplier;
+
+        BonusStats<float> bs = gameManager.GetComponent<BonusManager>().GetCardValue(CardType.CASH);
+
+        if(bs.activate)
+        {
+            _rewardMultiplier += bs.value;
         }
     }
 }

@@ -8,108 +8,108 @@ public class BonusManager : MonoBehaviour
 
     private CashManager cashManager;
 
-    public delegate void UpdateBonus(BonusType type, BonusStats<float> value);
-    public UpdateBonus updateBonus;
+    public delegate void UpdateCard(CardType type, BonusStats<float> value);
+    public UpdateCard updateCard;
 
-   /* public delegate void RemoveBonus(BonusType type, float value);
-    public RemoveBonus removeBonus;*/
+    private Dictionary<CardType, Card> cards = new Dictionary<CardType, Card>();
 
+    private List<CardType> activeCards = new List<CardType>();
+    private int maxCards = 1;
 
-    private Dictionary<BonusType, Bonus> bonuses = new Dictionary<BonusType, Bonus>();
+    private int maxCardsExpandPrice = 100;
 
-    private List<BonusType> activeBonuses = new List<BonusType>();
-    private int maxBonuses = 1;
-
-    private int maxBonusesExpandPrice = 100;
-
-    private void IncreaseMaxBonusesExpandPrice()
+    private void IncreaseMaxCardsExpandPrice()
     {
-        maxBonusesExpandPrice += 100;
+        maxCardsExpandPrice += 100;
     }
 
     
-    public void ExpandMaxBonuses()
+    public void ExpandMaxCards()
     {
-        if (cashManager.SpendHardCash(maxBonusesExpandPrice))
+        if (cashManager.SpendHardCash(maxCardsExpandPrice))
         {
-            maxBonuses++;
-            IncreaseMaxBonusesExpandPrice();
+            maxCards++;
+            IncreaseMaxCardsExpandPrice();
         }
     }
 
     private System.Random rand = new System.Random();
-    public void OpenNewBonus()
+    public void OpenNewCard()
     {
-        var allTypes = Enum.GetValues(typeof(BonusType));
-        BonusType type;
+        var allTypes = Enum.GetValues(typeof(CardType));
+        CardType type;
         do
         {
-            type = (BonusType)allTypes.GetValue(rand.Next(allTypes.Length));
-        } while (bonuses[type] != null);
-
-        AddNewBonus(type);
+            type = (CardType)allTypes.GetValue(rand.Next(allTypes.Length));
+        } while (cards.ContainsKey(type));
+        Debug.Log(type);
+        AddNewCard(type);
     }
 
-    private void AddNewBonus(BonusType type)
+    private void AddNewCard(CardType type)
     {
         switch (type)
         {
-            case BonusType.BALLDAMAGE:
-                bonuses.Add(BonusType.BALLDAMAGE, new DamageBonus(1));
+            case CardType.BALLDAMAGE:
+                cards.Add(CardType.BALLDAMAGE, new DamageBonus(1));
                 break;
 
-            case BonusType.BALLSPEED:
-                bonuses.Add(BonusType.BALLSPEED, new SpeedBonus(1));
+            case CardType.BALLSPEED:
+                cards.Add(CardType.BALLSPEED, new SpeedBonus(1));
                 break;
 
-            case BonusType.CRITDAMAGE:
-                bonuses.Add(BonusType.CRITDAMAGE, new CritDamageBonus(1));
+            case CardType.CRITDAMAGE:
+                cards.Add(CardType.CRITDAMAGE, new CritDamageBonus(1));
+                break;
+
+            case CardType.CASH:
+                cards.Add(CardType.CASH, new CashBonus(1));
                 break;
         }
     }
 
-    public void ActivateBonus(BonusType type)
+    public void ActivateCard(CardType type)
     {
-        if(activeBonuses.Count < maxBonuses)
+        if(activeCards.Count < maxCards)
         {
-            if (!activeBonuses.Contains(type))
+            if (!activeCards.Contains(type))
             {
-                activeBonuses.Add(type);
-                BonusStats<float> bs = new BonusStats<float>(true, bonuses[type].value);
-                updateBonus?.Invoke(type, bs);
+                activeCards.Add(type);
+                BonusStats<float> bs = new BonusStats<float>(true, cards[type].value);
+                updateCard?.Invoke(type, bs);
             }
         }   
     }
 
-    public void DeactivateBonus(BonusType type)
+    public void DeactivateCard(CardType type)
     {
-        activeBonuses.Remove(type);
-        BonusStats<float> bs = new BonusStats<float>(false, bonuses[type].value);
-        updateBonus?.Invoke(type, bs);
+        activeCards.Remove(type);
+        BonusStats<float> bs = new BonusStats<float>(false, cards[type].value);
+        updateCard?.Invoke(type, bs);
     }
 
 
-    public void AddCountToBonus(BonusType type, int count)
+    public void AddCountToCard(CardType type, int count)
     {
-        float oldValue = bonuses[type].value;
+        float oldValue = cards[type].value;
 
-        if (bonuses[type].AddCount(count))
+        if (cards[type].AddCount(count))
         {
-            if (activeBonuses.Contains(type))
+            if (activeCards.Contains(type))
             {
-                BonusStats<float> bs = new BonusStats<float>(true, bonuses[type].value - oldValue);
-                updateBonus?.Invoke(type, bs);
+                BonusStats<float> bs = new BonusStats<float>(true, cards[type].value - oldValue);
+                updateCard?.Invoke(type, bs);
             }
         }
         
         
     }
 
-    public BonusStats<float> GetBonusValue(BonusType type)
+    public BonusStats<float> GetCardValue(CardType type)
     {
-        if (activeBonuses.Contains(type))
+        if (activeCards.Contains(type))
         {
-            return new BonusStats<float>(true, bonuses[type].value);
+            return new BonusStats<float>(true, cards[type].value);
         }
 
         return new BonusStats<float>(false, 0f);
@@ -118,6 +118,7 @@ public class BonusManager : MonoBehaviour
     void Start()
     {
         cashManager = GetComponent<CashManager>();
+        //OpenNewCard();
     }
 }
 

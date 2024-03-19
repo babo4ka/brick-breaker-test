@@ -7,13 +7,10 @@ public class CrushBall : BallScript
     [SerializeField]
     private GameObject smallBallPrefab;
 
-    [SerializeField]
-    private GameObject gameManager;
     private BrickManager brickManager;
 
     void Start()
     {
-        gameManager = GameObject.Find("GameManager");
         brickManager = gameManager.GetComponent<BrickManager>();
     }
 

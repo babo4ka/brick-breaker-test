@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class BallScript : MonoBehaviour
 {
+
     private protected GameObject gameManager;
 
    
@@ -18,6 +19,15 @@ public abstract class BallScript : MonoBehaviour
     [SerializeField]
     private float _damage;
     private float _damageMultiplier;
+
+    private float _critDamage;
+
+    public float critDamage
+    {
+        get { return _critDamage; }
+        set { _critDamage = value; }
+    }
+
     
 
     public float speed {
@@ -38,7 +48,11 @@ public abstract class BallScript : MonoBehaviour
 
     private protected float CountDamage()
     {
-        return _damage * (_damageMultiplier==0?1:_damageMultiplier);
+        Debug.Log(_damageMultiplier);
+        Debug.Log(_speedMultiplier);
+        Debug.Log(_critDamage);
+        return _damage * (_damageMultiplier == 0 ? 1 : _damageMultiplier)
+            * Random.Range(0f, 1f) <= _critDamage / 100 ? 1.5f : 1f;
     }
 
     public delegate void Attack(float damage, DamageType type, GameObject gameObject);
@@ -78,11 +92,11 @@ public abstract class BallScript : MonoBehaviour
     }
 
 
-    void UpdateBonus(BonusType type, BonusStats<float> bs)
+    void UpdateCard(CardType type, BonusStats<float> bs)
     {
         switch (type)
         {
-            case BonusType.BALLDAMAGE:
+            case CardType.BALLDAMAGE:
                 if (bs.activate)
                 {
                     _damageMultiplier += bs.value;
@@ -93,7 +107,7 @@ public abstract class BallScript : MonoBehaviour
                 }
                 break;
 
-            case BonusType.BALLSPEED:
+            case CardType.BALLSPEED:
                 if (bs.activate)
                 {
                     _speedMultiplier += bs.value;
@@ -111,12 +125,12 @@ public abstract class BallScript : MonoBehaviour
     {
         this.rigidbody = GetComponent<Rigidbody2D>();
         gameManager = GameObject.Find("GameManager");
-        gameManager.GetComponent<BonusManager>().updateBonus += UpdateBonus;
+        gameManager.GetComponent<BonusManager>().updateCard += UpdateCard;
 
         List<BonusStats<float>> bonuses = new List<BonusStats<float>>
         {
-            gameManager.GetComponent<BonusManager>().GetBonusValue(BonusType.BALLDAMAGE),
-            gameManager.GetComponent<BonusManager>().GetBonusValue(BonusType.BALLSPEED)
+            gameManager.GetComponent<BonusManager>().GetCardValue(CardType.BALLDAMAGE),
+            gameManager.GetComponent<BonusManager>().GetCardValue(CardType.BALLSPEED)
         };
 
 

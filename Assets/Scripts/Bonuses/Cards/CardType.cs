@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BonusType
+public enum CardType
 {
-    BALLDAMAGE, BALLSPEED, CRITDAMAGE
+    BALLDAMAGE, BALLSPEED, CRITDAMAGE, CASH
 }
