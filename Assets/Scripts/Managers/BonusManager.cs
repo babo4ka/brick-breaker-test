@@ -11,6 +11,12 @@ public class BonusManager : MonoBehaviour
     public delegate void UpdateCard(CardType type, BonusStats<float> value);
     public UpdateCard updateCard;
 
+    public delegate void UpdateCardInfo(CardType type, Card card);
+    public UpdateCardInfo updateCardInfo;
+
+    public delegate void UpdateActiveCardsCount(int count);
+    public UpdateActiveCardsCount updateActiveCardsCount;
+
     private Dictionary<CardType, Card> cards = new Dictionary<CardType, Card>();
 
     private List<CardType> activeCards = new List<CardType>();
@@ -41,6 +47,12 @@ public class BonusManager : MonoBehaviour
         }
 
         return maxCards;
+    }
+
+    public Card GetCurrentCard(CardType type)
+    {
+        if(cards.ContainsKey(type)) return cards[type];
+        return null;
     }
 
     private System.Random rand = new System.Random();
@@ -94,9 +106,10 @@ public class BonusManager : MonoBehaviour
                 cards.Add(CardType.STAGECASH, new StageCashCard(1));
                 break;
         }
+        updateCardInfo?.Invoke(type, cards[type]);
     }
 
-    public void ActivateCard(CardType type)
+    public bool ActivateCard(CardType type)
     {
         if(activeCards.Count < maxCards)
         {
@@ -105,8 +118,12 @@ public class BonusManager : MonoBehaviour
                 activeCards.Add(type);
                 BonusStats<float> bs = new BonusStats<float>(true, cards[type].value);
                 updateCard?.Invoke(type, bs);
+                updateActiveCardsCount(activeCards.Count);
+                return true;
             }
-        }   
+            return false;
+        }
+        return false;
     }
 
     public void DeactivateCard(CardType type)

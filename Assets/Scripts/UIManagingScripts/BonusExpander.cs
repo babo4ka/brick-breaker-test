@@ -15,9 +15,9 @@ public class BonusExpander : MonoBehaviour
 
     private Dictionary<CardType, int> numberByType = new Dictionary<CardType, int>
     {
-        {CardType.BALLDAMAGE, 0}, {CardType.BALLSPEED, 1}, {CardType.CRITDAMAGE, 2},
-        {CardType.CASHBRICKCHANCE, 3}, {CardType.CASHBRICK, 4}, {CardType.CASH, 5},
-        {CardType.RADIUS, 6}, {CardType.STAGECASH, 7}
+        {CardType.BALLDAMAGE, 0}, {CardType.BALLSPEED, 1}, {CardType.CASH, 2},
+        {CardType.CRITDAMAGE, 3}, {CardType.CASHBRICK, 4}, {CardType.RADIUS, 5},
+        {CardType.CASHBRICKCHANCE, 6}, {CardType.STAGECASH, 7}
     };
 
     [SerializeField]
@@ -35,21 +35,29 @@ public class BonusExpander : MonoBehaviour
         bonusManager = gameManager.GetComponent<BonusManager>();
         activeCards = bonusManager.ActiveCardsCount();
         maxCards = bonusManager.MaxCardsCount();
-        
+
+        bonusManager.updateActiveCardsCount += UpdateCardsCount;
+
         SetCardsCountText();
 
-        bonusesCountExpander.GetComponent<Button>().onClick.AddListener(ExpandCardsCount);
+        bonusesCountExpander.GetComponent<Button>().onClick.AddListener(ExpandMaxCardsCount);
         newBonusBuyer.GetComponent<Button>().onClick.AddListener(BuyNewBonus);
     }
 
     private void SetCardsCountText()
     {
-        activeCardsText.text = activeCards.ToString() + "/" + maxCards.ToString();
+        activeCardsText.text = activeCards + "/" + maxCards;
     }
 
-    private void ExpandCardsCount()
+    private void ExpandMaxCardsCount()
     {
         maxCards = bonusManager.ExpandMaxCards();
+        SetCardsCountText();
+    }
+
+    private void UpdateCardsCount(int count)
+    {
+        activeCards = count;
         SetCardsCountText();
     }
 
@@ -57,7 +65,5 @@ public class BonusExpander : MonoBehaviour
     {
         CardType type = bonusManager.OpenNewCard();
         cardsTogglersList[numberByType[type]].SetActive(true);
-
-        activeCards = bonusManager.ActiveCardsCount();
     }
 }

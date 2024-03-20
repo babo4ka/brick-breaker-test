@@ -6,7 +6,7 @@ public abstract class Card : Bonus
 {
     private protected Dictionary<int, float> values;
 
-    private int _level = 1;
+    private int _level;
 
     public int level
     {
@@ -28,10 +28,20 @@ public abstract class Card : Bonus
     };
 
 
+    public int NextLevelPrice()
+    {
+        if(_level + 1 < 6) {
+            return stageCounts[_level + 1];
+        }
+        return 0;
+    }
+
 
     public Card(int level)
     {
         OnCreate(level);
+        _level = level;
+        _count = 0;
     }
 
     public abstract void OnCreate(int level);
