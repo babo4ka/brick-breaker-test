@@ -7,6 +7,7 @@ using UnityEngine;
 public class BallManager : MonoBehaviour {
 
     private CashManager cashManager;
+    private int maxBallsAllowed = 50;
 
     #region Balls prefabs
     [SerializeField]
@@ -302,15 +303,20 @@ public class BallManager : MonoBehaviour {
     #region New Balls
     public Dictionary<string, float> BuyNewBall(BallType type)
     {
+
         float price = newBallPrice[type];
 
         Dictionary<string, float> returnValues = new Dictionary<string, float>();
         
-        if (cashManager.SpendSoftCash(price))
+        if(AllBallsCount() < maxBallsAllowed)
         {
-            newBallPrice[type] += price * priceMultiplier;
-            InstantiateBall(type);
+            if (cashManager.SpendSoftCash(price))
+            {
+                newBallPrice[type] += price * priceMultiplier;
+                InstantiateBall(type);
+            }
         }
+        
 
         returnValues.Add("value", (float)BallsCount(type));
         returnValues.Add("price", newBallPrice[type]);
@@ -322,37 +328,40 @@ public class BallManager : MonoBehaviour {
 
     public Dictionary<string, float> OpenNewBall(BallType ballType)
     {
-        if (cashManager.SpendSoftCash(stagePrice[currentStage + 1]))
+        if(AllBallsCount() < maxBallsAllowed)
         {
-            ballOpened[ballType] = true;
-            Dictionary<string, float> returnValues = new Dictionary<string, float>();
+            if (cashManager.SpendSoftCash(stagePrice[currentStage + 1]))
+            {
+                ballOpened[ballType] = true;
+                Dictionary<string, float> returnValues = new Dictionary<string, float>();
 
-            currentStage++;
+                currentStage++;
 
-            currentDamage.Add(ballType, powerBaseStats[currentStage][ballType]);
-            currentSpeed.Add(ballType, speedBaseStats[currentStage][ballType]);
-
-
-            damageIncrement.Add(ballType, powerBaseStats[currentStage][ballType]);
-            speedIncrement.Add(ballType, speedBaseStats[currentStage][ballType]);
-
-            damageUpgradePrice.Add(ballType, stagePrice[currentStage] == 0f ? 6f : stagePrice[currentStage]);
-            speedUpgradePrice.Add(ballType, stagePrice[currentStage] == 0f ? 6f : stagePrice[currentStage]);
-            newBallPrice.Add(ballType, stagePrice[currentStage] == 0f? 6f:
-                stagePrice[currentStage] + (stagePrice[currentStage] * priceMultiplier));
+                currentDamage.Add(ballType, powerBaseStats[currentStage][ballType]);
+                currentSpeed.Add(ballType, speedBaseStats[currentStage][ballType]);
 
 
-            InstantiateBall(ballType);
+                damageIncrement.Add(ballType, powerBaseStats[currentStage][ballType]);
+                speedIncrement.Add(ballType, speedBaseStats[currentStage][ballType]);
 
-            returnValues.Add("damage", currentDamage[ballType]);
-            returnValues.Add("speed", currentSpeed[ballType]);
-            returnValues.Add("count", 1);
+                damageUpgradePrice.Add(ballType, stagePrice[currentStage] == 0f ? 6f : stagePrice[currentStage]);
+                speedUpgradePrice.Add(ballType, stagePrice[currentStage] == 0f ? 6f : stagePrice[currentStage]);
+                newBallPrice.Add(ballType, stagePrice[currentStage] == 0f ? 6f :
+                    stagePrice[currentStage] + (stagePrice[currentStage] * priceMultiplier));
 
-            returnValues.Add("damagePrice", damageUpgradePrice[ballType]);
-            returnValues.Add("speedPrice", speedUpgradePrice[ballType]);
-            returnValues.Add("countPrice", newBallPrice[ballType]);
 
-            return returnValues;
+                InstantiateBall(ballType);
+
+                returnValues.Add("damage", currentDamage[ballType]);
+                returnValues.Add("speed", currentSpeed[ballType]);
+                returnValues.Add("count", 1);
+
+                returnValues.Add("damagePrice", damageUpgradePrice[ballType]);
+                returnValues.Add("speedPrice", speedUpgradePrice[ballType]);
+                returnValues.Add("countPrice", newBallPrice[ballType]);
+
+                return returnValues;
+            }
         }
 
         return null;
@@ -688,7 +697,43 @@ public class BallManager : MonoBehaviour {
     {
         cashManager = GetComponent<CashManager>();
         OpenNewBall(BallType.BASIC);
+    }
 
-       
+    public void ResetBalls()
+    {
+        currentStage = 0;
+
+        currentDamage = new Dictionary<BallType, float>();
+        damageIncrement = new Dictionary<BallType, float>();
+
+        currentSpeed = new Dictionary<BallType, float>();
+        speedIncrement = new Dictionary<BallType, float>();
+
+        ballOpened = new Dictionary<BallType, bool> {
+            {BallType.BASIC, false}, {BallType.SPLASH, false}, {BallType.SNIPER, false},
+            {BallType.POISON, false}, {BallType.DEMO, false}, {BallType.CRUSH, false},
+            {BallType.CASH, false}, {BallType.FIRE, false}
+        };
+
+        newBallPrice = new Dictionary<BallType, float>();
+        speedUpgradePrice = new Dictionary<BallType, float>();
+        damageUpgradePrice = new Dictionary<BallType, float>();
+
+
+        basicBalls = new List<BasicBall>();
+        poisonBalls = new List<PoisonBall>();
+        crushBalls = new List<CrushBall>();
+        demoBalls = new List<DemoBall>();
+        sniperBalls = new List<SniperBall>();
+        splashBalls = new List<SplashBall>();
+        cashBalls = new List<CashBall>();
+        fireBalls = new List<FireBall>();
+
+        foreach (GameObject item in GameObject.FindGameObjectsWithTag("Ball").ToList())
+        {
+            Destroy(item);
+        };
+
+        OpenNewBall(BallType.BASIC);
     }
 }

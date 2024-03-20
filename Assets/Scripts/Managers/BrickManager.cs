@@ -41,7 +41,6 @@ public class BrickManager : MonoBehaviour {
     private void OnBrickDestroyed(GameObject brick)
     {
         BrickScript bs = brick.GetComponent<BrickScript>();
-       // bs.destroyed -= OnBrickDestroyed;
         dropCash?.Invoke(bs.reward);
 
         _currentBricks.Remove(brick);
@@ -95,6 +94,13 @@ public class BrickManager : MonoBehaviour {
         _baseBrickHp *= multiplier;
         _bigBrickHp *= multiplier;
         _hexBrickHp *= multiplier;
+    }
+
+    public void ResetBricks()
+    {
+        _baseBrickHp = 1f;
+        _bigBrickHp = 5f;
+        _hexBrickHp = 10f;
     }
 
     private void SubscribeBrick(GameObject ball, GameObject brick)

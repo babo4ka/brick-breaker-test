@@ -19,7 +19,7 @@ public class CashManager : MonoBehaviour {
     private void Start()
     {
         gameObject.GetComponent<BrickManager>().dropCash += AddSoftCash;
-        //AddSoftCash(1106000000f);
+        AddSoftCash(1106000000f);
     }
 
 
@@ -46,6 +46,12 @@ public class CashManager : MonoBehaviour {
         _softCashAmount -= amount;
         SoftCashUpdated();
         return true;
+    }
+
+    public void ResetSoftCash()
+    {
+        _softCashAmount = 0f;
+        SoftCashUpdated();
     }
 
     public bool SpendHardCash(float amount)
