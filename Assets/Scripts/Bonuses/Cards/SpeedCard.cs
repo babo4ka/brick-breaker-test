@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageBonus : Card
+public class SpeedCard : Card
 {
-    public DamageBonus(int level) : base(level)
+    public SpeedCard(int level) : base(level)
     {
     }
 

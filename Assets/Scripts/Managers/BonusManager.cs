@@ -23,18 +23,28 @@ public class BonusManager : MonoBehaviour
         maxCardsExpandPrice += 100;
     }
 
+    public int ActiveCardsCount() { 
+       return activeCards.Count;
+    }
     
-    public void ExpandMaxCards()
+    public int MaxCardsCount()
+    {
+        return maxCards;
+    }
+
+    public int ExpandMaxCards()
     {
         if (cashManager.SpendHardCash(maxCardsExpandPrice))
         {
             maxCards++;
             IncreaseMaxCardsExpandPrice();
         }
+
+        return maxCards;
     }
 
     private System.Random rand = new System.Random();
-    public void OpenNewCard()
+    public CardType OpenNewCard()
     {
         var allTypes = Enum.GetValues(typeof(CardType));
         CardType type;
@@ -44,6 +54,8 @@ public class BonusManager : MonoBehaviour
         } while (cards.ContainsKey(type));
         Debug.Log(type);
         AddNewCard(type);
+
+        return type;
     }
 
     private void AddNewCard(CardType type)
@@ -51,19 +63,35 @@ public class BonusManager : MonoBehaviour
         switch (type)
         {
             case CardType.BALLDAMAGE:
-                cards.Add(CardType.BALLDAMAGE, new DamageBonus(1));
+                cards.Add(CardType.BALLDAMAGE, new DamageCard(1));
                 break;
 
             case CardType.BALLSPEED:
-                cards.Add(CardType.BALLSPEED, new SpeedBonus(1));
+                cards.Add(CardType.BALLSPEED, new SpeedCard(1));
                 break;
 
             case CardType.CRITDAMAGE:
-                cards.Add(CardType.CRITDAMAGE, new CritDamageBonus(1));
+                cards.Add(CardType.CRITDAMAGE, new CritDamageCard(1));
                 break;
 
             case CardType.CASH:
-                cards.Add(CardType.CASH, new CashBonus(1));
+                cards.Add(CardType.CASH, new CashCard(1));
+                break;
+
+            case CardType.CASHBRICK:
+                cards.Add(CardType.CASHBRICK, new CashBrickCard(1));
+                break;
+
+            case CardType.CASHBRICKCHANCE:
+                cards.Add(CardType.CASHBRICKCHANCE, new CashBrickChanceCard(1));
+                break;
+
+            case CardType.RADIUS:
+                cards.Add(CardType.RADIUS, new RadiusCard(1));
+                break;
+
+            case CardType.STAGECASH:
+                cards.Add(CardType.STAGECASH, new StageCashCard(1));
                 break;
         }
     }

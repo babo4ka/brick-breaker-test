@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CritDamageBonus : Card
+public class CashCard : Card
 {
-    public CritDamageBonus(int level) : base(level)
+    public CashCard(int level) : base(level)
     {
     }
 
@@ -12,7 +12,7 @@ public class CritDamageBonus : Card
     {
         values = new Dictionary<int, float>
         {
-            { 1, 5f}, { 2, 8f}, { 3, 10f}, {4, 15f}, { 5, 20f}
+            { 1, 1.5f}, { 2, 2f}, { 3, 2.2f}, {4, 2.5f}, { 5, 3f}
         };
 
         value = values[level];
