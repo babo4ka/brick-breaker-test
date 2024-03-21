@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class MenuButtonsController : MonoBehaviour
 {
+    private GameObject currentActivePanel;
+
     [SerializeField]
     private GameObject ballsManagingPanel;
     [SerializeField]
@@ -30,10 +32,16 @@ public class MenuButtonsController : MonoBehaviour
         if(cardsManagingPanel.activeSelf)
         {
             cardsManagingPanel.SetActive(false);
+            currentActivePanel = null;
         }
         else
         {
+            if(currentActivePanel != null)
+            {
+                currentActivePanel.SetActive(false);
+            }
             cardsManagingPanel.SetActive(true);
+            currentActivePanel = cardsManagingPanel;
         }
     }
 
@@ -46,10 +54,16 @@ public class MenuButtonsController : MonoBehaviour
                 newBallsPanel.SetActive(false);
             }
             ballsManagingPanel.SetActive(false);
+            currentActivePanel = null;
         }
         else
         {
+            if(currentActivePanel != null)
+            {
+                currentActivePanel.SetActive(false);
+            }
             ballsManagingPanel.SetActive(true);
+            currentActivePanel = ballsManagingPanel;
         }
     }
 }

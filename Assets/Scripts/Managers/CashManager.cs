@@ -15,6 +15,14 @@ public class CashManager : MonoBehaviour {
     [SerializeField]
     private TMP_Text hardCashText;
 
+    private float _totalSoftCashEarned;
+
+    public float totalSoftCashEarned
+    {
+        get { return _totalSoftCashEarned; }
+        set { _totalSoftCashEarned = value; }
+    }
+
 
     private void Start()
     {
@@ -27,6 +35,7 @@ public class CashManager : MonoBehaviour {
     public void AddSoftCash(float amount)
     {
         _softCashAmount += amount;
+        _totalSoftCashEarned += amount;
         SoftCashUpdated();
     }
 
@@ -52,6 +61,7 @@ public class CashManager : MonoBehaviour {
     public void ResetSoftCash()
     {
         _softCashAmount = 0f;
+        _totalSoftCashEarned = 0f;
         SoftCashUpdated();
     }
 

@@ -23,8 +23,8 @@ public class GameManager : MonoBehaviour
         gameObject.GetComponent<BrickManager>().levelDone += OnLevelDone;
         gameObject.GetComponent<BrickManager>().InstantiateLevel(currentLevel);
 
-        Vector2 min = Camera.main.ViewportToWorldPoint(new Vector2(0, 0));//это нижн€€ лева€ точка (угол) экрана
-        Vector2 max = Camera.main.ViewportToWorldPoint(new Vector2(1, 1));//это верхн€€ права€ точка (угол) экрана
+        Vector2 min = Camera.main.ViewportToWorldPoint(new Vector2(0, 0));
+        Vector2 max = Camera.main.ViewportToWorldPoint(new Vector2(1, 1));
 
         Instantiate(topPrefab, new Vector2(0f, max.y+0.2f), Quaternion.identity);
         Instantiate(bottomPrefab, new Vector2(0f, min.y - 0.2f), Quaternion.identity);
