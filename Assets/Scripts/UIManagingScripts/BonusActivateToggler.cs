@@ -43,7 +43,7 @@ public class BonusActivateToggler : MonoBehaviour
     private void UpdateInfo()
     {
         levelText.text = currentCard.level.ToString();
-        countText.text = currentCard.count + "/" + currentCard.NextLevelPrice();
+        countText.text = $"{currentCard.count}/{currentCard.NextLevelPrice()}";
     }
 
     private void ActivateCard()

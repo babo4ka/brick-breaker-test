@@ -46,7 +46,7 @@ public class BonusExpander : MonoBehaviour
 
     private void SetCardsCountText()
     {
-        activeCardsText.text = activeCards + "/" + maxCards;
+        activeCardsText.text = $"{activeCards}/{maxCards}";
     }
 
     private void ExpandMaxCardsCount()

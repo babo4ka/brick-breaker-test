@@ -24,14 +24,14 @@ public abstract class Card : Bonus
 
     private Dictionary<int, int> stageCounts = new Dictionary<int, int>
     {
-        {1, 3 }, {2, 5 }, {3, 7 }, {4, 10 }, {5, 12 }
+        {1, 3 }, {2, 5 }, {3, 7 }, {4, 10 }
     };
 
 
     public int NextLevelPrice()
     {
-        if(_level + 1 < 6) {
-            return stageCounts[_level + 1];
+        if(_level + 1 < 5) {
+            return stageCounts[_level];
         }
         return 0;
     }

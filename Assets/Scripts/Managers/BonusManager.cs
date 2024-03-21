@@ -21,6 +21,9 @@ public class BonusManager : MonoBehaviour
 
     private List<CardType> activeCards = new List<CardType>();
     private int maxCards = 1;
+    private const int totalMaxCards = 8;
+
+    private const int cardPrice = 20;
 
     private int maxCardsExpandPrice = 100;
 
@@ -40,12 +43,14 @@ public class BonusManager : MonoBehaviour
 
     public int ExpandMaxCards()
     {
-        if (cashManager.SpendHardCash(maxCardsExpandPrice))
+        if(maxCards + 1 < totalMaxCards)
         {
-            maxCards++;
-            IncreaseMaxCardsExpandPrice();
+            if (cashManager.SpendHardCash(maxCardsExpandPrice))
+            {
+                maxCards++;
+                IncreaseMaxCardsExpandPrice();
+            }
         }
-
         return maxCards;
     }
 
@@ -59,13 +64,29 @@ public class BonusManager : MonoBehaviour
     public CardType OpenNewCard()
     {
         var allTypes = Enum.GetValues(typeof(CardType));
-        CardType type;
-        do
+        CardType type = CardType.NONE;
+
+        if (cashManager.SpendHardCash(cardPrice))
         {
-            type = (CardType)allTypes.GetValue(rand.Next(allTypes.Length));
-        } while (cards.ContainsKey(type));
-        Debug.Log(type);
-        AddNewCard(type);
+            do
+            {
+                type = (CardType)allTypes.GetValue(rand.Next(allTypes.Length));
+            }while(type == CardType.NONE);
+
+            if (cards.ContainsKey(type))
+            {
+                int level = cards[type].level;
+                cards[type].AddCount(1);
+
+                updateCardInfo?.Invoke(type, cards[type]);
+            }
+            else
+            {
+                AddNewCard(type);
+            }
+
+           // Debug.Log(type);            
+        }
 
         return type;
     }
