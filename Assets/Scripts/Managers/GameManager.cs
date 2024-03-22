@@ -17,6 +17,11 @@ public class GameManager : MonoBehaviour
 
     private int currentLevel = 1;
 
+    public int getLevel
+    {
+        get { return currentLevel;}
+    }
+
 
     void Start()
     {

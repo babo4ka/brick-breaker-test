@@ -37,6 +37,7 @@ public class BonusExpander : MonoBehaviour
         maxCards = bonusManager.MaxCardsCount();
 
         bonusManager.updateActiveCardsCount += UpdateCardsCount;
+        bonusManager.updateMaxCardsCount += UpdateMaxCardsCount;
 
         SetCardsCountText();
 
@@ -49,9 +50,11 @@ public class BonusExpander : MonoBehaviour
         activeCardsText.text = $"{activeCards}/{maxCards}";
     }
 
-    private void ExpandMaxCardsCount()
+
+
+    private void UpdateMaxCardsCount(int count)
     {
-        maxCards = bonusManager.ExpandMaxCards();
+        maxCards = count;
         SetCardsCountText();
     }
 
@@ -65,5 +68,10 @@ public class BonusExpander : MonoBehaviour
     {
         CardType type = bonusManager.OpenNewCard();
         cardsTogglersList[numberByType[type]].SetActive(true);
+    }
+
+    private void ExpandMaxCardsCount()
+    {
+        bonusManager.ExpandMaxCards();
     }
 }

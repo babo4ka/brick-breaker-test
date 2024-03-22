@@ -16,7 +16,8 @@ public class BrickManager : MonoBehaviour {
     #region Bricks HP
     private float _baseBrickHp = 1f;
     private float _bigBrickHp = 5f;
-    private float _hexBrickHp = 10f;
+    private float _triangleBrickHp = 10f;
+    private float _hexBrickHp = 15f;
 
     private float multiplier = 1.2f;
     private const float maxMultiplier = 9f;
@@ -28,6 +29,15 @@ public class BrickManager : MonoBehaviour {
 
     public delegate void DropCash(float amount);
     public DropCash dropCash;
+    #endregion
+
+    #region StageReward
+    private CashManager cashManager;
+    private float stageRewardAmount;
+    private void AddReward(float amount)
+    {
+        cashManager.AddSoftCash(amount);
+    }
     #endregion
 
     public void InstantiateLevel(int levelNum)
@@ -46,6 +56,7 @@ public class BrickManager : MonoBehaviour {
         _currentBricks.Remove(brick);
 
         if(_currentBricks.Count == 0) { 
+            AddReward(stageRewardAmount);
             Destroy(currentLevelObject);
             levelDone?.Invoke();
         }
@@ -55,6 +66,7 @@ public class BrickManager : MonoBehaviour {
     {
         _currentBricks.Clear();
         _currentBricks = bricks;
+        stageRewardAmount = 0f;
 
         List<GameObject> balls = GameObject.FindGameObjectsWithTag("Ball").ToList();
 
@@ -65,23 +77,32 @@ public class BrickManager : MonoBehaviour {
             }
 
             BrickScript bs = brick.GetComponent<BrickScript>();
+
+            stageRewardAmount+= bs.reward;
+
             bs.destroyed += OnBrickDestroyed;
 
             switch (bs.type)
             {
-                case 1:
+                case BrickType.HORIZONTAL:
                     bs.health = _baseBrickHp;
                     break;
 
-                case 2:
+                case BrickType.VERTICAL:
                     bs.health = _bigBrickHp;
                     break;
 
-                case 3:
+                case BrickType.TRIANGLE:
+                    bs.health = _triangleBrickHp;
+                    break;
+
+                case BrickType.HEX:
                     bs.health = _hexBrickHp;
                     break;
             }
         }
+
+        stageRewardAmount *= 0.7f;
     }
 
     public void IncreaseHp(int level)
@@ -93,6 +114,7 @@ public class BrickManager : MonoBehaviour {
 
         _baseBrickHp *= multiplier;
         _bigBrickHp *= multiplier;
+        _triangleBrickHp *= multiplier;
         _hexBrickHp *= multiplier;
     }
 
@@ -100,6 +122,7 @@ public class BrickManager : MonoBehaviour {
     {
         _baseBrickHp = 1f;
         _bigBrickHp = 5f;
+        _triangleBrickHp = 10f;
         _hexBrickHp = 10f;
     }
 
@@ -127,5 +150,10 @@ public class BrickManager : MonoBehaviour {
         {
             UnsubscribeBrick(ball, brick);
         }
+    }
+
+    void Start()
+    {
+        cashManager = GetComponent<CashManager>();
     }
 }

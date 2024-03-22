@@ -8,14 +8,18 @@ public class BonusManager : MonoBehaviour
 
     private CashManager cashManager;
 
+    //обновляет уже активные бонусы
     public delegate void UpdateCard(CardType type, BonusStats<float> value);
     public UpdateCard updateCard;
 
+    //обновляет информацию о карте в UI
     public delegate void UpdateCardInfo(CardType type, Card card);
     public UpdateCardInfo updateCardInfo;
 
-    public delegate void UpdateActiveCardsCount(int count);
-    public UpdateActiveCardsCount updateActiveCardsCount;
+    //обновляет информацию о количестве карт
+    public delegate void UpdateIntegerInfo(int count);
+    public UpdateIntegerInfo updateActiveCardsCount;
+    public UpdateIntegerInfo updateMaxCardsCount;
 
     private Dictionary<CardType, Card> cards = new Dictionary<CardType, Card>();
 
@@ -32,16 +36,12 @@ public class BonusManager : MonoBehaviour
         maxCardsExpandPrice += 100;
     }
 
-    public int ActiveCardsCount() { 
-       return activeCards.Count;
-    }
+    public int ActiveCardsCount() {return activeCards.Count;}
     
-    public int MaxCardsCount()
-    {
-        return maxCards;
-    }
+    public int MaxCardsCount(){ return maxCards;}
 
-    public int ExpandMaxCards()
+    //увеличивает максимальное количество используемых карт
+    public void ExpandMaxCards()
     {
         if(maxCards + 1 < totalMaxCards)
         {
@@ -51,16 +51,20 @@ public class BonusManager : MonoBehaviour
                 IncreaseMaxCardsExpandPrice();
             }
         }
-        return maxCards;
+        
+        updateMaxCardsCount?.Invoke(maxCards);
     }
 
+    //получает карту в зависимости от типа
     public Card GetCurrentCard(CardType type)
     {
         if(cards.ContainsKey(type)) return cards[type];
         return null;
     }
 
+
     private System.Random rand = new System.Random();
+    //покупка карты, возвращает тип карты, которую открыл
     public CardType OpenNewCard()
     {
         var allTypes = Enum.GetValues(typeof(CardType));
@@ -75,17 +79,14 @@ public class BonusManager : MonoBehaviour
 
             if (cards.ContainsKey(type))
             {
-                int level = cards[type].level;
                 cards[type].AddCount(1);
-
-                updateCardInfo?.Invoke(type, cards[type]);
             }
             else
             {
                 AddNewCard(type);
             }
 
-           // Debug.Log(type);            
+            updateCardInfo?.Invoke(type, cards[type]);
         }
 
         return type;
@@ -127,7 +128,6 @@ public class BonusManager : MonoBehaviour
                 cards.Add(CardType.STAGECASH, new StageCashCard(1));
                 break;
         }
-        updateCardInfo?.Invoke(type, cards[type]);
     }
 
     public bool ActivateCard(CardType type)
@@ -137,9 +137,8 @@ public class BonusManager : MonoBehaviour
             if (!activeCards.Contains(type))
             {
                 activeCards.Add(type);
-                BonusStats<float> bs = new BonusStats<float>(true, cards[type].value);
-                updateCard?.Invoke(type, bs);
-                updateActiveCardsCount(activeCards.Count);
+                updateCard?.Invoke(type, new BonusStats<float>(true, cards[type].value));
+                updateActiveCardsCount?.Invoke(activeCards.Count);
                 return true;
             }
             return false;
@@ -152,6 +151,7 @@ public class BonusManager : MonoBehaviour
         activeCards.Remove(type);
         BonusStats<float> bs = new BonusStats<float>(false, cards[type].value);
         updateCard?.Invoke(type, bs);
+        updateActiveCardsCount?.Invoke(activeCards.Count);
     }
 
 
@@ -167,8 +167,6 @@ public class BonusManager : MonoBehaviour
                 updateCard?.Invoke(type, bs);
             }
         }
-        
-        
     }
 
     public BonusStats<float> GetCardValue(CardType type)
@@ -184,6 +182,7 @@ public class BonusManager : MonoBehaviour
     void Start()
     {
         cashManager = GetComponent<CashManager>();
+        updateActiveCardsCount?.Invoke(20);
         //OpenNewCard();
     }
 }
