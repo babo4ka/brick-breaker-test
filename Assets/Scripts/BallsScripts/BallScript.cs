@@ -15,12 +15,12 @@ public abstract class BallScript : MonoBehaviour
 
     [SerializeField]
     private float _speed = 0f;
-    private float _speedMultiplier;
+    private float _speedMultiplier = 1f;
     [SerializeField]
     private float _damage;
-    private float _damageMultiplier;
+    private float _damageMultiplier = 1f;
 
-    private float _critDamage;
+    private float _critDamage = 0f;
 
     public float critDamage
     {
@@ -51,7 +51,7 @@ public abstract class BallScript : MonoBehaviour
         Debug.Log(_damageMultiplier);
         Debug.Log(_speedMultiplier);
         Debug.Log(_critDamage);
-        return _damage * (_damageMultiplier == 0 ? 1 : _damageMultiplier)
+        return _damage * _damageMultiplier
             * Random.Range(0f, 1f) <= _critDamage / 100 ? 1.5f : 1f;
     }
 
@@ -70,14 +70,14 @@ public abstract class BallScript : MonoBehaviour
         force.y = Random.Range(-1f, 1f);
         direction = force;
         
-        rigidbody.AddForce(force.normalized * speed * (_speedMultiplier == 0 ? 1 : _speedMultiplier));
+        rigidbody.AddForce(force.normalized * speed * _speedMultiplier);
     }
 
     public void UpdateSpeed(float newSpeed)
     {
         this._speed = newSpeed;
         rigidbody.velocity = Vector2.zero;
-        rigidbody.AddForce(direction.normalized * newSpeed * (_speedMultiplier == 0 ? 1 : _speedMultiplier));
+        rigidbody.AddForce(direction.normalized * newSpeed * _speedMultiplier);
 
 
         /*//newSpeed *= _speedMultiplier==0?1:_speedMultiplier;
@@ -99,24 +99,49 @@ public abstract class BallScript : MonoBehaviour
             case CardType.BALLDAMAGE:
                 if (bs.activate)
                 {
-                    _damageMultiplier += bs.value;
+                    _damageMultiplier *= bs.value;
                 }
                 else
                 {
-                    _damageMultiplier -= bs.value;
+                    _damageMultiplier /= bs.value;
                 }
                 break;
 
             case CardType.BALLSPEED:
                 if (bs.activate)
                 {
-                    _speedMultiplier += bs.value;
+                    _speedMultiplier *= bs.value;
                 }
                 else
                 {
-                    _speedMultiplier -= bs.value;
+                    _speedMultiplier /= bs.value;
                 }
                 UpdateSpeed(this.speed);
+                break;
+
+            case CardType.CRITDAMAGE:
+                if (bs.activate)
+                {
+                    if(critDamage == 0f)
+                    {
+                        critDamage += bs.value;
+                    }
+                    else
+                    {
+                        critDamage *= bs.value;
+                    }
+                }
+                else
+                {
+                    if(critDamage == bs.value)
+                    {
+                        critDamage -= bs.value;
+                    }
+                    else
+                    {
+                        critDamage /= bs.value;
+                    }
+                }
                 break;
         }
     }

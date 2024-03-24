@@ -4,5 +4,5 @@ using UnityEngine;
 
 public enum DamageType
 {
-   DAMAGE, POISON, FIRE
+   DAMAGE, POISON, FIRE, CASH
 }

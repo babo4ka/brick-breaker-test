@@ -12,6 +12,10 @@ public class BrickScript : MonoBehaviour
     public delegate void Destroyed(GameObject brick);
     public Destroyed destroyed;
 
+    public delegate void DropCashByBall(float amount);
+    public DropCashByBall dropCashByBall;
+
+
     [SerializeField]
     private List<BallScript> balls = new List<BallScript>();
     #endregion
@@ -167,6 +171,11 @@ public class BrickScript : MonoBehaviour
         }
     }
 
+    private void CashBallTrigger(float damage)
+    {
+        dropCashByBall?.Invoke(damage * health);
+    }
+
     private void getDamage(float damage, DamageType type, GameObject objToDamage)
     {
         if(gameObject == objToDamage)
@@ -191,6 +200,10 @@ public class BrickScript : MonoBehaviour
                         this.burning = damage * 0.5f;
                         InvokeRepeating("Burn", 0f, 1f);
                     }
+                    break;
+
+                case DamageType.CASH:
+                    CashBallTrigger(damage);
                     break;
             }
 

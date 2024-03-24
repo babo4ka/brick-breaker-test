@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class CashBall : BallScript
 {
-    private CashManager cashManager;
 
-    void Start()
-    {
-        cashManager = gameManager.GetComponent<CashManager>();
-    }
 
     public override void OnCollisionEnter2D(Collision2D collision)
     {
@@ -17,7 +12,7 @@ public class CashBall : BallScript
 
         if (collision.gameObject.tag == "Brick")
         {
-            cashManager.AddSoftCash(collision.gameObject.GetComponent<BrickScript>().health * CountDamage());
+            attack?.Invoke(CountDamage(), DamageType.CASH, collision.gameObject);
         }
     }
 }

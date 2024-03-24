@@ -32,12 +32,8 @@ public class BrickManager : MonoBehaviour {
     #endregion
 
     #region StageReward
-    private CashManager cashManager;
     private float stageRewardAmount;
-    private void AddReward(float amount)
-    {
-        cashManager.AddSoftCash(amount);
-    }
+
     #endregion
 
     public void InstantiateLevel(int levelNum)
@@ -54,12 +50,19 @@ public class BrickManager : MonoBehaviour {
         dropCash?.Invoke(bs.reward);
 
         _currentBricks.Remove(brick);
+        bs.destroyed -= OnBrickDestroyed;
+        bs.dropCashByBall -= CashBallTrigger;
 
-        if(_currentBricks.Count == 0) { 
-            AddReward(stageRewardAmount);
+        if (_currentBricks.Count == 0) { 
+            dropCash?.Invoke(stageRewardAmount);
             Destroy(currentLevelObject);
             levelDone?.Invoke();
         }
+    }
+
+    private void CashBallTrigger(float amount)
+    {
+        dropCash?.Invoke(amount);
     }
 
     private void SetBricks(List<GameObject> bricks)
@@ -81,6 +84,8 @@ public class BrickManager : MonoBehaviour {
             stageRewardAmount+= bs.reward;
 
             bs.destroyed += OnBrickDestroyed;
+            bs.dropCashByBall += CashBallTrigger;
+
 
             switch (bs.type)
             {
@@ -154,6 +159,5 @@ public class BrickManager : MonoBehaviour {
 
     void Start()
     {
-        cashManager = GetComponent<CashManager>();
     }
 }
