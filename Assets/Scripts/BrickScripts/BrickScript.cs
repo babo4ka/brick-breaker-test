@@ -59,9 +59,6 @@ public class BrickScript : MonoBehaviour
     #endregion
 
     #region Buffs info
-    public delegate void BuffAction(BuffType type, float duration);
-    public BuffAction buffAction;
-
     private Dictionary<BuffType, float> buffsChance = new Dictionary<BuffType, float>
     {
         { BuffType.DIAMOND, 5f},
@@ -72,26 +69,9 @@ public class BrickScript : MonoBehaviour
     private BuffType _buffOnBrick;
     public BuffType buffOnBrick
     {
-        get { return buffOnBrick; }
+        get { return _buffOnBrick; }
     }
 
-    private float buffDuration = 10.0f;
-
-    private void ActBuff()
-    {
-        switch (_buffOnBrick)
-        {
-            case BuffType.DIAMOND:
-            case BuffType.SPEED:
-            case BuffType.DAMAGE: 
-            case BuffType.CASHMULT:
-                buffAction?.Invoke(_buffOnBrick, buffDuration);
-                break;
-
-            default:
-                break;
-        }
-    }
 
     private void ChooseBuff()
     {
@@ -136,7 +116,6 @@ public class BrickScript : MonoBehaviour
 
     private void OnDestroy()
     {
-        ActBuff();
         foreach (BallScript ball in balls)
         {
             ball.attack -= getDamage;

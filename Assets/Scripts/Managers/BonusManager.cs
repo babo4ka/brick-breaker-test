@@ -149,8 +149,7 @@ public class BonusManager : MonoBehaviour
     public void DeactivateCard(CardType type)
     {
         activeCards.Remove(type);
-        BonusStats<float> bs = new BonusStats<float>(false, cards[type].value);
-        updateCard?.Invoke(type, bs);
+        updateCard?.Invoke(type, new BonusStats<float>(false, cards[type].value));
         updateActiveCardsCount?.Invoke(activeCards.Count);
     }
 
@@ -178,6 +177,9 @@ public class BonusManager : MonoBehaviour
 
         return new BonusStats<float>(false, 0f);
     }
+
+
+
 
     void Start()
     {

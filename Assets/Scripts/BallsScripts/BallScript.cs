@@ -7,11 +7,11 @@ public abstract class BallScript : MonoBehaviour
 
     private protected GameObject gameManager;
 
-   
-    public Rigidbody2D rigidbody { get;  set; }
 
-    public Vector3 direction {  get;  set; }
-    private Vector3 lastPos;
+    public Rigidbody2D rigidbody { get; set; }
+
+    public Vector2 direction { get; set; }
+    private Vector2 lastPos= Vector2.zero;
 
     [SerializeField]
     private float _speed = 0f;
@@ -19,6 +19,19 @@ public abstract class BallScript : MonoBehaviour
     [SerializeField]
     private float _damage;
     private float _damageMultiplier = 1f;
+
+    private Dictionary<BuffType, float> buffStartTime = new Dictionary<BuffType, float>
+    {
+        {BuffType.SPEED, -1f}, {BuffType.DAMAGE, -1f}
+    };
+    private Dictionary<BuffType, float> buffEndTime = new Dictionary<BuffType, float>
+    {
+        {BuffType.SPEED, -1f}, {BuffType.DAMAGE, -1f}
+    };
+    private Dictionary<BuffType, bool> buffActive = new Dictionary<BuffType, bool>
+    {
+        {BuffType.SPEED, false}, {BuffType.DAMAGE, false}
+    };
 
     private float _critDamage = 0f;
 
@@ -77,7 +90,7 @@ public abstract class BallScript : MonoBehaviour
     {
         this._speed = newSpeed;
         rigidbody.velocity = Vector2.zero;
-        rigidbody.AddForce(direction.normalized * newSpeed * _speedMultiplier);
+        rigidbody.AddForce(_speedMultiplier * newSpeed * direction.normalized);
 
 
         /*//newSpeed *= _speedMultiplier==0?1:_speedMultiplier;
@@ -92,7 +105,7 @@ public abstract class BallScript : MonoBehaviour
     }
 
 
-    void UpdateCard(CardType type, BonusStats<float> bs)
+    private void UpdateCard(CardType type, BonusStats<float> bs)
     {
         switch (type)
         {
@@ -146,11 +159,53 @@ public abstract class BallScript : MonoBehaviour
         }
     }
 
+    private void UpdateBuff(BuffType type, BonusStats<float> bs, float duration)
+    {
+        switch(type)
+        {
+            case BuffType.SPEED:
+                if (bs.activate)
+                {
+                    _speedMultiplier *= bs.value;
+                    buffActive[type] = true;
+                    UpdateSpeed(this.speed);
+                    AddTimeToBuff(type, 10f);
+                }
+                break;
+
+            case BuffType.DAMAGE:
+                _damageMultiplier *= bs.value;
+                buffActive[type] = true;
+                AddTimeToBuff(type, 10f);
+                break;
+
+            default:
+                break;
+        }
+
+
+    }
+
+    private void AddTimeToBuff(BuffType type, float duration)
+    {
+        if (buffActive[type])
+        {
+            buffEndTime[type] += duration;
+        }
+        else
+        {
+            buffStartTime[type] = Time.time;
+            buffEndTime[type] = buffStartTime[type] + duration;
+            buffActive[type] = true;
+        }
+    }
+
     void Awake()
     {
         this.rigidbody = GetComponent<Rigidbody2D>();
         gameManager = GameObject.Find("GameManager");
         gameManager.GetComponent<BonusManager>().updateCard += UpdateCard;
+        gameManager.GetComponent<BrickManager>().actBuff += UpdateBuff;
 
         List<BonusStats<float>> bonuses = new List<BonusStats<float>>
         {
@@ -161,22 +216,46 @@ public abstract class BallScript : MonoBehaviour
 
         if (bonuses[0].activate)
         {
-            _damageMultiplier += bonuses[0].value;
+            _damageMultiplier *= bonuses[0].value;
         }
 
         if (bonuses[1].activate)
         {
-            _speedMultiplier += bonuses[1].value;
+            _speedMultiplier *= bonuses[1].value;
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        Vector3 position = transform.position;
-        if(lastPos != null)
+        Vector2 position = transform.position;
+        Vector2 nextPos = position * 2;
+
+        direction = nextPos - position;
+        Debug.Log(position);
+        Debug.Log(nextPos);
+        Debug.Log(direction);
+        
+        //lastPos = position;
+
+
+
+        if (buffActive[BuffType.SPEED])
         {
-            direction = position - lastPos;
+            if (Time.time >= buffEndTime[BuffType.SPEED])
+            {
+                _speedMultiplier /= 2;
+                UpdateSpeed(this.speed);
+                buffActive[BuffType.SPEED] = false;
+            }
         }
-        lastPos = position;
+
+        if (buffActive[BuffType.DAMAGE])
+        {
+            if (Time.time >= buffEndTime[BuffType.DAMAGE])
+            {
+                _damageMultiplier /= 2;
+                buffActive[BuffType.DAMAGE] = false;
+            }
+        }
     }
 }

@@ -5,8 +5,16 @@ using UnityEngine;
 
 public class CashManager : MonoBehaviour {
 
+    private BrickManager brickManager;
+
     [SerializeField]
     private float _softCashAmount;
+    private float softCashMultiplier = 1f;
+
+    private float buffStartTime;
+    private float buffEndTime;
+    private bool buffActive = false;
+
     [SerializeField]
     private float _hardCashAmount;
 
@@ -26,16 +34,63 @@ public class CashManager : MonoBehaviour {
 
     private void Start()
     {
-        gameObject.GetComponent<BrickManager>().dropCash += AddSoftCash;
+        brickManager = GetComponent<BrickManager>();
+        brickManager.dropCash += AddSoftCash;
+        brickManager.actBuff += GetHardByBuff;
+
         AddSoftCash(1106000000f);
         AddHardCash(10000000);
     }
 
-
-    public void AddSoftCash(float amount)
+    private void Update()
     {
-        _softCashAmount += amount;
-        _totalSoftCashEarned += amount;
+        if(buffActive)
+        {
+            if(Time.time >= buffEndTime)
+            {
+                softCashMultiplier /= 2;
+                buffActive = false;
+            }
+        }
+    }
+
+    private void GetHardByBuff(BuffType type, BonusStats<float> bs, float dur)
+    {
+        if(type == BuffType.DIAMOND)
+        {
+            AddHardCash(1);
+        }
+        else if (type == BuffType.CASHMULT)
+        {
+            if (bs.activate)
+            {
+                softCashMultiplier *= bs.value;
+                AddTimeToBuff(10f);
+            }
+        }
+    }
+
+
+    private void AddTimeToBuff(float duration)
+    {
+        if (buffActive)
+        {
+            buffEndTime += duration;
+        }
+        else
+        {
+            buffStartTime = Time.time;
+            buffEndTime = Time.time + duration;
+            buffActive = true;
+        }
+        
+    }
+
+
+    private void AddSoftCash(float amount)
+    {
+        _softCashAmount += amount * softCashMultiplier;
+        _totalSoftCashEarned += amount * softCashMultiplier;
         SoftCashUpdated();
     }
 

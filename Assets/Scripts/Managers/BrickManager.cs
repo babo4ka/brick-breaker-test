@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static BrickScript;
 
 public class BrickManager : MonoBehaviour {
 
@@ -29,6 +30,9 @@ public class BrickManager : MonoBehaviour {
 
     public delegate void DropCash(float amount);
     public DropCash dropCash;
+
+    public delegate void ActBuff(BuffType type, BonusStats<float> stats, float duration);
+    public ActBuff actBuff;
     #endregion
 
     #region StageReward
@@ -48,6 +52,22 @@ public class BrickManager : MonoBehaviour {
     {
         BrickScript bs = brick.GetComponent<BrickScript>();
         dropCash?.Invoke(bs.reward);
+
+        switch (bs.buffOnBrick)
+        {
+            case BuffType.DIAMOND:
+                actBuff?.Invoke(bs.buffOnBrick, null, 0);
+                break;
+            case BuffType.SPEED:
+            case BuffType.DAMAGE:
+            case BuffType.CASHMULT:
+                actBuff?.Invoke(bs.buffOnBrick, new BonusStats<float>(true, 2), 10f);
+                break;
+
+            default:
+                break;
+        }
+        
 
         _currentBricks.Remove(brick);
         bs.destroyed -= OnBrickDestroyed;
