@@ -22,7 +22,7 @@ public class PrestigeManager : MonoBehaviour
         prestigeCash += amount;
         totalPrestiged += amount;
 
-        if(totalPrestiged >= nextLevelPrice)
+        while(totalPrestiged >= nextLevelPrice)
         {
             nextLevelPrice = (int)Math.Truncate(nextLevelPrice * 1.5f);
             prestigeMultiplier *= 1.2f;

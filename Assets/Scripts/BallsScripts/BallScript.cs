@@ -73,6 +73,7 @@ public abstract class BallScript : MonoBehaviour
     public Attack attack;
 
 
+
     public abstract void OnCollisionEnter2D(Collision2D collision);
 
     public void SetTrajectory()

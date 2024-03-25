@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BasicBall : BallScript
 {
-
+    private IAttack attackImpl = new BasicBallAttackImpl();
 
     public override void OnCollisionEnter2D(Collision2D collision)
     {
@@ -12,7 +12,8 @@ public class BasicBall : BallScript
 
         if (collision.gameObject.tag == "Brick")
         {
-            attack?.Invoke(CountDamage(), DamageType.DAMAGE, collision.gameObject);
+            attackImpl.Attack(CountDamage(), DamageType.DAMAGE, collision.gameObject, attack);
+            //attack?.Invoke(CountDamage(), DamageType.DAMAGE, collision.gameObject);
         }
     }
 }
