@@ -127,6 +127,18 @@ public class BonusManager : MonoBehaviour
             case CardType.STAGECASH:
                 cards.Add(CardType.STAGECASH, new StageCashCard(1));
                 break;
+
+            case CardType.SPEEDBUFF:
+                cards.Add(CardType.SPEEDBUFF, new SpeedBuffCard(1));
+                break;
+
+            case CardType.DAMAGEBUFF:
+                cards.Add(CardType.DAMAGEBUFF, new DamageBuffCard(1));
+                break;
+
+            case CardType.CASHMULTBUFF:
+                cards.Add(CardType.CASHMULTBUFF, new CashmultBuffCard(1));
+                break;
         }
     }
 
@@ -162,7 +174,7 @@ public class BonusManager : MonoBehaviour
         {
             if (activeCards.Contains(type))
             {
-                updateCard?.Invoke(type, new BonusStats<float>(false, 0f));
+                updateCard?.Invoke(type, new BonusStats<float>(false, cards[type].value));
                 updateCard?.Invoke(type, new BonusStats<float>(true, cards[type].value));
             }
         }
@@ -184,7 +196,6 @@ public class BonusManager : MonoBehaviour
     void Start()
     {
         cashManager = GetComponent<CashManager>();
-        updateActiveCardsCount?.Invoke(20);
         //OpenNewCard();
     }
 }

@@ -50,7 +50,20 @@ public class BrickScript : MonoBehaviour
         {BrickType.HORIZONTAL, 1f}, {BrickType.VERTICAL, 2f},
         {BrickType.TRIANGLE, 15f}, {BrickType.HEX, 25f}
     };
-    private float _rewardMultiplier;
+    private float _rewardMultiplier = 1f;
+    private float _cashBrickMultiplier = 1f;
+
+    public float cashBrickMultiplier
+    {
+        get { return _cashBrickMultiplier; }
+        set { _cashBrickMultiplier = value; }
+    }
+
+    public float rewardMultiplier
+    {
+        get { return _rewardMultiplier; }
+        set { _rewardMultiplier = value; }
+    }
 
     public float reward
     {
@@ -59,58 +72,17 @@ public class BrickScript : MonoBehaviour
     #endregion
 
     #region Buffs info
-    private Dictionary<BuffType, float> buffsChance = new Dictionary<BuffType, float>
-    {
-        { BuffType.DIAMOND, 5f},
-        { BuffType.CASH, 5f},
-        { BuffType.SPEED, 0f }, { BuffType.DAMAGE, 0f}, { BuffType.CASHMULT, 0f}
-    };
-
     private BuffType _buffOnBrick;
     public BuffType buffOnBrick
     {
         get { return _buffOnBrick; }
-    }
-
-
-    private void ChooseBuff()
-    {
-        float diamondEdge = 0 + buffsChance[BuffType.DIAMOND]/100;
-        float cashEdge = diamondEdge + buffsChance[BuffType.CASH]/100;
-        float speedEdge = cashEdge + buffsChance[BuffType.SPEED]/100;
-        float damageEdge = speedEdge + buffsChance[BuffType.DAMAGE]/100;
-        float cashMultEdge = damageEdge + buffsChance[BuffType.CASHMULT]/100;
-
-        float roll = Random.Range(0f, 1f);
-
-        if(roll > 0f && roll <= diamondEdge)
-        {
-            _buffOnBrick = BuffType.DIAMOND;
-        }else if (roll > diamondEdge && roll <= cashEdge)
-        {
-            _buffOnBrick = BuffType.CASH;
-        }else if(roll > cashEdge && roll <= speedEdge)
-        {
-            _buffOnBrick = BuffType.SPEED;
-        }else if (roll > speedEdge && roll <= damageEdge)
-        {
-            _buffOnBrick = BuffType.DAMAGE;
-        }
-        else if(roll > damageEdge && roll <= cashMultEdge)
-        {
-            _buffOnBrick = BuffType.CASHMULT;
-        }
-        else
-        {
-            _buffOnBrick = BuffType.NONE;
-        }
-        
+        set { _buffOnBrick = value; }
     }
     #endregion
 
     private float CountCashReward()
     {
-        return rewards[_type] * (_rewardMultiplier==0f?1:_rewardMultiplier) * (_buffOnBrick==BuffType.CASH?10:1);
+        return rewards[_type] * _rewardMultiplier * _cashBrickMultiplier;
     }
 
 
@@ -211,7 +183,6 @@ public class BrickScript : MonoBehaviour
 
     void Start()
     {
-        ChooseBuff();
         gameManager = GameObject.Find("GameManager");
 
         gameManager.GetComponent<BonusManager>().updateCard += UpdateRewardMultiplier;
