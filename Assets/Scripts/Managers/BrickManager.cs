@@ -39,7 +39,7 @@ public class BrickManager : MonoBehaviour {
 
     #region StageReward
     private float stageRewardAmount;
-
+    private float stageRewardMultiplier = 1f;
     #endregion
 
     #region Buffs
@@ -168,6 +168,17 @@ public class BrickManager : MonoBehaviour {
                     buffsChance[BuffType.CASHMULT] -= bs.value;
                 }
                 break;
+
+            case CardType.STAGECASH:
+                if (bs.activate)
+                {
+                    stageRewardMultiplier *= bs.value;
+                }
+                else
+                {
+                    stageRewardMultiplier /= bs.value;
+                }
+                break;
         }
     }
     #endregion
@@ -206,7 +217,7 @@ public class BrickManager : MonoBehaviour {
         bs.dropCashByBall -= CashBallTrigger;
 
         if (_currentBricks.Count == 0) { 
-            dropCash?.Invoke(stageRewardAmount);
+            dropCash?.Invoke(stageRewardAmount * stageRewardMultiplier);
             Destroy(currentLevelObject);
             levelDone?.Invoke();
         }

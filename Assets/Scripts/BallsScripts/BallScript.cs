@@ -200,7 +200,7 @@ public abstract class BallScript : MonoBehaviour
         }
     }
 
-    void Awake()
+    private protected virtual void Awake()
     {
         this.rigidbody = GetComponent<Rigidbody2D>();
         gameManager = GameObject.Find("GameManager");

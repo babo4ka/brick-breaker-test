@@ -8,6 +8,7 @@ public class SplashBall : BallScript
 
     [SerializeField]
     private float radius;
+    private float radiusMultiplier;
 
     public override void OnCollisionEnter2D(Collision2D collision)
     {
@@ -20,7 +21,7 @@ public class SplashBall : BallScript
 
         Vector2 circleCenter = transform.position;
 
-        List<Collider2D> around = Physics2D.OverlapCircleAll(circleCenter, radius).ToList();
+        List<Collider2D> around = Physics2D.OverlapCircleAll(circleCenter, radius * radiusMultiplier).ToList();
 
         around = around.Where(a => 
         a.gameObject.tag == "Brick" && a.gameObject!=collision.gameObject).ToList();
@@ -29,6 +30,36 @@ public class SplashBall : BallScript
         foreach(Collider2D c in around)
         {
             attack?.Invoke(CountDamage() * 0.4f, DamageType.DAMAGE, c.gameObject);
+        }
+    }
+
+    private void UpdateCard(CardType type, BonusStats<float> bs)
+    {
+
+        if (type == CardType.RADIUS)
+        {
+            if (bs.activate)
+            {
+                radiusMultiplier *= bs.value;
+            }
+            else
+            {
+                radiusMultiplier /= bs.value;
+            }
+        }
+    }
+
+
+
+    private protected override void Awake()
+    {
+        base.Awake();
+        gameManager.GetComponent<BonusManager>().updateCard += UpdateCard;
+
+        BonusStats<float> bs = gameManager.GetComponent<BonusManager>().GetCardValue(CardType.RADIUS);
+        if (bs.activate)
+        {
+            radiusMultiplier *= bs.value;
         }
     }
 }
