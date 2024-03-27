@@ -2,40 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SplashPrestigeBonus : MonoBehaviour
+public class SplashPrestigeBonus : PrestigeBonusBall
 {
-    private Dictionary<PrestigeBonusType, PrestigeBonus> bonuses = new Dictionary<PrestigeBonusType, PrestigeBonus>
+    public SplashPrestigeBonus()
     {
-        { PrestigeBonusType.SPEED, new PrestigeBonus(0, 0.2f, 10)},
-        { PrestigeBonusType.DAMAGE, new PrestigeBonus(0, 0.1f, 10)},
-        { PrestigeBonusType.RADIUS, new PrestigeBonus(0, 0.1f, 10)},
-        { PrestigeBonusType.SECDAMAGE, new PrestigeBonus(0, 0.2f, 10)}
-    };
+        ballType = BallType.SPLASH;
+        mainWrapper = new PrestigeBonusWrapper(PrestigeBonusType.SPEED);
 
-    public void UpdateBonusLevelValid(PrestigeBonusType type)
-    {
-        if(type == PrestigeBonusType.DAMAGE || type == PrestigeBonusType.RADIUS)
-        {
-            if (bonuses[PrestigeBonusType.SPEED].level >= 3)
-            {
-                UpdateBonuseLevel(type);
-            }
-        }else if(type == PrestigeBonusType.SECDAMAGE)
-        {
-            if (bonuses[PrestigeBonusType.DAMAGE].level >= 3)
-            {
-                UpdateBonuseLevel(type);
-            }
-        }
-        else
-        {
-            UpdateBonuseLevel(type);
-        }
-    }
+        mainWrapper.left = new PrestigeBonusWrapper(PrestigeBonusType.DAMAGE);
+        mainWrapper.left.left = new PrestigeBonusWrapper(PrestigeBonusType.SECDAMAGE);
 
-    private void UpdateBonuseLevel(PrestigeBonusType type)
-    {
-        bonuses[type].AddLevel();
-    }
-
+        mainWrapper.right = new PrestigeBonusWrapper(PrestigeBonusType.RADIUS);
+    }    
+    
 }

@@ -20,6 +20,8 @@ public class MenuButtonsController : MonoBehaviour
     private Button ballsManagingButton;
     [SerializeField]
     private Button cardsManagingButton;
+    [SerializeField]
+    private Button prestigeManagingPanel;
 
     private void Start()
     {

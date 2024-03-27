@@ -5,18 +5,34 @@ using UnityEngine;
 
 public class PrestigeManager : MonoBehaviour
 {
+    #region Prestige data
     private int totalPrestiged;
     private int prestigeCash;
     private int nextLevelPrice = 150;
 
     private float prestigeMultiplier = 1f;
+    #endregion
 
+    #region Managers
     private GameManager gameManager;
     private CashManager cashManager;
+    #endregion
 
     private const float prestigePriceInCash = 100000000f;
     private const float everyPoint = 1000000f;
-    
+
+    private Dictionary<BallType, PrestigeBonusBall> ballPrestiges = new Dictionary<BallType, PrestigeBonusBall>
+    {
+        {BallType.SPLASH, new SplashPrestigeBonus()}
+    };
+
+    public void AddLevelToPrestigeBonus(BallType ballType, PrestigeBonusType prestigeBonusType)
+    {
+        //проверка цены еще будет
+        ballPrestiges[ballType].AddLevelToBonus(prestigeBonusType);
+    }
+
+
     public void AddPrestigeCash(int amount)
     {
         prestigeCash += amount;

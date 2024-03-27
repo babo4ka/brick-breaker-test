@@ -174,7 +174,7 @@ public class BonusManager : MonoBehaviour
         {
             if (activeCards.Contains(type))
             {
-                updateCard?.Invoke(type, new BonusStats<float>(false, cards[type].value));
+                updateCard?.Invoke(type, new BonusStats<float>(false, oldValue));
                 updateCard?.Invoke(type, new BonusStats<float>(true, cards[type].value));
             }
         }
