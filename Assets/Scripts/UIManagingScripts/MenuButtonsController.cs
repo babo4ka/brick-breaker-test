@@ -9,63 +9,69 @@ public class MenuButtonsController : MonoBehaviour
 
     [SerializeField]
     private GameObject ballsManagingPanel;
-    [SerializeField]
-    private GameObject newBallsPanel;
 
     [SerializeField]
     private GameObject cardsManagingPanel;
 
+    [SerializeField]
+    private GameObject prestigeManagingPanel;
 
     [SerializeField]
     private Button ballsManagingButton;
     [SerializeField]
     private Button cardsManagingButton;
     [SerializeField]
-    private Button prestigeManagingPanel;
+    private Button prestigeManagingButton;
 
     private void Start()
     {
         ballsManagingButton.onClick.AddListener(BallManagingPanelToggle);
         cardsManagingButton.onClick.AddListener(CardManagingPanelToggle);
+        //prestigeManagingButton.onClick.AddListener(PrestigeManagingPanelToggle);
     }
 
     private void CardManagingPanelToggle()
     {
-        if(cardsManagingPanel.activeSelf)
+        if(currentActivePanel == cardsManagingPanel)
         {
-            cardsManagingPanel.SetActive(false);
+            cardsManagingPanel.GetComponent<UIPanel>().Close();
             currentActivePanel = null;
         }
         else
         {
-            if(currentActivePanel != null)
-            {
-                currentActivePanel.SetActive(false);
-            }
-            cardsManagingPanel.SetActive(true);
+            currentActivePanel?.GetComponent<UIPanel>().Close();
+            cardsManagingPanel.GetComponent<UIPanel>().Open();
             currentActivePanel = cardsManagingPanel;
         }
     }
 
     private void BallManagingPanelToggle()
     {
-        if(ballsManagingPanel.activeSelf)
+        if(currentActivePanel == ballsManagingPanel)
         {
-            if (newBallsPanel.activeSelf)
-            {
-                newBallsPanel.SetActive(false);
-            }
-            ballsManagingPanel.SetActive(false);
+            ballsManagingPanel.GetComponent<UIPanel>().Close();
+            currentActivePanel=null;
+        }
+        else
+        {
+            currentActivePanel?.GetComponent<UIPanel>().Close();
+            ballsManagingPanel.GetComponent<UIPanel>().Open();
+            currentActivePanel = ballsManagingPanel;
+        }
+    }
+
+    private void PrestigeManagingPanelToggle()
+    {
+        if(currentActivePanel == prestigeManagingPanel)
+        {
+            prestigeManagingPanel.GetComponent<UIPanel>().Close();
             currentActivePanel = null;
         }
         else
         {
-            if(currentActivePanel != null)
-            {
-                currentActivePanel.SetActive(false);
-            }
-            ballsManagingPanel.SetActive(true);
-            currentActivePanel = ballsManagingPanel;
+            currentActivePanel.GetComponent<UIPanel>().Close();
+            prestigeManagingPanel.GetComponent<UIPanel>().Open();
+            currentActivePanel = prestigeManagingPanel;
         }
     }
 }

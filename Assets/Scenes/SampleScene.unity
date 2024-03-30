@@ -3981,7 +3981,7 @@ GameObject:
   - component: {fileID: 317179439}
   - component: {fileID: 317179438}
   m_Layer: 5
-  m_Name: Prestige
+  m_Name: PrestigeManagingButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11406,6 +11406,7 @@ GameObject:
   - component: {fileID: 868867429}
   - component: {fileID: 868867428}
   - component: {fileID: 868867430}
+  - component: {fileID: 868867431}
   m_Layer: 5
   m_Name: CardsMamagingPanel
   m_TagString: Untagged
@@ -11498,6 +11499,19 @@ MonoBehaviour:
   bonusesCountExpander: {fileID: 687973345}
   newBonusBuyer: {fileID: 729217629}
   activeCardsText: {fileID: 747960656}
+--- !u!114 &868867431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868867426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26ca1cf2a31563f43a4c1cd247348969, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  childPanels: []
 --- !u!1 &873502255
 GameObject:
   m_ObjectHideFlags: 0
@@ -12705,6 +12719,7 @@ GameObject:
   m_Component:
   - component: {fileID: 983900464}
   - component: {fileID: 983900465}
+  - component: {fileID: 983900466}
   m_Layer: 5
   m_Name: BallsManagingPanel
   m_TagString: Untagged
@@ -12763,6 +12778,20 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &983900466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983900463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26ca1cf2a31563f43a4c1cd247348969, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  childPanels:
+  - {fileID: 1767828467}
 --- !u!1 &1004105757
 GameObject:
   m_ObjectHideFlags: 0
@@ -22333,11 +22362,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ballsManagingPanel: {fileID: 983900463}
-  newBallsPanel: {fileID: 1767828467}
   cardsManagingPanel: {fileID: 868867426}
+  prestigeManagingPanel: {fileID: 0}
   ballsManagingButton: {fileID: 1642195185}
   cardsManagingButton: {fileID: 1924617409}
-  prestigeManagingPanel: {fileID: 0}
+  prestigeManagingButton: {fileID: 317179438}
 --- !u!1 &1756349851
 GameObject:
   m_ObjectHideFlags: 0
