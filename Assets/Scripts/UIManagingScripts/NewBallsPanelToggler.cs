@@ -59,8 +59,7 @@ public class NewBallsPanelToggler : MonoBehaviour
         else
         {
             newBallsPanel.SetActive(true);
-            float nextStageprice = ballManager.NextStagePrice();
-            newBallPriceText.text = nextStageprice.ToString() + "$";
+            newBallPriceText.text = $"{ballManager.NextStagePrice()}$";
 
             allowedTypes.Clear();
             allowedTypes = ballManager.AllowedTypes();

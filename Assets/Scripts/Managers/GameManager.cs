@@ -25,8 +25,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        gameObject.GetComponent<BrickManager>().levelDone += OnLevelDone;
-        gameObject.GetComponent<BrickManager>().InstantiateLevel(currentLevel);
+        GetComponent<BrickManager>().levelDone += OnLevelDone;
+        GetComponent<BrickManager>().InstantiateLevel(currentLevel);
 
         Vector2 min = Camera.main.ViewportToWorldPoint(new Vector2(0, 0));
         Vector2 max = Camera.main.ViewportToWorldPoint(new Vector2(1, 1));
@@ -45,13 +45,23 @@ public class GameManager : MonoBehaviour
         currentLevel++;
         GetComponent<BrickManager>().InstantiateLevel(currentLevel);
     }
-
+    
     public void ResetGame()
     {
         currentLevel = 1;
         BrickManager bm = GetComponent<BrickManager>();
         bm.ResetBricks();
         GetComponent<BallManager>().ResetBalls();
+        IncreaseValueScript[] ballManagingPanels = Resources.FindObjectsOfTypeAll<IncreaseValueScript>();
+        foreach(IncreaseValueScript ivs in ballManagingPanels)
+        {
+            ivs.ResetValues();
+        }
+
+        GetComponent<UIManager>().ResetUI();
+
+        
+
         GetComponent<CashManager>().ResetSoftCash();
 
         bm.InstantiateLevel(currentLevel);

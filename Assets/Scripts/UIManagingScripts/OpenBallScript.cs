@@ -51,9 +51,9 @@ public class OpenBallScript : MonoBehaviour
             speedText.text = opened["speed"].ToString();
             damageText.text = opened["damage"].ToString();
 
-            countPriceText.text = System.Math.Round(opened["countPrice"], 2).ToString() + "$";
-            speedPriceText.text = System.Math.Round(opened["speedPrice"], 2).ToString() + "$";
-            damagePriceText.text = System.Math.Round(opened["damagePrice"], 2).ToString() + "$";
+            countPriceText.text = $"{System.Math.Round(opened["countPrice"], 2)}$";
+            speedPriceText.text = $"{System.Math.Round(opened["speedPrice"], 2)}$";
+            damagePriceText.text = $"{System.Math.Round(opened["damagePrice"], 2)}$";
 
             newBallsPanel.SetActive(false);
             gameObject.SetActive(false);

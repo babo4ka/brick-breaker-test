@@ -18631,6 +18631,7 @@ GameObject:
   - component: {fileID: 1152358838}
   - component: {fileID: 1152358836}
   - component: {fileID: 1152358837}
+  - component: {fileID: 1152358839}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -18757,6 +18758,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47fabf7c9262b5b42bdcfdd20c72161f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1152358839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1152358830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 700b2fa43c3033b4f8078363f2021109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ballManagingPanels:
+  - {fileID: 938305526}
+  - {fileID: 1190798752}
+  - {fileID: 937336974}
+  - {fileID: 1267535387}
+  - {fileID: 588169327}
+  - {fileID: 1104929152}
+  - {fileID: 1988297587}
+  ballManagingContent: {fileID: 489233952}
 --- !u!1 &1163780518
 GameObject:
   m_ObjectHideFlags: 0
@@ -28687,6 +28709,7 @@ GameObject:
   - component: {fileID: 1767828468}
   - component: {fileID: 1767828470}
   - component: {fileID: 1767828469}
+  - component: {fileID: 1767828471}
   m_Layer: 5
   m_Name: NewBallChoosePanel
   m_TagString: Untagged
@@ -28754,6 +28777,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1767828467}
   m_CullTransparentMesh: 1
+--- !u!114 &1767828471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1767828467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3034ebb1042e6c8459c7de644e5501a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panels:
+  - {fileID: 656028852}
+  - {fileID: 448275948}
+  - {fileID: 1978565923}
+  - {fileID: 627718404}
+  - {fileID: 1498322650}
+  - {fileID: 873502255}
+  - {fileID: 1538752633}
 --- !u!1 &1771048169
 GameObject:
   m_ObjectHideFlags: 0

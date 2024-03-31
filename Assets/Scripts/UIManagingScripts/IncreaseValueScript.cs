@@ -54,19 +54,40 @@ public class IncreaseValueScript : MonoBehaviour
             case ValueType.COUNT:
                 Dictionary<string, float> count = ballManager.BuyNewBall(ballType);
                 valueText.text = ((int)count["value"]).ToString();
-                priceText.text = System.Math.Round(count["price"], 2).ToString() + "$";
+                priceText.text = $"{System.Math.Round(count["price"], 2)}$";
                 break;
 
             case ValueType.SPEED:
                 Dictionary<string, float> speed = ballManager.UpgradeSpeed(ballType);
                 valueText.text = System.Math.Round(speed["value"], 2).ToString();
-                priceText.text = System.Math.Round(speed["price"], 2).ToString() + "$";
+                priceText.text = $"{System.Math.Round(speed["price"], 2)}$";
                 break;
 
             case ValueType.DAMAGE:
                 Dictionary<string, float> damage = ballManager.UpgradeDamage(ballType);
                 valueText.text = System.Math.Round(damage["value"], 2).ToString();
-                priceText.text = System.Math.Round(damage["price"], 2).ToString() + "$";
+                priceText.text = $"{System.Math.Round(damage["price"], 2)}$";
+                break;
+        }
+    }
+
+    public void ResetValues()
+    {
+        switch (valueType)
+        {
+            case ValueType.COUNT:
+                priceText.text = ballType==BallType.BASIC?$"{System.Math.Round(ballManager.GetNewBallPrice(ballType), 2)}$":"";
+                valueText.text = ballType == BallType.BASIC ? ballManager.BallsCount(ballType).ToString():"";
+                break;
+
+            case ValueType.SPEED:
+                priceText.text = ballType == BallType.BASIC ? $"{System.Math.Round(ballManager.GetSpeedUpgradePrice(ballType), 2)}$":"";
+                valueText.text = ballType == BallType.BASIC ? $"{System.Math.Round(ballManager.GetCurrentSpeed(ballType), 2)}":"";
+                break;
+
+            case ValueType.DAMAGE:
+                priceText.text = ballType == BallType.BASIC ? $"{System.Math.Round(ballManager.GetDamageUpgradePrice(ballType), 2)}$" : "";
+                valueText.text = ballType == BallType.BASIC ? $"{System.Math.Round(ballManager.GetCurrentDamage(ballType), 2)}" : "";
                 break;
         }
     }

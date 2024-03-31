@@ -232,9 +232,9 @@ public abstract class BallScript : MonoBehaviour
         Vector2 nextPos = position * 2;
 
         direction = nextPos - position;
-        Debug.Log(position);
+        /*Debug.Log(position);
         Debug.Log(nextPos);
-        Debug.Log(direction);
+        Debug.Log(direction);*/
         
         //lastPos = position;
 
