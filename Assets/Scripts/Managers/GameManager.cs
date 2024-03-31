@@ -43,13 +43,13 @@ public class GameManager : MonoBehaviour
     private void OnLevelDone()
     {
         currentLevel++;
-        gameObject.GetComponent<BrickManager>().InstantiateLevel(currentLevel);
+        GetComponent<BrickManager>().InstantiateLevel(currentLevel);
     }
 
     public void ResetGame()
     {
         currentLevel = 1;
-        BrickManager bm = gameObject.GetComponent<BrickManager>();
+        BrickManager bm = GetComponent<BrickManager>();
         bm.ResetBricks();
         GetComponent<BallManager>().ResetBalls();
         GetComponent<CashManager>().ResetSoftCash();

@@ -27,7 +27,7 @@ public class MenuButtonsController : MonoBehaviour
     {
         ballsManagingButton.onClick.AddListener(BallManagingPanelToggle);
         cardsManagingButton.onClick.AddListener(CardManagingPanelToggle);
-        //prestigeManagingButton.onClick.AddListener(PrestigeManagingPanelToggle);
+        prestigeManagingButton.onClick.AddListener(PrestigeManagingPanelToggle);
     }
 
     private void CardManagingPanelToggle()
@@ -69,7 +69,7 @@ public class MenuButtonsController : MonoBehaviour
         }
         else
         {
-            currentActivePanel.GetComponent<UIPanel>().Close();
+            currentActivePanel?.GetComponent<UIPanel>().Close();
             prestigeManagingPanel.GetComponent<UIPanel>().Open();
             currentActivePanel = prestigeManagingPanel;
         }
