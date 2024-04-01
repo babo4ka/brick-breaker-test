@@ -22,6 +22,8 @@ public class PrestigeUIManaging : MonoBehaviour
     [SerializeField]
     private TMP_Text prestigeCashText;
     [SerializeField]
+    private TMP_Text prestigeCashTextInternal;
+    [SerializeField]
     private TMP_Text multiplierText;
 
     private void Start()
@@ -38,6 +40,7 @@ public class PrestigeUIManaging : MonoBehaviour
     private void UpdatePrestigeInfo()
     {
         prestigeCashText.text = $"{prestigeManager.prestigeCash}";
+        prestigeCashTextInternal.text = $"{prestigeManager.prestigeCash}";
         multiplierText.text = $"Current multiplier: {System.Math.Round(prestigeManager.prestigeMultiplier, 2)}x";
     } 
 
