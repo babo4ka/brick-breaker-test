@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class PrestigeManager : MonoBehaviour
 {
+    public delegate void Prestiged();
+    public Prestiged prestiged;
+
     #region Prestige data
     private int totalPrestiged;
     private int _prestigeCash = 0;
@@ -70,6 +73,8 @@ public class PrestigeManager : MonoBehaviour
             int pointsEarned = (int)Math.Truncate(totalCash / _everyPoint);
 
             AddPrestigeCash(pointsEarned * 5 + 50);
+
+            prestiged?.Invoke();
         }
     }
 

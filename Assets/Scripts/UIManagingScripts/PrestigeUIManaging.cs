@@ -26,15 +26,19 @@ public class PrestigeUIManaging : MonoBehaviour
 
     private void Start()
     {
+        prestigeManager = gameManager.GetComponent<PrestigeManager>();
         openBuyPrestigePanel.onClick.AddListener(ToggleBuyPrestigePanel);
         closeBuyPrestigePanel.onClick.AddListener(ToggleBuyPrestigePanel);
         UpdatePrestigeInfo();
+
+        prestigeManager.prestiged += UpdatePrestigeInfo;
     }
+
 
     private void UpdatePrestigeInfo()
     {
         prestigeCashText.text = $"{prestigeManager.prestigeCash}";
-        multiplierText.text = $"{prestigeManager.prestigeMultiplier}x";
+        multiplierText.text = $"Current multiplier: {System.Math.Round(prestigeManager.prestigeMultiplier, 2)}x";
     } 
 
     private void ToggleBuyPrestigePanel()
