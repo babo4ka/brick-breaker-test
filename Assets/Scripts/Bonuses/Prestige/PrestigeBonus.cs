@@ -11,23 +11,33 @@ public class PrestigeBonus : Bonus
         get { return _level; }
     }
 
-    private float levelStep;
-    private int maxLevel;
+    private float _levelStep;
+    private int _maxLevel;
+
+    public float levelStep
+    {
+        get { return _levelStep; }
+    }
+
+    public int maxLevel
+    {
+        get { return _maxLevel; }
+    }
 
     public PrestigeBonus(int level, float levelStep, int maxLevel)
     {
         _level = level;
-        this.levelStep = levelStep;
-        this.maxLevel = maxLevel;
+        this._levelStep = levelStep;
+        this._maxLevel = maxLevel;
         value = 1;
     }
 
     public bool AddLevel()
     {
-        if(_level < maxLevel)
+        if(_level < _maxLevel)
         {
             this._level++;
-            value += levelStep;
+            value += _levelStep;
             return true;
         }
 

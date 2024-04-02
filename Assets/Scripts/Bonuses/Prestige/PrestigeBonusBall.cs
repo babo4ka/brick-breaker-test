@@ -15,8 +15,8 @@ public class PrestigeBonusBall : MonoBehaviour
 
     public void AddLevelToBonus(PrestigeBonusType type)
     {
-        bool added = mainWrapper.AddLevelToPrestigeBonus(type);
         float oldValue = mainWrapper.GetPrestigeBonusValue(type);
+        bool added = mainWrapper.AddLevelToPrestigeBonus(type);
 
         if(added)
         {
@@ -28,10 +28,13 @@ public class PrestigeBonusBall : MonoBehaviour
         }
     }
 
+    public float GetNextPrestigeBonusValue(PrestigeBonusType type)
+    {
+        return mainWrapper.GetNextPrestigeBonusValue(type);
+    }
+
     public BonusStats<float> GetPrestigeBonusStats(PrestigeBonusType type)
     {
-        float value = mainWrapper.GetPrestigeBonusValue(type);
-
-        return new BonusStats<float>(true, value);
+        return new BonusStats<float>(true, mainWrapper.GetPrestigeBonusValue(type));
     }
 }

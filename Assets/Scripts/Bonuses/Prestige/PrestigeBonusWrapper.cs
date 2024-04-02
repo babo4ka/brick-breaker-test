@@ -52,6 +52,28 @@ public class PrestigeBonusWrapper : MonoBehaviour
         return value;
     }
 
+    public float GetNextPrestigeBonusValue(PrestigeBonusType type)
+    {
+        if(type == this.type)
+        {
+            return prestigeBonus.value + prestigeBonus.levelStep;
+        }
+
+        float value = -1f;
+
+        if(_left != null)
+        {
+            value = _left.GetNextPrestigeBonusValue(type);
+        }
+
+        if (value == -1f && _right != null)
+        {
+            value = _right.GetNextPrestigeBonusValue(type);
+        }
+
+        return value;
+    }
+
     public bool AddLevelToPrestigeBonus(PrestigeBonusType type)
     {
         if(type == this.type)

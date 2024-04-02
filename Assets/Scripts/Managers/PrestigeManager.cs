@@ -50,6 +50,9 @@ public class PrestigeManager : MonoBehaviour
         ballPrestiges[ballType].AddLevelToBonus(prestigeBonusType);
     }
 
+    public float GetNextPrestigeBonusValue(BallType ballType, PrestigeBonusType prestigeBonusType) {
+        return ballPrestiges[ballType].GetNextPrestigeBonusValue(prestigeBonusType);
+    }
 
     public void AddPrestigeCash(int amount)
     {
