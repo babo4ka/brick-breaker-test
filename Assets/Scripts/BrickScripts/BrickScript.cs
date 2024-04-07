@@ -40,7 +40,7 @@ public class BrickScript : MonoBehaviour
 
 
     private float poisoned = 1.0f;
-    private float burning = 0.0f;
+    private float longDamaged = 0.0f;
     private float shield = 0.0f;
 
 
@@ -112,9 +112,9 @@ public class BrickScript : MonoBehaviour
 
     #region Getting damage
 
-    private void Burn()
+    private void LongDamage()
     {
-        this._health -= burning * poisoned * (shield == 0f ? 1 : shield);
+        this._health -= longDamaged * poisoned * (shield == 0f ? 1 : shield);
 
         if (_health <= 0f)
         {
@@ -146,15 +146,22 @@ public class BrickScript : MonoBehaviour
 
                 case DamageType.FIRE:
                     this._health -= damage * poisoned * (shield == 0f ? 1 : shield);
-                    if(this.burning == 0.0f)
-                    {
-                        this.burning = damage * 0.5f;
-                        InvokeRepeating("Burn", 0f, 1f);
-                    }
+
+                    this.longDamaged += damage * 0.5f;
+                    InvokeRepeating("LongDamage", 0f, 1f);
+                    break;
+
+                case DamageType.LONGPOISON:
+                    this.longDamaged += damage;
+                    InvokeRepeating("LongDamage", 0f, 1f);
                     break;
 
                 case DamageType.CASH:
                     CashBallTrigger(damage);
+                    break;
+
+                case DamageType.KILL:
+                    this._health = 0;
                     break;
             }
 

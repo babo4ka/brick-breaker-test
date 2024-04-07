@@ -49,11 +49,10 @@ public class SplashBall : BallScript
         }
     }
 
-    private void UpdatePrestigeValue(BallType ballType,
+    private protected override void UpdatePrestigeValue(BallType ballType,
         PrestigeBonusType prestigeBonusType,
         BonusStats<float> bs)
     {
-        Debug.Log($"balltype {ballType} bonustype {prestigeBonusType} activate {bs.activate}");
         if(ballType == BallType.SPLASH)
         {
             switch(prestigeBonusType)

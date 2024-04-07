@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class SniperBall : BallScript
 {
+    private float sniperDamageMul = 1f;
+
+    private GameObject closestBrick = null;
+
     public override void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision == null) return;
 
         if (collision.gameObject.tag == "Brick")
         {
-            attack?.Invoke(CountDamage(), DamageType.DAMAGE, collision.gameObject);
+            attack?.Invoke(CountDamage() * (collision.gameObject == closestBrick? sniperDamageMul:1), 
+                DamageType.DAMAGE, collision.gameObject);
         }
 
         if(collision.gameObject.tag == "Wall")
@@ -38,4 +43,48 @@ public class SniperBall : BallScript
         }
     }
 
+    private protected override void UpdatePrestigeValue(BallType ballType, 
+        PrestigeBonusType prestigeBonusType, 
+        BonusStats<float> bs)
+    {
+        if(ballType == BallType.SNIPER)
+        {
+            switch(prestigeBonusType)
+            {
+                case PrestigeBonusType.SPEED:
+                    if (bs.activate)
+                    {
+                        _speedMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _speedMultiplier /= bs.value;
+                    }
+                    UpdateSpeed(this.speed);
+                    break;
+
+                case PrestigeBonusType.DAMAGE:
+                    if (bs.activate)
+                    {
+                        _damageMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _damageMultiplier /= bs.value;
+                    }
+                    break;
+
+                case PrestigeBonusType.SECDAMAGE:
+                    if(bs.activate)
+                    {
+                        sniperDamageMul += bs.value;
+                    }
+                    else
+                    {
+                        sniperDamageMul -= bs.value;
+                    }
+                    break;
+            }
+        }
+    }
 }

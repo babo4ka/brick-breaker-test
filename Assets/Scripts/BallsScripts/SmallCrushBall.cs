@@ -23,4 +23,9 @@ public class SmallCrushBall : BallScript
             Destroy(gameObject);
         }
     }
+
+    private protected override void UpdatePrestigeValue(BallType ballType, PrestigeBonusType prestigeBonusType, BonusStats<float> bs)
+    {
+        throw new System.NotImplementedException();
+    }
 }

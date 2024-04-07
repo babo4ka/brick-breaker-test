@@ -10,6 +10,8 @@ public class PoisonBall : BallScript
     private float radius = 0.5f;
     private float radiusMultiplier;
 
+    private float longDamageMul = 0;
+
     public override void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision == null) return;
@@ -17,6 +19,10 @@ public class PoisonBall : BallScript
         if (collision.gameObject.tag == "Brick")
         {
             attack?.Invoke(CountDamage(), DamageType.POISON, collision.gameObject);
+            if(longDamageMul > 0)
+            {
+                attack?.Invoke(CountDamage() * longDamageMul, DamageType.LONGPOISON, collision.gameObject);
+            }
         }
 
         Vector2 circleCenter = transform.position;
@@ -30,6 +36,10 @@ public class PoisonBall : BallScript
         foreach (Collider2D c in around)
         {
             attack?.Invoke(CountDamage(), DamageType.POISON, c.gameObject);
+            if (longDamageMul > 0)
+            {
+                attack?.Invoke(CountDamage() * longDamageMul, DamageType.LONGPOISON, c.gameObject);
+            }
         }
     }
 
@@ -62,4 +72,59 @@ public class PoisonBall : BallScript
         }
     }
 
+    private protected override void UpdatePrestigeValue(BallType ballType, 
+        PrestigeBonusType prestigeBonusType, 
+        BonusStats<float> bs)
+    {
+        if(ballType == BallType.POISON)
+        {
+            switch(prestigeBonusType)
+            {
+                case PrestigeBonusType.SPEED:
+                    if (bs.activate)
+                    {
+                        _speedMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _speedMultiplier /= bs.value;
+                    }
+                    UpdateSpeed(this.speed);
+                    break;
+
+                case PrestigeBonusType.DAMAGE:
+                    if (bs.activate)
+                    {
+                        _damageMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _damageMultiplier /= bs.value;
+                    }
+                    break;
+
+                case PrestigeBonusType.RADIUS:
+                    if (bs.activate)
+                    {
+                        radiusMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        radiusMultiplier /= bs.value;
+                    }
+                    break;
+
+                case PrestigeBonusType.EVERYSECONDDAMAGE:
+                    if (bs.activate)
+                    {
+                        longDamageMul += bs.value;
+                    }
+                    else
+                    {
+                        longDamageMul -= bs.value;
+                    }
+                    break;
+            }
+        }
+    }
 }

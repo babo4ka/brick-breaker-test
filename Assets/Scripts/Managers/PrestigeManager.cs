@@ -46,7 +46,10 @@ public class PrestigeManager : MonoBehaviour
 
     private Dictionary<BallType, PrestigeBonusBall> ballPrestiges = new Dictionary<BallType, PrestigeBonusBall>
     {
-        {BallType.SPLASH, new SplashPrestigeBonus()}
+        {BallType.SPLASH, new SplashPrestigeBonus()}, { BallType.SNIPER, new SniperPrestigeBonus()},
+        {BallType.POISON, new PoisonPrestigeBonus()}, {BallType.CRUSH, new CrushPrestigeBonus()}, 
+        {BallType.DEMO, new DemoPrestigeBonus()}, {BallType.CASH, new CashPrestigeBonus()},
+        {BallType.FIRE, new FirePrestigeBonus()}
     };
 
 
@@ -100,5 +103,11 @@ public class PrestigeManager : MonoBehaviour
         cashManager = GetComponent<CashManager>();
 
         ballPrestiges[BallType.SPLASH].updatePrestigeBonus += PrestigeBonusUpdate;
+        ballPrestiges[BallType.SNIPER].updatePrestigeBonus += PrestigeBonusUpdate;
+        ballPrestiges[BallType.POISON].updatePrestigeBonus += PrestigeBonusUpdate;
+        ballPrestiges[BallType.CRUSH].updatePrestigeBonus += PrestigeBonusUpdate;
+        ballPrestiges[BallType.DEMO].updatePrestigeBonus += PrestigeBonusUpdate;
+        ballPrestiges[BallType.CASH].updatePrestigeBonus += PrestigeBonusUpdate;
+        ballPrestiges[BallType.FIRE].updatePrestigeBonus += PrestigeBonusUpdate;
     }
 }

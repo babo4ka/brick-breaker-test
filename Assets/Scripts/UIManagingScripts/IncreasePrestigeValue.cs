@@ -9,9 +9,7 @@ public class IncreasePrestigeValue : MonoBehaviour
     private GameObject gameManager;
     private PrestigeManager prestigeManager;
 
-    [SerializeField]
     private BallType ballType;
-    [SerializeField]
     private PrestigeBonusType prestigeBonusType;
 
     public void SetProps(BallType ballType, PrestigeBonusType prestigeBonusType)

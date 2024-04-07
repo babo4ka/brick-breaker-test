@@ -187,6 +187,10 @@ public abstract class BallScript : MonoBehaviour
 
     }
 
+    private protected abstract void UpdatePrestigeValue(BallType ballType,
+        PrestigeBonusType prestigeBonusType,
+        BonusStats<float> bs);
+
     private void AddTimeToBuff(BuffType type, float duration)
     {
         if (buffActive[type])

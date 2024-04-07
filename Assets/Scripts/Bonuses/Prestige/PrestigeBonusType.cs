@@ -10,5 +10,4 @@ public enum PrestigeBonusType
     KILLCHANCE, //demo
     EVERYSECONDDAMAGE, //poison
     COUNT, //crush
-
 }

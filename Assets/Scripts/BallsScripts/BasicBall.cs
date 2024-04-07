@@ -16,4 +16,9 @@ public class BasicBall : BallScript
             //attack?.Invoke(CountDamage(), DamageType.DAMAGE, collision.gameObject);
         }
     }
+
+    private protected override void UpdatePrestigeValue(BallType ballType, PrestigeBonusType prestigeBonusType, BonusStats<float> bs)
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -7,6 +7,9 @@ public class CrushBall : BallScript
     [SerializeField]
     private GameObject smallBallPrefab;
 
+    private int smallBallsCount = 2;
+    private float damagePercentInc = 0;
+
     private BrickManager brickManager;
 
     void Start()
@@ -29,14 +32,71 @@ public class CrushBall : BallScript
         {
             Vector2 position = transform.position;
 
-            for(int i=0; i<2; i++)
+            for(int i=0; i<smallBallsCount; i++)
             {
                 GameObject smallBall = Instantiate(smallBallPrefab, position, Quaternion.identity);
                 BallScript bs = smallBall.GetComponent<BallScript>();
                 bs.speed = speed;
-                bs.damage = damage * 0.4f;
+                bs.damage = damage * (damagePercentInc + 0.4f);
                 bs.SetTrajectory();
                 brickManager.SubscribeBricks(smallBall);
+            }
+
+        }
+    }
+
+    private protected override void UpdatePrestigeValue(BallType ballType, 
+        PrestigeBonusType prestigeBonusType, 
+        BonusStats<float> bs)
+    {
+        if(ballType == BallType.CRUSH)
+        {
+            switch(prestigeBonusType)
+            {
+                case PrestigeBonusType.SPEED:
+                    if (bs.activate)
+                    {
+                        _speedMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _speedMultiplier /= bs.value;
+                    }
+                    UpdateSpeed(this.speed);
+                    break;
+
+                case PrestigeBonusType.DAMAGE:
+                    if (bs.activate)
+                    {
+                        _damageMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _damageMultiplier /= bs.value;
+                    }
+                    break;
+
+                case PrestigeBonusType.SECDAMAGE:
+                    if (bs.activate)
+                    {
+                        damagePercentInc += bs.value;
+                    }
+                    else
+                    {
+                        damagePercentInc -= bs.value;
+                    }
+                    break;
+
+                case PrestigeBonusType.COUNT:
+                    if (bs.activate)
+                    {
+                        smallBallsCount += (int)bs.value;
+                    }
+                    else
+                    {
+                        smallBallsCount -= (int)bs.value;
+                    }
+                    break;
             }
 
         }
