@@ -33,7 +33,7 @@ public class SplashBall : BallScript
         }
     }
 
-    private void UpdateCard(CardType type, BonusStats<float> bs)
+    private void UpdateCardSplash(CardType type, BonusStats<float> bs)
     {
 
         if (type == CardType.RADIUS)
@@ -49,12 +49,61 @@ public class SplashBall : BallScript
         }
     }
 
+    private void UpdatePrestigeValue(BallType ballType,
+        PrestigeBonusType prestigeBonusType,
+        BonusStats<float> bs)
+    {
+        Debug.Log($"balltype {ballType} bonustype {prestigeBonusType} activate {bs.activate}");
+        if(ballType == BallType.SPLASH)
+        {
+            switch(prestigeBonusType)
+            {
+                case PrestigeBonusType.SPEED:
+                    if (bs.activate)
+                    {
+                        _speedMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _speedMultiplier /= bs.value;
+                    }
+                    UpdateSpeed(this.speed);
+                    break;
+
+                case PrestigeBonusType.DAMAGE:
+                    if (bs.activate)
+                    {
+                        _damageMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _damageMultiplier /= bs.value;
+                    }
+                    break;
+
+                case PrestigeBonusType.RADIUS:
+                    if (bs.activate)
+                    {
+                        radiusMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        radiusMultiplier /= bs.value;
+                    }
+                    break;
+            }
+        }
+    }
+
 
 
     private protected override void Awake()
     {
         base.Awake();
-        gameManager.GetComponent<BonusManager>().updateCard += UpdateCard;
+        gameManager.GetComponent<BonusManager>().updateCard += UpdateCardSplash;
+        gameManager.GetComponent<PrestigeManager>().prestigeUpdate += UpdatePrestigeValue;
+        
+
 
         BonusStats<float> bs = gameManager.GetComponent<BonusManager>().GetCardValue(CardType.RADIUS);
         if (bs.activate)

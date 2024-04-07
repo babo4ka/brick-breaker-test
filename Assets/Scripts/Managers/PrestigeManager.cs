@@ -8,6 +8,11 @@ public class PrestigeManager : MonoBehaviour
     public delegate void Prestiged();
     public Prestiged prestiged;
 
+    public delegate void PrestigeUpdate(BallType ballType,
+        PrestigeBonusType prestigeBonusType,
+        BonusStats<float> stats);
+    public PrestigeUpdate prestigeUpdate;
+
     #region Prestige data
     private int totalPrestiged;
     private int _prestigeCash = 0;
@@ -43,6 +48,14 @@ public class PrestigeManager : MonoBehaviour
     {
         {BallType.SPLASH, new SplashPrestigeBonus()}
     };
+
+
+    private void PrestigeBonusUpdate(BallType ballType,
+        PrestigeBonusType prestigeBonusType,
+        BonusStats<float> stats)
+    {
+        prestigeUpdate?.Invoke(ballType, prestigeBonusType, stats);
+    }
 
     public void AddLevelToPrestigeBonus(BallType ballType, PrestigeBonusType prestigeBonusType)
     {
@@ -85,5 +98,7 @@ public class PrestigeManager : MonoBehaviour
     {
         gameManager = GetComponent<GameManager>();
         cashManager = GetComponent<CashManager>();
+
+        ballPrestiges[BallType.SPLASH].updatePrestigeBonus += PrestigeBonusUpdate;
     }
 }

@@ -14,6 +14,12 @@ public class IncreasePrestigeValue : MonoBehaviour
     [SerializeField]
     private PrestigeBonusType prestigeBonusType;
 
+    public void SetProps(BallType ballType, PrestigeBonusType prestigeBonusType)
+    {
+        this.ballType = ballType;
+        this.prestigeBonusType = prestigeBonusType;
+    }
+
     private void Start()
     {
         prestigeManager = gameManager.GetComponent<PrestigeManager>();

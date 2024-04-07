@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PrestigeBonusWrapper : MonoBehaviour
+public class PrestigeBonusWrapper
 {
     private PrestigeBonusType type;
 
@@ -17,6 +17,8 @@ public class PrestigeBonusWrapper : MonoBehaviour
         set { _left = value; }
     }
 
+
+
     public PrestigeBonusWrapper right
     {
         get { return _right; }
@@ -24,9 +26,10 @@ public class PrestigeBonusWrapper : MonoBehaviour
     }
 
 
-    public PrestigeBonusWrapper(PrestigeBonusType type)
+    public PrestigeBonusWrapper(PrestigeBonusType type, PrestigeBonus prestigeBonus)
     {
         this.type = type;
+        this.prestigeBonus = prestigeBonus;
     }
 
 

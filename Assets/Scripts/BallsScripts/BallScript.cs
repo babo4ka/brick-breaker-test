@@ -15,10 +15,10 @@ public abstract class BallScript : MonoBehaviour
 
     [SerializeField]
     private float _speed = 0f;
-    private float _speedMultiplier = 1f;
+    private protected float _speedMultiplier = 1f;
     [SerializeField]
     private float _damage;
-    private float _damageMultiplier = 1f;
+    private protected float _damageMultiplier = 1f;
 
     private Dictionary<BuffType, float> buffStartTime = new Dictionary<BuffType, float>
     {
@@ -61,7 +61,7 @@ public abstract class BallScript : MonoBehaviour
 
     private protected float CountDamage()
     {
-        Debug.Log(_damageMultiplier);
+        Debug.Log($"dmg mul {_damageMultiplier}");
         Debug.Log(_speedMultiplier);
         Debug.Log(_critDamage);
         return _damage * _damageMultiplier

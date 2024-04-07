@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InfoToggler : MonoBehaviour
 {
@@ -17,13 +18,18 @@ public class InfoToggler : MonoBehaviour
     [SerializeField]
     private GameObject infoPanel;
     [SerializeField]
+    private GameObject increaseValueButton;
+    [SerializeField]
     private TMP_Text descriptionText;
     [SerializeField]
     private TMP_Text nextValueText;
 
+
+
     private void Start()
     {
         prestigeManager = gameManager.GetComponent<PrestigeManager>();
+        GetComponent<Button>().onClick.AddListener(ToggleInfoPanel);
     }
 
     private void ToggleInfoPanel()
@@ -31,5 +37,6 @@ public class InfoToggler : MonoBehaviour
         infoPanel.SetActive(true);
         descriptionText.text = PrestigeBonusDescription.GetDescription(type);
         nextValueText.text = $"Next value: {prestigeManager.GetNextPrestigeBonusValue(ballType, type)}";
+        increaseValueButton.GetComponent<IncreasePrestigeValue>().SetProps(ballType, type);
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PrestigeBonusBall : MonoBehaviour
+public class PrestigeBonusBall
 {
     public delegate void UpdatePrestigeBonus(BallType ballType, 
         PrestigeBonusType prestigeBonusType, 
