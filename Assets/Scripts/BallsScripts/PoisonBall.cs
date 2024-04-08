@@ -43,11 +43,74 @@ public class PoisonBall : BallScript
         }
     }
 
-    private void UpdateCard(CardType type, BonusStats<float> bs) {
-
-        if(type == CardType.RADIUS)
+    private protected override void UpdatePrestigeValueInternal(PrestigeBonusType prestigeBonusType,
+        BonusStats<float> bs)
+    {
+        switch (prestigeBonusType)
         {
-            if(bs.activate)
+            case PrestigeBonusType.SPEED:
+                if (bs.activate)
+                {
+                    _speedMultiplier *= bs.value;
+                }
+                else
+                {
+                    _speedMultiplier /= bs.value;
+                }
+                UpdateSpeed(this.speed);
+                break;
+
+            case PrestigeBonusType.DAMAGE:
+                if (bs.activate)
+                {
+                    _damageMultiplier *= bs.value;
+                }
+                else
+                {
+                    _damageMultiplier /= bs.value;
+                }
+                break;
+
+            case PrestigeBonusType.RADIUS:
+                if (bs.activate)
+                {
+                    radiusMultiplier *= bs.value;
+                }
+                else
+                {
+                    radiusMultiplier /= bs.value;
+                }
+                break;
+
+            case PrestigeBonusType.EVERYSECONDDAMAGE:
+                if (bs.activate)
+                {
+                    longDamageMul += bs.value;
+                }
+                else
+                {
+                    longDamageMul -= bs.value;
+                }
+                break;
+        }
+    }
+
+    private protected override void UpdatePrestigeValue(BallType ballType, 
+        PrestigeBonusType prestigeBonusType, 
+        BonusStats<float> bs)
+    {
+        if(ballType == BallType.POISON)
+        {
+            UpdatePrestigeValueInternal(prestigeBonusType, bs);
+        }
+    }
+
+    private void UpdateCardPoison(CardType type, BonusStats<float> bs)
+    {
+
+        if (type == CardType.RADIUS)
+        {
+            if (bs.activate)
             {
                 radiusMultiplier *= bs.value;
             }
@@ -58,73 +121,32 @@ public class PoisonBall : BallScript
         }
     }
 
-    
-
     private protected override void Awake()
     {
         base.Awake();
-        gameManager.GetComponent<BonusManager>().updateCard += UpdateCard;
+        gameManager.GetComponent<BonusManager>().updateCard += UpdateCardPoison;
+
 
         BonusStats<float> bs = gameManager.GetComponent<BonusManager>().GetCardValue(CardType.RADIUS);
         if (bs.activate)
         {
             radiusMultiplier *= bs.value;
         }
-    }
 
-    private protected override void UpdatePrestigeValue(BallType ballType, 
-        PrestigeBonusType prestigeBonusType, 
-        BonusStats<float> bs)
-    {
-        if(ballType == BallType.POISON)
-        {
-            switch(prestigeBonusType)
-            {
-                case PrestigeBonusType.SPEED:
-                    if (bs.activate)
-                    {
-                        _speedMultiplier *= bs.value;
-                    }
-                    else
-                    {
-                        _speedMultiplier /= bs.value;
-                    }
-                    UpdateSpeed(this.speed);
-                    break;
+        UpdatePrestigeValueInternal(PrestigeBonusType.DAMAGE, 
+            gameManager.GetComponent<PrestigeManager>()
+            .GetPrestigeBonusValue(BallType.POISON, PrestigeBonusType.DAMAGE));
 
-                case PrestigeBonusType.DAMAGE:
-                    if (bs.activate)
-                    {
-                        _damageMultiplier *= bs.value;
-                    }
-                    else
-                    {
-                        _damageMultiplier /= bs.value;
-                    }
-                    break;
+        UpdatePrestigeValueInternal(PrestigeBonusType.SPEED,
+            gameManager.GetComponent<PrestigeManager>()
+            .GetPrestigeBonusValue(BallType.POISON, PrestigeBonusType.SPEED));
 
-                case PrestigeBonusType.RADIUS:
-                    if (bs.activate)
-                    {
-                        radiusMultiplier *= bs.value;
-                    }
-                    else
-                    {
-                        radiusMultiplier /= bs.value;
-                    }
-                    break;
+        UpdatePrestigeValueInternal( PrestigeBonusType.RADIUS,
+            gameManager.GetComponent<PrestigeManager>()
+            .GetPrestigeBonusValue(BallType.POISON, PrestigeBonusType.RADIUS));
 
-                case PrestigeBonusType.EVERYSECONDDAMAGE:
-                    if (bs.activate)
-                    {
-                        longDamageMul += bs.value;
-                    }
-                    else
-                    {
-                        longDamageMul -= bs.value;
-                    }
-                    break;
-            }
-        }
+        UpdatePrestigeValueInternal(PrestigeBonusType.EVERYSECONDDAMAGE,
+            gameManager.GetComponent<PrestigeManager>()
+            .GetPrestigeBonusValue(BallType.POISON, PrestigeBonusType.EVERYSECONDDAMAGE));
     }
 }

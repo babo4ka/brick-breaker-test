@@ -45,60 +45,86 @@ public class CrushBall : BallScript
         }
     }
 
+    private protected override void UpdatePrestigeValueInternal(PrestigeBonusType prestigeBonusType, 
+        BonusStats<float> bs)
+    {
+        switch (prestigeBonusType)
+        {
+            case PrestigeBonusType.SPEED:
+                if (bs.activate)
+                {
+                    _speedMultiplier *= bs.value;
+                }
+                else
+                {
+                    _speedMultiplier /= bs.value;
+                }
+                UpdateSpeed(this.speed);
+                break;
+
+            case PrestigeBonusType.DAMAGE:
+                if (bs.activate)
+                {
+                    _damageMultiplier *= bs.value;
+                }
+                else
+                {
+                    _damageMultiplier /= bs.value;
+                }
+                break;
+
+            case PrestigeBonusType.SECDAMAGE:
+                if (bs.activate)
+                {
+                    damagePercentInc += bs.value;
+                }
+                else
+                {
+                    damagePercentInc -= bs.value;
+                }
+                break;
+
+            case PrestigeBonusType.COUNT:
+                if (bs.activate)
+                {
+                    smallBallsCount += (int)bs.value;
+                }
+                else
+                {
+                    smallBallsCount -= (int)bs.value;
+                }
+                break;
+        }
+    }
+
     private protected override void UpdatePrestigeValue(BallType ballType, 
         PrestigeBonusType prestigeBonusType, 
         BonusStats<float> bs)
     {
         if(ballType == BallType.CRUSH)
         {
-            switch(prestigeBonusType)
-            {
-                case PrestigeBonusType.SPEED:
-                    if (bs.activate)
-                    {
-                        _speedMultiplier *= bs.value;
-                    }
-                    else
-                    {
-                        _speedMultiplier /= bs.value;
-                    }
-                    UpdateSpeed(this.speed);
-                    break;
-
-                case PrestigeBonusType.DAMAGE:
-                    if (bs.activate)
-                    {
-                        _damageMultiplier *= bs.value;
-                    }
-                    else
-                    {
-                        _damageMultiplier /= bs.value;
-                    }
-                    break;
-
-                case PrestigeBonusType.SECDAMAGE:
-                    if (bs.activate)
-                    {
-                        damagePercentInc += bs.value;
-                    }
-                    else
-                    {
-                        damagePercentInc -= bs.value;
-                    }
-                    break;
-
-                case PrestigeBonusType.COUNT:
-                    if (bs.activate)
-                    {
-                        smallBallsCount += (int)bs.value;
-                    }
-                    else
-                    {
-                        smallBallsCount -= (int)bs.value;
-                    }
-                    break;
-            }
-
+            UpdatePrestigeValueInternal(prestigeBonusType, bs);
         }
+    }
+
+    private protected override void Awake()
+    {
+        base.Awake();
+
+        UpdatePrestigeValueInternal(PrestigeBonusType.DAMAGE,
+            gameManager.GetComponent<PrestigeManager>()
+            .GetPrestigeBonusValue(BallType.CRUSH, PrestigeBonusType.DAMAGE));
+
+        UpdatePrestigeValueInternal(PrestigeBonusType.SPEED,
+            gameManager.GetComponent<PrestigeManager>()
+            .GetPrestigeBonusValue(BallType.CRUSH, PrestigeBonusType.SPEED));
+
+        UpdatePrestigeValueInternal(PrestigeBonusType.SECDAMAGE,
+            gameManager.GetComponent<PrestigeManager>()
+            .GetPrestigeBonusValue(BallType.CRUSH, PrestigeBonusType.SECDAMAGE));
+
+        UpdatePrestigeValueInternal(PrestigeBonusType.COUNT,
+            gameManager.GetComponent<PrestigeManager>()
+            .GetPrestigeBonusValue(BallType.CRUSH, PrestigeBonusType.COUNT));
     }
 }

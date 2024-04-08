@@ -19,6 +19,11 @@ public class BasicBall : BallScript
 
     private protected override void UpdatePrestigeValue(BallType ballType, PrestigeBonusType prestigeBonusType, BonusStats<float> bs)
     {
-        throw new System.NotImplementedException();
+        
+    }
+
+    private protected override void UpdatePrestigeValueInternal(PrestigeBonusType prestigeBonusType, BonusStats<float> bs)
+    {
+        
     }
 }

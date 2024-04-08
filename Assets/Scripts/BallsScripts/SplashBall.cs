@@ -49,48 +49,53 @@ public class SplashBall : BallScript
         }
     }
 
+    private protected override void UpdatePrestigeValueInternal(PrestigeBonusType prestigeBonusType, BonusStats<float> bs)
+    {
+        switch (prestigeBonusType)
+        {
+            case PrestigeBonusType.SPEED:
+                if (bs.activate)
+                {
+                    _speedMultiplier *= bs.value;
+                }
+                else
+                {
+                    _speedMultiplier /= bs.value;
+                }
+                UpdateSpeed(this.speed);
+                break;
+
+            case PrestigeBonusType.DAMAGE:
+                if (bs.activate)
+                {
+                    _damageMultiplier *= bs.value;
+                }
+                else
+                {
+                    _damageMultiplier /= bs.value;
+                }
+                break;
+
+            case PrestigeBonusType.RADIUS:
+                if (bs.activate)
+                {
+                    radiusMultiplier *= bs.value;
+                }
+                else
+                {
+                    radiusMultiplier /= bs.value;
+                }
+                break;
+        }
+    }
+
     private protected override void UpdatePrestigeValue(BallType ballType,
         PrestigeBonusType prestigeBonusType,
         BonusStats<float> bs)
     {
         if(ballType == BallType.SPLASH)
         {
-            switch(prestigeBonusType)
-            {
-                case PrestigeBonusType.SPEED:
-                    if (bs.activate)
-                    {
-                        _speedMultiplier *= bs.value;
-                    }
-                    else
-                    {
-                        _speedMultiplier /= bs.value;
-                    }
-                    UpdateSpeed(this.speed);
-                    break;
-
-                case PrestigeBonusType.DAMAGE:
-                    if (bs.activate)
-                    {
-                        _damageMultiplier *= bs.value;
-                    }
-                    else
-                    {
-                        _damageMultiplier /= bs.value;
-                    }
-                    break;
-
-                case PrestigeBonusType.RADIUS:
-                    if (bs.activate)
-                    {
-                        radiusMultiplier *= bs.value;
-                    }
-                    else
-                    {
-                        radiusMultiplier /= bs.value;
-                    }
-                    break;
-            }
+            UpdatePrestigeValueInternal(prestigeBonusType, bs);
         }
     }
 
@@ -100,8 +105,6 @@ public class SplashBall : BallScript
     {
         base.Awake();
         gameManager.GetComponent<BonusManager>().updateCard += UpdateCardSplash;
-        gameManager.GetComponent<PrestigeManager>().prestigeUpdate += UpdatePrestigeValue;
-        
 
 
         BonusStats<float> bs = gameManager.GetComponent<BonusManager>().GetCardValue(CardType.RADIUS);
@@ -109,5 +112,19 @@ public class SplashBall : BallScript
         {
             radiusMultiplier *= bs.value;
         }
+
+        UpdatePrestigeValueInternal(PrestigeBonusType.DAMAGE,
+           gameManager.GetComponent<PrestigeManager>()
+           .GetPrestigeBonusValue(BallType.SPLASH, PrestigeBonusType.DAMAGE));
+
+        UpdatePrestigeValueInternal(PrestigeBonusType.SPEED,
+            gameManager.GetComponent<PrestigeManager>()
+            .GetPrestigeBonusValue(BallType.SPLASH, PrestigeBonusType.SPEED));
+
+        UpdatePrestigeValueInternal(PrestigeBonusType.RADIUS,
+            gameManager.GetComponent<PrestigeManager>()
+            .GetPrestigeBonusValue(BallType.SPLASH, PrestigeBonusType.RADIUS));
     }
+
+
 }

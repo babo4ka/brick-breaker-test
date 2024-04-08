@@ -35,51 +35,75 @@ public class CashBall : BallScript
         }
     }
 
+    private protected override void UpdatePrestigeValueInternal(PrestigeBonusType prestigeBonusType, 
+        BonusStats<float> bs)
+    {
+        switch (prestigeBonusType)
+        {
+            case PrestigeBonusType.SPEED:
+                if (bs.activate)
+                {
+                    _speedMultiplier *= bs.value;
+                }
+                else
+                {
+                    _speedMultiplier /= bs.value;
+                }
+                UpdateSpeed(this.speed);
+                break;
+
+            case PrestigeBonusType.DAMAGE:
+                if (bs.activate)
+                {
+                    _damageMultiplier *= bs.value;
+                }
+                else
+                {
+                    _damageMultiplier /= bs.value;
+                }
+                break;
+
+
+            case PrestigeBonusType.RADIUS:
+                if (bs.activate)
+                {
+                    radius = 0.5f;
+                    radiusMultiplier *= bs.value;
+                }
+                else
+                {
+                    radius = 0;
+                    radiusMultiplier /= bs.value;
+                }
+                break;
+        }
+    }
+
     private protected override void UpdatePrestigeValue(BallType ballType, 
         PrestigeBonusType prestigeBonusType, 
         BonusStats<float> bs)
     {
         if(ballType == BallType.CASH)
         {
-            switch(prestigeBonusType)
-            {
-                case PrestigeBonusType.SPEED:
-                    if (bs.activate)
-                    {
-                        _speedMultiplier *= bs.value;
-                    }
-                    else
-                    {
-                        _speedMultiplier /= bs.value;
-                    }
-                    UpdateSpeed(this.speed);
-                    break;
-
-                case PrestigeBonusType.DAMAGE:
-                    if (bs.activate)
-                    {
-                        _damageMultiplier *= bs.value;
-                    }
-                    else
-                    {
-                        _damageMultiplier /= bs.value;
-                    }
-                    break;
-
-
-                case PrestigeBonusType.RADIUS:
-                    if (bs.activate)
-                    {
-                        radius = 0.5f;
-                        radiusMultiplier *= bs.value;
-                    }
-                    else
-                    {
-                        radius = 0;
-                        radiusMultiplier /= bs.value;
-                    }
-                    break;
-            }
+            UpdatePrestigeValueInternal(prestigeBonusType, bs);
         }
+    }
+
+
+    private protected override void Awake()
+    {
+        base.Awake();
+
+        UpdatePrestigeValueInternal(PrestigeBonusType.DAMAGE,
+            gameManager.GetComponent<PrestigeManager>()
+            .GetPrestigeBonusValue(BallType.CASH, PrestigeBonusType.DAMAGE));
+
+        UpdatePrestigeValueInternal(PrestigeBonusType.SPEED,
+            gameManager.GetComponent<PrestigeManager>()
+            .GetPrestigeBonusValue(BallType.CASH, PrestigeBonusType.SPEED));
+
+        UpdatePrestigeValueInternal(PrestigeBonusType.RADIUS,
+            gameManager.GetComponent<PrestigeManager>()
+            .GetPrestigeBonusValue(BallType.CASH, PrestigeBonusType.RADIUS));
     }
 }

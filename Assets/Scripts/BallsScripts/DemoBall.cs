@@ -20,48 +20,71 @@ public class DemoBall : BallScript
         }
     }
 
+    private protected override void UpdatePrestigeValueInternal(PrestigeBonusType prestigeBonusType, BonusStats<float> bs)
+    {
+        switch (prestigeBonusType)
+        {
+            case PrestigeBonusType.SPEED:
+                if (bs.activate)
+                {
+                    _speedMultiplier *= bs.value;
+                }
+                else
+                {
+                    _speedMultiplier /= bs.value;
+                }
+                UpdateSpeed(this.speed);
+                break;
+
+            case PrestigeBonusType.DAMAGE:
+                if (bs.activate)
+                {
+                    _damageMultiplier *= bs.value;
+                }
+                else
+                {
+                    _damageMultiplier /= bs.value;
+                }
+                break;
+
+            case PrestigeBonusType.KILLCHANCE:
+                if (bs.activate)
+                {
+                    killChance += bs.value;
+                }
+                else
+                {
+                    killChance -= bs.value;
+                }
+                break;
+        }
+    }
+
     private protected override void UpdatePrestigeValue(BallType ballType, 
         PrestigeBonusType prestigeBonusType, 
         BonusStats<float> bs)
     {
         if(ballType == BallType.DEMO)
         {
-            switch(prestigeBonusType)
-            {
-                case PrestigeBonusType.SPEED:
-                    if (bs.activate)
-                    {
-                        _speedMultiplier *= bs.value;
-                    }
-                    else
-                    {
-                        _speedMultiplier /= bs.value;
-                    }
-                    UpdateSpeed(this.speed);
-                    break;
-
-                case PrestigeBonusType.DAMAGE:
-                    if (bs.activate)
-                    {
-                        _damageMultiplier *= bs.value;
-                    }
-                    else
-                    {
-                        _damageMultiplier /= bs.value;
-                    }
-                    break;
-
-                case PrestigeBonusType.KILLCHANCE:
-                    if (bs.activate)
-                    {
-                        killChance += bs.value;
-                    }
-                    else
-                    {
-                        killChance -= bs.value;
-                    }
-                    break;
-            }
+            UpdatePrestigeValueInternal(prestigeBonusType, bs);
         }
+    }
+
+
+    private protected override void Awake()
+    {
+        base.Awake();
+
+        UpdatePrestigeValueInternal(PrestigeBonusType.DAMAGE,
+            gameManager.GetComponent<PrestigeManager>()
+            .GetPrestigeBonusValue(BallType.DEMO, PrestigeBonusType.DAMAGE));
+
+        UpdatePrestigeValueInternal(PrestigeBonusType.SPEED,
+            gameManager.GetComponent<PrestigeManager>()
+            .GetPrestigeBonusValue(BallType.DEMO, PrestigeBonusType.SPEED));
+
+        UpdatePrestigeValueInternal(PrestigeBonusType.KILLCHANCE,
+            gameManager.GetComponent<PrestigeManager>()
+            .GetPrestigeBonusValue(BallType.DEMO, PrestigeBonusType.KILLCHANCE));
     }
 }

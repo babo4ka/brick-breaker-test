@@ -36,10 +36,50 @@ public class SniperBall : BallScript
                 }
 
             }
-
+            closestBrick = closest;
             Vector2 goal = closest.transform.position - position;
             rigidbody.velocity = Vector2.zero;
             rigidbody.AddForce(goal.normalized * speed);
+        }
+    }
+
+    private protected override void UpdatePrestigeValueInternal(PrestigeBonusType prestigeBonusType, BonusStats<float> bs)
+    {
+        switch (prestigeBonusType)
+        {
+            case PrestigeBonusType.SPEED:
+                if (bs.activate)
+                {
+                    _speedMultiplier *= bs.value;
+                }
+                else
+                {
+                    _speedMultiplier /= bs.value;
+                }
+                UpdateSpeed(this.speed);
+                break;
+
+            case PrestigeBonusType.DAMAGE:
+                if (bs.activate)
+                {
+                    _damageMultiplier *= bs.value;
+                }
+                else
+                {
+                    _damageMultiplier /= bs.value;
+                }
+                break;
+
+            case PrestigeBonusType.SECDAMAGE:
+                if (bs.activate)
+                {
+                    sniperDamageMul += bs.value;
+                }
+                else
+                {
+                    sniperDamageMul -= bs.value;
+                }
+                break;
         }
     }
 
@@ -49,42 +89,24 @@ public class SniperBall : BallScript
     {
         if(ballType == BallType.SNIPER)
         {
-            switch(prestigeBonusType)
-            {
-                case PrestigeBonusType.SPEED:
-                    if (bs.activate)
-                    {
-                        _speedMultiplier *= bs.value;
-                    }
-                    else
-                    {
-                        _speedMultiplier /= bs.value;
-                    }
-                    UpdateSpeed(this.speed);
-                    break;
-
-                case PrestigeBonusType.DAMAGE:
-                    if (bs.activate)
-                    {
-                        _damageMultiplier *= bs.value;
-                    }
-                    else
-                    {
-                        _damageMultiplier /= bs.value;
-                    }
-                    break;
-
-                case PrestigeBonusType.SECDAMAGE:
-                    if(bs.activate)
-                    {
-                        sniperDamageMul += bs.value;
-                    }
-                    else
-                    {
-                        sniperDamageMul -= bs.value;
-                    }
-                    break;
-            }
+            UpdatePrestigeValueInternal(prestigeBonusType, bs);
         }
+    }
+
+    private protected override void Awake()
+    {
+        base.Awake();
+
+        UpdatePrestigeValueInternal(PrestigeBonusType.DAMAGE,
+            gameManager.GetComponent<PrestigeManager>()
+            .GetPrestigeBonusValue(BallType.SNIPER, PrestigeBonusType.DAMAGE));
+
+        UpdatePrestigeValueInternal(PrestigeBonusType.SPEED,
+            gameManager.GetComponent<PrestigeManager>()
+            .GetPrestigeBonusValue(BallType.SNIPER, PrestigeBonusType.SPEED));
+
+        UpdatePrestigeValueInternal(PrestigeBonusType.SECDAMAGE,
+            gameManager.GetComponent<PrestigeManager>()
+            .GetPrestigeBonusValue(BallType.SNIPER, PrestigeBonusType.SECDAMAGE));
     }
 }

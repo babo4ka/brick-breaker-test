@@ -191,6 +191,9 @@ public abstract class BallScript : MonoBehaviour
         PrestigeBonusType prestigeBonusType,
         BonusStats<float> bs);
 
+    private protected abstract void UpdatePrestigeValueInternal(PrestigeBonusType prestigeBonusType,
+        BonusStats<float> bs);
+
     private void AddTimeToBuff(BuffType type, float duration)
     {
         if (buffActive[type])
@@ -211,6 +214,8 @@ public abstract class BallScript : MonoBehaviour
         gameManager = GameObject.Find("GameManager");
         gameManager.GetComponent<BonusManager>().updateCard += UpdateCard;
         gameManager.GetComponent<BrickManager>().actBuff += UpdateBuff;
+
+        gameManager.GetComponent<PrestigeManager>().prestigeUpdate += UpdatePrestigeValue;
 
         List<BonusStats<float>> bonuses = new List<BonusStats<float>>
         {

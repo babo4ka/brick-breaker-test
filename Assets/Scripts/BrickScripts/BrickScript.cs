@@ -148,12 +148,12 @@ public class BrickScript : MonoBehaviour
                     this._health -= damage * poisoned * (shield == 0f ? 1 : shield);
 
                     this.longDamaged += damage * 0.5f;
-                    InvokeRepeating("LongDamage", 0f, 1f);
+                    InvokeRepeating(nameof(LongDamage), 0f, 1f);
                     break;
 
                 case DamageType.LONGPOISON:
                     this.longDamaged += damage;
-                    InvokeRepeating("LongDamage", 0f, 1f);
+                    InvokeRepeating(nameof(LongDamage), 0f, 1f);
                     break;
 
                 case DamageType.CASH:
