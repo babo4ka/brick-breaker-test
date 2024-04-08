@@ -40,6 +40,9 @@ public class BrickManager : MonoBehaviour {
     #region StageReward
     private float stageRewardAmount;
     private float stageRewardMultiplier = 1f;
+
+    private float passiveRewardAmount;
+    private float passiveRewardMultiplier = 1f;
     #endregion
 
     #region Buffs
@@ -179,6 +182,17 @@ public class BrickManager : MonoBehaviour {
                     stageRewardMultiplier /= bs.value;
                 }
                 break;
+
+            case CardType.PASSIVEINCOMEMUL:
+                if (bs.activate)
+                {
+                    passiveRewardMultiplier *= bs.value;
+                }
+                else
+                {
+                    passiveRewardMultiplier /= bs.value;
+                }
+                break;
         }
     }
     #endregion
@@ -228,6 +242,13 @@ public class BrickManager : MonoBehaviour {
         dropCash?.Invoke(amount);
     }
 
+    private void CountPassiveIncome()
+    {
+        dropCash.Invoke(passiveRewardAmount * passiveRewardMultiplier);
+        Debug.Log(passiveRewardAmount * passiveRewardMultiplier);
+    }
+
+
     private void SetBricks(List<GameObject> bricks)
     {
         _currentBricks.Clear();
@@ -276,7 +297,10 @@ public class BrickManager : MonoBehaviour {
             }
         }
 
+        
         stageRewardAmount *= 0.7f;
+        passiveRewardAmount = stageRewardAmount * 0.5f;
+        InvokeRepeating(nameof(CountPassiveIncome), 0, 1);
     }
 
     public void IncreaseHp(int level)
@@ -300,6 +324,7 @@ public class BrickManager : MonoBehaviour {
         _hexBrickHp = 10f;
     }
 
+    #region Bricks subscribing
     private void SubscribeBrick(GameObject ball, GameObject brick)
     {
         brick.GetComponent<BrickScript>().SubscribeToBall(ball.GetComponent<BallScript>());
@@ -325,11 +350,60 @@ public class BrickManager : MonoBehaviour {
             UnsubscribeBrick(ball, brick);
         }
     }
+    #endregion
 
     private void Start()
     {
         bonusManager = GetComponent<BonusManager>();
 
         bonusManager.updateCard += UpdateCard;
+
+        BonusStats<float> bs = bonusManager.GetCardValue(CardType.CASH);
+        if (bs.activate)
+        {
+            cashMultiplier *= bs.value;
+        }
+
+        bs = bonusManager.GetCardValue(CardType.CASHBRICK);
+        if (bs.activate)
+        {
+            cashBrickMultiplier *= bs.value;
+        }
+
+        bs = bonusManager.GetCardValue(CardType.CASHBRICKCHANCE);
+        if (bs.activate)
+        {
+            buffsChance[BuffType.CASH] += bs.value;
+        }
+
+        bs = bonusManager.GetCardValue(CardType.SPEEDBUFF);
+        if (bs.activate)
+        {
+            buffsChance[BuffType.SPEED] += bs.value;
+        }
+
+        bs = bonusManager.GetCardValue(CardType.DAMAGEBUFF);
+        if (bs.activate)
+        {
+            buffsChance[BuffType.DAMAGE] += bs.value;
+        }
+
+        bs = bonusManager.GetCardValue(CardType.CASHMULTBUFF);
+        if (bs.activate)
+        {
+            buffsChance[BuffType.CASHMULT] += bs.value;
+        }
+
+        bs = bonusManager.GetCardValue(CardType.STAGECASH);
+        if (bs.activate)
+        {
+            stageRewardMultiplier *= bs.value;
+        }
+
+        bs = bonusManager.GetCardValue(CardType.PASSIVEINCOMEMUL);
+        if (bs.activate)
+        {
+            passiveRewardMultiplier *= bs.value;
+        }
     }
 }

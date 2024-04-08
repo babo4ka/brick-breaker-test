@@ -44,22 +44,14 @@ public class CashBall : BallScript
                 if (bs.activate)
                 {
                     _speedMultiplier *= bs.value;
+                    UpdateSpeed(this.speed);
                 }
-                else
-                {
-                    _speedMultiplier /= bs.value;
-                }
-                UpdateSpeed(this.speed);
                 break;
 
             case PrestigeBonusType.DAMAGE:
                 if (bs.activate)
                 {
                     _damageMultiplier *= bs.value;
-                }
-                else
-                {
-                    _damageMultiplier /= bs.value;
                 }
                 break;
 
@@ -69,11 +61,6 @@ public class CashBall : BallScript
                 {
                     radius = 0.5f;
                     radiusMultiplier *= bs.value;
-                }
-                else
-                {
-                    radius = 0;
-                    radiusMultiplier /= bs.value;
                 }
                 break;
         }
@@ -85,7 +72,45 @@ public class CashBall : BallScript
     {
         if(ballType == BallType.CASH)
         {
-            UpdatePrestigeValueInternal(prestigeBonusType, bs);
+            switch (prestigeBonusType)
+            {
+                case PrestigeBonusType.SPEED:
+                    if (bs.activate)
+                    {
+                        _speedMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _speedMultiplier /= bs.value;
+                    }
+                    UpdateSpeed(this.speed);
+                    break;
+
+                case PrestigeBonusType.DAMAGE:
+                    if (bs.activate)
+                    {
+                        _damageMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _damageMultiplier /= bs.value;
+                    }
+                    break;
+
+
+                case PrestigeBonusType.RADIUS:
+                    if (bs.activate)
+                    {
+                        radius = 0.5f;
+                        radiusMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        radius = 0;
+                        radiusMultiplier /= bs.value;
+                    }
+                    break;
+            }
         }
     }
 

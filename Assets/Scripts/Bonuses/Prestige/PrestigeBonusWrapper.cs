@@ -32,6 +32,27 @@ public class PrestigeBonusWrapper
         this.prestigeBonus = prestigeBonus;
     }
 
+    public int GetPrestigeBonusPrice(PrestigeBonusType type)
+    {
+        if(type == this.type)
+        {
+            return prestigeBonus.levelPrice;
+        }
+
+        int value = -1;
+
+        if(_left != null)
+        {
+            value  =_left.GetPrestigeBonusPrice(type);
+        }
+
+        if(value == -1 && _right != null)
+        {
+            value = _right.GetPrestigeBonusPrice(type);
+        }
+
+        return value;
+    }
 
     public float GetPrestigeBonusValue(PrestigeBonusType type)
     {

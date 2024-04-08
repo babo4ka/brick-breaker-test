@@ -51,12 +51,8 @@ public class SniperBall : BallScript
                 if (bs.activate)
                 {
                     _speedMultiplier *= bs.value;
+                    UpdateSpeed(this.speed);
                 }
-                else
-                {
-                    _speedMultiplier /= bs.value;
-                }
-                UpdateSpeed(this.speed);
                 break;
 
             case PrestigeBonusType.DAMAGE:
@@ -64,20 +60,12 @@ public class SniperBall : BallScript
                 {
                     _damageMultiplier *= bs.value;
                 }
-                else
-                {
-                    _damageMultiplier /= bs.value;
-                }
                 break;
 
             case PrestigeBonusType.SECDAMAGE:
                 if (bs.activate)
                 {
                     sniperDamageMul += bs.value;
-                }
-                else
-                {
-                    sniperDamageMul -= bs.value;
                 }
                 break;
         }
@@ -89,7 +77,42 @@ public class SniperBall : BallScript
     {
         if(ballType == BallType.SNIPER)
         {
-            UpdatePrestigeValueInternal(prestigeBonusType, bs);
+            switch (prestigeBonusType)
+            {
+                case PrestigeBonusType.SPEED:
+                    if (bs.activate)
+                    {
+                        _speedMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _speedMultiplier /= bs.value;
+                    }
+                    UpdateSpeed(this.speed);
+                    break;
+
+                case PrestigeBonusType.DAMAGE:
+                    if (bs.activate)
+                    {
+                        _damageMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _damageMultiplier /= bs.value;
+                    }
+                    break;
+
+                case PrestigeBonusType.SECDAMAGE:
+                    if (bs.activate)
+                    {
+                        sniperDamageMul += bs.value;
+                    }
+                    else
+                    {
+                        sniperDamageMul -= bs.value;
+                    }
+                    break;
+            }
         }
     }
 

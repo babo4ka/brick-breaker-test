@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PrestigeManager : MonoBehaviour
 {
+
+    #region Delegates
     public delegate void Prestiged();
     public Prestiged prestiged;
 
@@ -12,6 +14,7 @@ public class PrestigeManager : MonoBehaviour
         PrestigeBonusType prestigeBonusType,
         BonusStats<float> stats);
     public PrestigeUpdate prestigeUpdate;
+    #endregion
 
     #region Prestige data
     private int totalPrestiged;
@@ -20,7 +23,7 @@ public class PrestigeManager : MonoBehaviour
 
     private float _prestigeMultiplier = 1f;
 
-    public float prestigeCash
+    public int prestigeCash
     {
         get { return _prestigeCash; }
     }
@@ -36,9 +39,13 @@ public class PrestigeManager : MonoBehaviour
     private CashManager cashManager;
     #endregion
 
+    #region Prestige points
     private const float _prestigePriceInCash = 100000000f;
     private const float _everyPoint = 1000000f;
+    #endregion
 
+
+    #region Getting values
     public float prestigeBonus
     {
         get { return (int)Math.Truncate((cashManager.totalSoftCashEarned - _prestigePriceInCash) / _everyPoint) * 5 + 50; }
@@ -62,8 +69,12 @@ public class PrestigeManager : MonoBehaviour
 
     public void AddLevelToPrestigeBonus(BallType ballType, PrestigeBonusType prestigeBonusType)
     {
-        //проверка цены еще будет
-        ballPrestiges[ballType].AddLevelToBonus(prestigeBonusType);
+        if(_prestigeCash >= ballPrestiges[ballType].GetPrestigeBonusPrice(prestigeBonusType)){
+            //проверка цены еще будет
+            _prestigeCash -= ballPrestiges[ballType].GetPrestigeBonusPrice(prestigeBonusType);
+            ballPrestiges[ballType].AddLevelToBonus(prestigeBonusType);
+        }
+        
     }
 
     public BonusStats<float> GetPrestigeBonusValue(BallType ballType, 
@@ -75,7 +86,10 @@ public class PrestigeManager : MonoBehaviour
     public float GetNextPrestigeBonusValue(BallType ballType, PrestigeBonusType prestigeBonusType) {
         return ballPrestiges[ballType].GetNextPrestigeBonusValue(prestigeBonusType);
     }
+    #endregion
 
+
+    #region Utils
     public void AddPrestigeCash(int amount)
     {
         _prestigeCash += amount;
@@ -102,6 +116,7 @@ public class PrestigeManager : MonoBehaviour
             prestiged?.Invoke();
         }
     }
+    #endregion
 
     void Start()
     {

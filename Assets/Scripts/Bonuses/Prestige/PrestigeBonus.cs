@@ -1,18 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 
 public class PrestigeBonus : Bonus
 {
     private int _level;
+    private float _levelStep;
+    private int _maxLevel;
 
+    private int _levelPrice;
     public int level
     {
         get { return _level; }
     }
 
-    private float _levelStep;
-    private int _maxLevel;
+    public int levelPrice
+    {
+        get { return _levelPrice; }
+    }
 
     public float levelStep
     {
@@ -38,6 +44,7 @@ public class PrestigeBonus : Bonus
         {
             this._level++;
             value += _levelStep;
+            _levelPrice += (int)(_levelPrice * 1.5);
             return true;
         }
 

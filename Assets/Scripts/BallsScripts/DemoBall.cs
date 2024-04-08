@@ -28,12 +28,8 @@ public class DemoBall : BallScript
                 if (bs.activate)
                 {
                     _speedMultiplier *= bs.value;
+                    UpdateSpeed(this.speed);
                 }
-                else
-                {
-                    _speedMultiplier /= bs.value;
-                }
-                UpdateSpeed(this.speed);
                 break;
 
             case PrestigeBonusType.DAMAGE:
@@ -41,20 +37,12 @@ public class DemoBall : BallScript
                 {
                     _damageMultiplier *= bs.value;
                 }
-                else
-                {
-                    _damageMultiplier /= bs.value;
-                }
                 break;
 
             case PrestigeBonusType.KILLCHANCE:
                 if (bs.activate)
                 {
                     killChance += bs.value;
-                }
-                else
-                {
-                    killChance -= bs.value;
                 }
                 break;
         }
@@ -66,7 +54,42 @@ public class DemoBall : BallScript
     {
         if(ballType == BallType.DEMO)
         {
-            UpdatePrestigeValueInternal(prestigeBonusType, bs);
+            switch (prestigeBonusType)
+            {
+                case PrestigeBonusType.SPEED:
+                    if (bs.activate)
+                    {
+                        _speedMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _speedMultiplier /= bs.value;
+                    }
+                    UpdateSpeed(this.speed);
+                    break;
+
+                case PrestigeBonusType.DAMAGE:
+                    if (bs.activate)
+                    {
+                        _damageMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _damageMultiplier /= bs.value;
+                    }
+                    break;
+
+                case PrestigeBonusType.KILLCHANCE:
+                    if (bs.activate)
+                    {
+                        killChance += bs.value;
+                    }
+                    else
+                    {
+                        killChance -= bs.value;
+                    }
+                    break;
+            }
         }
     }
 

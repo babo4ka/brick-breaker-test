@@ -52,22 +52,14 @@ public class PoisonBall : BallScript
                 if (bs.activate)
                 {
                     _speedMultiplier *= bs.value;
+                    UpdateSpeed(this.speed);
                 }
-                else
-                {
-                    _speedMultiplier /= bs.value;
-                }
-                UpdateSpeed(this.speed);
                 break;
 
             case PrestigeBonusType.DAMAGE:
                 if (bs.activate)
                 {
                     _damageMultiplier *= bs.value;
-                }
-                else
-                {
-                    _damageMultiplier /= bs.value;
                 }
                 break;
 
@@ -76,20 +68,12 @@ public class PoisonBall : BallScript
                 {
                     radiusMultiplier *= bs.value;
                 }
-                else
-                {
-                    radiusMultiplier /= bs.value;
-                }
                 break;
 
             case PrestigeBonusType.EVERYSECONDDAMAGE:
                 if (bs.activate)
                 {
                     longDamageMul += bs.value;
-                }
-                else
-                {
-                    longDamageMul -= bs.value;
                 }
                 break;
         }
@@ -101,7 +85,53 @@ public class PoisonBall : BallScript
     {
         if(ballType == BallType.POISON)
         {
-            UpdatePrestigeValueInternal(prestigeBonusType, bs);
+            switch (prestigeBonusType)
+            {
+                case PrestigeBonusType.SPEED:
+                    if (bs.activate)
+                    {
+                        _speedMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _speedMultiplier /= bs.value;
+                    }
+                    UpdateSpeed(this.speed);
+                    break;
+
+                case PrestigeBonusType.DAMAGE:
+                    if (bs.activate)
+                    {
+                        _damageMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _damageMultiplier /= bs.value;
+                    }
+                    break;
+
+                case PrestigeBonusType.RADIUS:
+                    if (bs.activate)
+                    {
+                        radiusMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        radiusMultiplier /= bs.value;
+                    }
+                    break;
+
+                case PrestigeBonusType.EVERYSECONDDAMAGE:
+                    if (bs.activate)
+                    {
+                        longDamageMul += bs.value;
+                    }
+                    else
+                    {
+                        longDamageMul -= bs.value;
+                    }
+                    break;
+            }
         }
     }
 

@@ -139,6 +139,11 @@ public class BonusManager : MonoBehaviour
             case CardType.CASHMULTBUFF:
                 cards.Add(CardType.CASHMULTBUFF, new CashmultBuffCard(1));
                 break;
+
+            case CardType.PASSIVEINCOMEMUL:
+                cards.Add(CardType.PASSIVEINCOMEMUL, new PassiveIncomeMulCard(1));
+                break;
+                  
         }
     }
 

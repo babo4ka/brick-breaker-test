@@ -33,8 +33,14 @@ public class PrestigeBonusBall
         return mainWrapper.GetNextPrestigeBonusValue(type);
     }
 
+    public int GetPrestigeBonusPrice(PrestigeBonusType type)
+    {
+        return mainWrapper.GetPrestigeBonusPrice(type);
+    }
+
     public BonusStats<float> GetPrestigeBonusStats(PrestigeBonusType type)
     {
-        return new BonusStats<float>(true, mainWrapper.GetPrestigeBonusValue(type));
+        float value = mainWrapper.GetPrestigeBonusValue(type);
+        return new BonusStats<float>(value>0, mainWrapper.GetPrestigeBonusValue(type));
     }
 }

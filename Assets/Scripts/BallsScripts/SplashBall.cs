@@ -57,12 +57,8 @@ public class SplashBall : BallScript
                 if (bs.activate)
                 {
                     _speedMultiplier *= bs.value;
+                    UpdateSpeed(this.speed);
                 }
-                else
-                {
-                    _speedMultiplier /= bs.value;
-                }
-                UpdateSpeed(this.speed);
                 break;
 
             case PrestigeBonusType.DAMAGE:
@@ -70,20 +66,12 @@ public class SplashBall : BallScript
                 {
                     _damageMultiplier *= bs.value;
                 }
-                else
-                {
-                    _damageMultiplier /= bs.value;
-                }
                 break;
 
             case PrestigeBonusType.RADIUS:
                 if (bs.activate)
                 {
                     radiusMultiplier *= bs.value;
-                }
-                else
-                {
-                    radiusMultiplier /= bs.value;
                 }
                 break;
         }
@@ -93,10 +81,47 @@ public class SplashBall : BallScript
         PrestigeBonusType prestigeBonusType,
         BonusStats<float> bs)
     {
-        if(ballType == BallType.SPLASH)
+        if (ballType == BallType.SPLASH)
         {
-            UpdatePrestigeValueInternal(prestigeBonusType, bs);
+            switch (prestigeBonusType)
+            {
+                case PrestigeBonusType.SPEED:
+                    if (bs.activate)
+                    {
+                        _speedMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _speedMultiplier /= bs.value;
+                    }
+                    UpdateSpeed(this.speed);
+                    break;
+
+                case PrestigeBonusType.DAMAGE:
+                    Debug.Log(bs.activate);
+                    if (bs.activate)
+                    {
+                        _damageMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _damageMultiplier /= bs.value;
+                    }
+                    break;
+
+                case PrestigeBonusType.RADIUS:
+                    if (bs.activate)
+                    {
+                        radiusMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        radiusMultiplier /= bs.value;
+                    }
+                    break;
+            }
         }
+        
     }
 
 

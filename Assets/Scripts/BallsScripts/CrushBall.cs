@@ -54,22 +54,14 @@ public class CrushBall : BallScript
                 if (bs.activate)
                 {
                     _speedMultiplier *= bs.value;
+                    UpdateSpeed(this.speed);
                 }
-                else
-                {
-                    _speedMultiplier /= bs.value;
-                }
-                UpdateSpeed(this.speed);
                 break;
 
             case PrestigeBonusType.DAMAGE:
                 if (bs.activate)
                 {
                     _damageMultiplier *= bs.value;
-                }
-                else
-                {
-                    _damageMultiplier /= bs.value;
                 }
                 break;
 
@@ -78,20 +70,12 @@ public class CrushBall : BallScript
                 {
                     damagePercentInc += bs.value;
                 }
-                else
-                {
-                    damagePercentInc -= bs.value;
-                }
                 break;
 
             case PrestigeBonusType.COUNT:
                 if (bs.activate)
                 {
                     smallBallsCount += (int)bs.value;
-                }
-                else
-                {
-                    smallBallsCount -= (int)bs.value;
                 }
                 break;
         }
@@ -103,7 +87,53 @@ public class CrushBall : BallScript
     {
         if(ballType == BallType.CRUSH)
         {
-            UpdatePrestigeValueInternal(prestigeBonusType, bs);
+            switch (prestigeBonusType)
+            {
+                case PrestigeBonusType.SPEED:
+                    if (bs.activate)
+                    {
+                        _speedMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _speedMultiplier /= bs.value;
+                    }
+                    UpdateSpeed(this.speed);
+                    break;
+
+                case PrestigeBonusType.DAMAGE:
+                    if (bs.activate)
+                    {
+                        _damageMultiplier *= bs.value;
+                    }
+                    else
+                    {
+                        _damageMultiplier /= bs.value;
+                    }
+                    break;
+
+                case PrestigeBonusType.SECDAMAGE:
+                    if (bs.activate)
+                    {
+                        damagePercentInc += bs.value;
+                    }
+                    else
+                    {
+                        damagePercentInc -= bs.value;
+                    }
+                    break;
+
+                case PrestigeBonusType.COUNT:
+                    if (bs.activate)
+                    {
+                        smallBallsCount += (int)bs.value;
+                    }
+                    else
+                    {
+                        smallBallsCount -= (int)bs.value;
+                    }
+                    break;
+            }
         }
     }
 
