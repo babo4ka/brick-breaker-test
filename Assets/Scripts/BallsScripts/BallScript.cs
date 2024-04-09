@@ -90,9 +90,11 @@ public abstract class BallScript : MonoBehaviour
     public void UpdateSpeed(float newSpeed)
     {
         this._speed = newSpeed;
+        //Vector2 dir = transform.
+        
         rigidbody.velocity = Vector2.zero;
         rigidbody.AddForce(_speedMultiplier * newSpeed * direction.normalized);
-
+ 
 
         /*//newSpeed *= _speedMultiplier==0?1:_speedMultiplier;
         if (this._speed != 0f) {
@@ -244,10 +246,8 @@ public abstract class BallScript : MonoBehaviour
         /*Debug.Log(position);
         Debug.Log(nextPos);
         Debug.Log(direction);*/
-        
+
         //lastPos = position;
-
-
 
         if (buffActive[BuffType.SPEED])
         {

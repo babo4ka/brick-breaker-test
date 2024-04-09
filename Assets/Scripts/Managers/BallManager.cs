@@ -66,6 +66,10 @@ public class BallManager : MonoBehaviour {
 
             case BallType.FIRE:
                 return fireBalls.Count;
+
+            case BallType.SMALLCRUSH:
+            default:
+                break;
         }
 
         return -1;
@@ -382,14 +386,16 @@ public class BallManager : MonoBehaviour {
 
             if(type == BallType.DEMO)
             {
-                speedIncrement[type] *= demoBallSpeedIncrementMultiplier;
+                //speedIncrement[type] *= demoBallSpeedIncrementMultiplier;
+                currentSpeed[type] += demoBallSpeedIncrementMultiplier;
             }
             else
             {
-                speedIncrement[type] *= allBallsSpeedIncrementMultiplier;
+                currentSpeed[type] += allBallsDamageIncrementMultiplier;
+                //speedIncrement[type] *= allBallsSpeedIncrementMultiplier;
             }
 
-            currentSpeed[type] += speedIncrement[type];
+            //currentSpeed[type] += speedIncrement[type];
 
             switch (type)
             {

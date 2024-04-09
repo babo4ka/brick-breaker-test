@@ -245,7 +245,6 @@ public class BrickManager : MonoBehaviour {
     private void CountPassiveIncome()
     {
         dropCash.Invoke(passiveRewardAmount * passiveRewardMultiplier);
-        Debug.Log(passiveRewardAmount * passiveRewardMultiplier);
     }
 
 
