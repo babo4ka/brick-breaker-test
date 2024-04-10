@@ -11,7 +11,6 @@ public abstract class BallScript : MonoBehaviour
     public Rigidbody2D rigidbody { get; set; }
 
     public Vector2 direction { get; set; }
-    private Vector2 lastPos= Vector2.zero;
 
     [SerializeField]
     private float _speed = 0f;
@@ -89,12 +88,11 @@ public abstract class BallScript : MonoBehaviour
 
     public void UpdateSpeed(float newSpeed)
     {
+        Vector2 dir = rigidbody.velocity/this.speed;
         this._speed = newSpeed;
-        //Vector2 dir = transform.
-        
         rigidbody.velocity = Vector2.zero;
-        rigidbody.AddForce(_speedMultiplier * newSpeed * direction.normalized);
- 
+        rigidbody.AddForce(_speedMultiplier * newSpeed * dir.normalized);
+        
 
         /*//newSpeed *= _speedMultiplier==0?1:_speedMultiplier;
         if (this._speed != 0f) {
@@ -239,16 +237,6 @@ public abstract class BallScript : MonoBehaviour
 
     private void Update()
     {
-        Vector2 position = transform.position;
-        Vector2 nextPos = position * 2;
-
-        direction = nextPos - position;
-        /*Debug.Log(position);
-        Debug.Log(nextPos);
-        Debug.Log(direction);*/
-
-        //lastPos = position;
-
         if (buffActive[BuffType.SPEED])
         {
             if (Time.time >= buffEndTime[BuffType.SPEED])
