@@ -18,6 +18,8 @@ public class BrickScript : MonoBehaviour
 
     [SerializeField]
     private List<BallScript> balls = new List<BallScript>();
+
+    private Animator animator;
     #endregion
 
     #region Data
@@ -129,8 +131,11 @@ public class BrickScript : MonoBehaviour
 
     private void getDamage(float damage, DamageType type, GameObject objToDamage)
     {
+        
+
         if(gameObject == objToDamage)
         {
+            animator.SetTrigger("AnimationTrigger");
             switch (type)
             {
                 case DamageType.DAMAGE:
@@ -190,6 +195,7 @@ public class BrickScript : MonoBehaviour
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         gameManager = GameObject.Find("GameManager");
 
         gameManager.GetComponent<BonusManager>().updateCard += UpdateRewardMultiplier;
@@ -208,5 +214,7 @@ public class BrickScript : MonoBehaviour
                 shield = 0.55f;
             }
         }
+
+
     }
 }

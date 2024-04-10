@@ -200,7 +200,7 @@ public class BrickManager : MonoBehaviour {
     public void InstantiateLevel(int levelNum)
     {
         IncreaseHp(levelNum);
-        currentLevelObject = Instantiate(levelPrefabs[1], new Vector2(0, 0), Quaternion.identity);
+        currentLevelObject = Instantiate(levelPrefabs[2], new Vector2(0, 0), Quaternion.identity);
         SetBricks(GameObject.FindGameObjectsWithTag("Brick").ToList());
     }
 
