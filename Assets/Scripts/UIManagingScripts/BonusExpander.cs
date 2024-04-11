@@ -17,7 +17,8 @@ public class BonusExpander : MonoBehaviour
     {
         {CardType.BALLDAMAGE, 0}, {CardType.BALLSPEED, 1}, {CardType.CASH, 2},
         {CardType.CRITDAMAGE, 3}, {CardType.CASHBRICK, 4}, {CardType.RADIUS, 5},
-        {CardType.CASHBRICKCHANCE, 6}, {CardType.STAGECASH, 7}
+        {CardType.CASHBRICKCHANCE, 6}, {CardType.STAGECASH, 7}, {CardType.SPEEDBUFF, 8},
+        {CardType.DAMAGEBUFF, 9 }, {CardType.CASHMULTBUFF, 10}, {CardType.PASSIVEINCOMEMUL, 11}
     };
 
     [SerializeField]

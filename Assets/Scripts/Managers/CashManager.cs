@@ -138,6 +138,6 @@ public class CashManager : MonoBehaviour {
 
     private void HardCashUpdated()
     {
-        //hardCashText.text = _hardCashAmount.ToString();
+        hardCashText.text = _hardCashAmount.ToString();
     }
 }
