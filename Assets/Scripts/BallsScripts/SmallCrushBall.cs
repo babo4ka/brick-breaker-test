@@ -8,7 +8,6 @@ public class SmallCrushBall : BallScript
 
     void Start()
     {
-        gameManager = GameObject.Find("GameManager");
         brickManager = gameManager.GetComponent<BrickManager>();
     }
 

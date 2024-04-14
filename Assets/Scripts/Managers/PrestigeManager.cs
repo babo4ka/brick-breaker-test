@@ -14,6 +14,9 @@ public class PrestigeManager : MonoBehaviour
         PrestigeBonusType prestigeBonusType,
         BonusStats<float> stats);
     public PrestigeUpdate prestigeUpdate;
+
+    public delegate void BallsCountPrestiged(int count);
+    public BallsCountPrestiged ballsCountPrestiged;
     #endregion
 
     #region Prestige data
@@ -99,6 +102,7 @@ public class PrestigeManager : MonoBehaviour
         {
             nextLevelPrice = (int)Math.Truncate(nextLevelPrice * 1.5f);
             _prestigeMultiplier *= 1.2f;
+            ballsCountPrestiged?.Invoke(5);
         }
     }
 
@@ -106,12 +110,14 @@ public class PrestigeManager : MonoBehaviour
     {
         if(cashManager.totalSoftCashEarned >= _prestigePriceInCash)
         {
-            float totalCash = cashManager.totalSoftCashEarned - _prestigePriceInCash;
-            gameManager.ResetGame();
 
+            float totalCash = cashManager.totalSoftCashEarned - _prestigePriceInCash;
+            
             int pointsEarned = (int)Math.Truncate(totalCash / _everyPoint);
 
             AddPrestigeCash(pointsEarned * 5 + 50);
+            
+            gameManager.ResetGame();    
 
             prestiged?.Invoke();
         }

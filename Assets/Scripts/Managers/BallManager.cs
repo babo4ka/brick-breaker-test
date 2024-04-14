@@ -2,12 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class BallManager : MonoBehaviour {
 
+    [SerializeField]
+    private TMP_Text ballsCountText;
+
     private CashManager cashManager;
-    private int maxBallsAllowed = 50;
+    private PrestigeManager prestigeManager;
+    private int maxBallsAllowed;
 
     #region Balls prefabs
     [SerializeField]
@@ -81,6 +86,11 @@ public class BallManager : MonoBehaviour {
             splashBalls.Count + poisonBalls.Count +
             demoBalls.Count + crushBalls.Count +
             cashBalls.Count + fireBalls.Count;
+    }
+
+    private void UpdateMaxBallsCount(int count)
+    {
+        maxBallsAllowed += count;
     }
     #endregion
 
@@ -318,6 +328,8 @@ public class BallManager : MonoBehaviour {
             {
                 newBallPrice[type] += price * priceMultiplier;
                 InstantiateBall(type);
+
+                ballsCountText.text = $"{AllBallsCount()}/{maxBallsAllowed}";
             }
         }
         
@@ -363,6 +375,8 @@ public class BallManager : MonoBehaviour {
                 returnValues.Add("damagePrice", damageUpgradePrice[ballType]);
                 returnValues.Add("speedPrice", speedUpgradePrice[ballType]);
                 returnValues.Add("countPrice", newBallPrice[ballType]);
+
+                ballsCountText.text = $"{AllBallsCount()}/{maxBallsAllowed}";
 
                 return returnValues;
             }
@@ -701,7 +715,10 @@ public class BallManager : MonoBehaviour {
 
     private void Start()
     {
+        maxBallsAllowed = 50;
         cashManager = GetComponent<CashManager>();
+        prestigeManager = GetComponent<PrestigeManager>();
+        prestigeManager.ballsCountPrestiged += UpdateMaxBallsCount;
         OpenNewBall(BallType.BASIC);
     }
 
