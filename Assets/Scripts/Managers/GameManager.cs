@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    private const string CURRENTLVLKEY = "currentLvl";
+
     [SerializeField]
     private GameObject topPrefab;
     [SerializeField]
@@ -25,6 +27,9 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        SaveLoadData<int> sld = new SaveLoadData<int>(CURRENTLVLKEY);
+        currentLevel = sld.LoadData();
+
         GetComponent<BrickManager>().levelDone += OnLevelDone;
         GetComponent<BrickManager>().InstantiateLevel(currentLevel);
 
@@ -36,6 +41,7 @@ public class GameManager : MonoBehaviour
 
         Instantiate(leftPrefab, new Vector2(min.x - 0.2f, 0f), Quaternion.identity);
         Instantiate(rightPrefab, new Vector2(max.x + 0.2f, 0f), Quaternion.identity);
+
     }
 
 
@@ -44,11 +50,18 @@ public class GameManager : MonoBehaviour
     {
         currentLevel++;
         GetComponent<BrickManager>().InstantiateLevel(currentLevel);
+
+        SaveLoadData<int> sld = new SaveLoadData<int>(CURRENTLVLKEY, currentLevel);
+        sld.SaveData();
     }
     
     public void ResetGame()
     {
         currentLevel = 1;
+        
+        SaveLoadData<int> sld = new SaveLoadData<int>(CURRENTLVLKEY, currentLevel);
+        sld.SaveData();
+
         BrickManager bm = GetComponent<BrickManager>();
         bm.ResetBricks();
         GetComponent<BallManager>().ResetBalls();

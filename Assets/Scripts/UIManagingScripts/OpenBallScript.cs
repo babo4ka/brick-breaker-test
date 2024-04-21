@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class OpenBallScript : MonoBehaviour
 {
+    private const string BALLMNGNGPNLHEIGHTKEY = "ballManagingHeight";
+
+
     [SerializeField]
     private GameObject gameManager;
     private BallManager ballManager;
@@ -62,6 +65,10 @@ public class OpenBallScript : MonoBehaviour
             {
                 Vector2 min = allBallsPanelContent.GetComponent<RectTransform>().offsetMin;
                 min.y -= height;
+
+                SaveLoadData<float> sld = new SaveLoadData<float>(BALLMNGNGPNLHEIGHTKEY, min.y);
+                sld.SaveData();
+
                 allBallsPanelContent.GetComponent<RectTransform>().offsetMin = min;
             }
             

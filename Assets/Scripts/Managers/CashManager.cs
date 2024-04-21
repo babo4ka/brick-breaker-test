@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class CashManager : MonoBehaviour {
 
+    private const string SOFTCASHKEY = "softCash";
+    private const string HARDCASHKEY = "hardCash";
+
     private BrickManager brickManager;
 
     [SerializeField]
@@ -16,7 +19,7 @@ public class CashManager : MonoBehaviour {
     private bool buffActive = false;
 
     [SerializeField]
-    private float _hardCashAmount;
+    private int _hardCashAmount;
 
     [SerializeField]
     private TMP_Text softCashText;
@@ -38,8 +41,11 @@ public class CashManager : MonoBehaviour {
         brickManager.dropCash += AddSoftCash;
         brickManager.actBuff += GetHardByBuff;
 
-        AddSoftCash(1106000000f);
-        AddHardCash(10000000);
+        //AddSoftCash(1106000000f);
+        //AddSoftCash(500f);
+        LoadSoftCash();
+        LoadHardCash();
+        //AddHardCash(10000000);
     }
 
     private void Update()
@@ -92,12 +98,14 @@ public class CashManager : MonoBehaviour {
         _softCashAmount += amount * softCashMultiplier;
         _totalSoftCashEarned += amount * softCashMultiplier;
         SoftCashUpdated();
+        SaveSoftCash();
     }
 
-    public void AddHardCash(float amount)
+    public void AddHardCash(int amount)
     {
         _hardCashAmount += amount;
         HardCashUpdated();
+        SaveHardCash();
     }
 
 
@@ -120,7 +128,7 @@ public class CashManager : MonoBehaviour {
         SoftCashUpdated();
     }
 
-    public bool SpendHardCash(float amount)
+    public bool SpendHardCash(int amount)
     {
         if(_hardCashAmount < amount)
         {
@@ -129,6 +137,40 @@ public class CashManager : MonoBehaviour {
         _hardCashAmount -= amount;
         HardCashUpdated();
         return true;
+    }
+
+    private void SaveSoftCash()
+    {
+        SaveLoadData<float> sld = new SaveLoadData<float>(SOFTCASHKEY, _softCashAmount);
+        sld.SaveData();
+    }
+
+    private void LoadSoftCash()
+    {
+        if (PlayerPrefs.HasKey(SOFTCASHKEY))
+        {
+            SaveLoadData<float> sld = new SaveLoadData<float>(SOFTCASHKEY);
+            float sc = sld.LoadData();
+            _softCashAmount = sc;
+            SoftCashUpdated();
+        }
+    }
+
+    private void SaveHardCash()
+    {
+        SaveLoadData<int> sld = new SaveLoadData<int>(HARDCASHKEY, _hardCashAmount);
+        sld.SaveData();
+    }
+
+    private void LoadHardCash()
+    {
+        if (PlayerPrefs.HasKey(HARDCASHKEY))
+        {
+            SaveLoadData<int> sld = new SaveLoadData<int>(HARDCASHKEY);
+            int hc = sld.LoadData();
+            _hardCashAmount = hc;
+            HardCashUpdated();
+        }
     }
 
     private void SoftCashUpdated()

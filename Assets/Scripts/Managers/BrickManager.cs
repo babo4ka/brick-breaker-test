@@ -6,6 +6,12 @@ using static BrickScript;
 
 public class BrickManager : MonoBehaviour {
 
+    private const string BASEBRHPKEY = "baseBrickHP";
+    private const string BIGBRHPKEY = "bigBrickHP";
+    private const string TRIBRHPKEY = "triangleBrickHP";
+    private const string HEXBRHPKEY = "hexBrickHP";
+    private const string HPMULKEY = "brickHPMultiplier";
+
     private BonusManager bonusManager;
 
     #region Level objects
@@ -244,7 +250,7 @@ public class BrickManager : MonoBehaviour {
 
     private void CountPassiveIncome()
     {
-        dropCash.Invoke(passiveRewardAmount * passiveRewardMultiplier);
+        dropCash?.Invoke(passiveRewardAmount * passiveRewardMultiplier);
     }
 
 
@@ -307,12 +313,27 @@ public class BrickManager : MonoBehaviour {
         if (level != 0 && level % 50 == 0 && hpMultiplier < maxHpMultiplier)
         {
             hpMultiplier += 0.1f;
+            SaveLoadData<float> sld = new SaveLoadData<float>(HPMULKEY, hpMultiplier);
+            sld.SaveData();
         }
 
         _baseBrickHp *= hpMultiplier;
         _bigBrickHp *= hpMultiplier;
         _triangleBrickHp *= hpMultiplier;
         _hexBrickHp *= hpMultiplier;
+
+        List<SaveLoadData<float>> slds = new List<SaveLoadData<float>>
+        {
+            new SaveLoadData<float>(BASEBRHPKEY, _baseBrickHp),
+            new SaveLoadData<float>(BIGBRHPKEY, _bigBrickHp),
+            new SaveLoadData<float>(TRIBRHPKEY, _triangleBrickHp),
+            new SaveLoadData<float>(HEXBRHPKEY, _hexBrickHp)
+        };
+
+        foreach (SaveLoadData<float> sld in slds)
+        {
+            sld.SaveData();
+        }
     }
 
     public void ResetBricks()
@@ -321,6 +342,23 @@ public class BrickManager : MonoBehaviour {
         _bigBrickHp = 5f;
         _triangleBrickHp = 10f;
         _hexBrickHp = 10f;
+
+        hpMultiplier = 1.2f;
+
+        List<SaveLoadData<float>> slds = new List<SaveLoadData<float>>
+        {
+            new SaveLoadData<float>(BASEBRHPKEY, _baseBrickHp),
+            new SaveLoadData<float>(BIGBRHPKEY, _bigBrickHp),
+            new SaveLoadData<float>(TRIBRHPKEY, _triangleBrickHp),
+            new SaveLoadData<float>(HEXBRHPKEY, _hexBrickHp),
+
+            new SaveLoadData<float>(HPMULKEY, hpMultiplier)
+        };
+
+        foreach (SaveLoadData<float> sld in slds)
+        {
+            sld.SaveData();
+        }
     }
 
     #region Bricks subscribing
@@ -353,6 +391,40 @@ public class BrickManager : MonoBehaviour {
 
     private void Start()
     {
+
+        if (PlayerPrefs.HasKey(BASEBRHPKEY))
+        {
+            SaveLoadData<float> baseBtickHPsld = new SaveLoadData<float>(BASEBRHPKEY);
+            _baseBrickHp = baseBtickHPsld.LoadData();
+        }
+
+        if (PlayerPrefs.HasKey(BIGBRHPKEY))
+        {
+            SaveLoadData<float> bigBtickHPsld = new SaveLoadData<float>(BIGBRHPKEY);
+            _bigBrickHp = bigBtickHPsld.LoadData();
+        }
+
+        if (PlayerPrefs.HasKey(TRIBRHPKEY))
+        {
+            SaveLoadData<float> tirangleBtickHPsld = new SaveLoadData<float>(TRIBRHPKEY);
+            _triangleBrickHp = tirangleBtickHPsld.LoadData();
+        }
+
+        if (PlayerPrefs.HasKey(HEXBRHPKEY))
+        {
+            SaveLoadData<float> hexBtickHPsld = new SaveLoadData<float>(HEXBRHPKEY);
+            _hexBrickHp = hexBtickHPsld.LoadData();
+        }
+
+        if (PlayerPrefs.HasKey(HPMULKEY))
+        {
+            SaveLoadData<float> HPMulsld = new SaveLoadData<float>(HPMULKEY);
+            hpMultiplier = HPMulsld.LoadData();
+        }
+        
+
+
+
         bonusManager = GetComponent<BonusManager>();
 
         bonusManager.updateCard += UpdateCard;
