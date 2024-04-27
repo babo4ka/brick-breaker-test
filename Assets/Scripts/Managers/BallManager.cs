@@ -1114,6 +1114,8 @@ public class BallManager : MonoBehaviour {
             speedUpgradePrice[BallType.BASIC] = new SaveLoadData<float>(BASICBALLSPEEDUPGRADEPRICEKEY).LoadData();
             newBallPrice[BallType.BASIC] = new SaveLoadData<float>(BASICBALLNEWBALLPRICEKEY).LoadData();
 
+            ballOpened[BallType.BASIC] = true;
+
             int count = new SaveLoadData<int>(BASICBALLCOUNTKEY).LoadData();
             for(int i=0; i<count; i++)
             {
@@ -1130,6 +1132,8 @@ public class BallManager : MonoBehaviour {
             damageUpgradePrice[BallType.SPLASH] = new SaveLoadData<float>(SPLASHBALLDAMAGEUPGRADEPRICEKEY).LoadData();
             speedUpgradePrice[BallType.SPLASH] = new SaveLoadData<float>(SPLASHBALLSPEEDUPGRADEPRICEKEY).LoadData();
             newBallPrice[BallType.SPLASH] = new SaveLoadData<float>(SPLASHBALLNEWBALLPRICEKEY).LoadData();
+
+            ballOpened[BallType.SPLASH] = true;
 
             int count = new SaveLoadData<int>(SPLASHBALLCOUNTKEY).LoadData();
             for (int i = 0; i < count; i++)
@@ -1148,6 +1152,8 @@ public class BallManager : MonoBehaviour {
             speedUpgradePrice[BallType.SNIPER] = new SaveLoadData<float>(SNIPERBALLSPEEDUPGRADEPRICEKEY).LoadData();
             newBallPrice[BallType.SNIPER] = new SaveLoadData<float>(SNIPERBALLNEWBALLPRICEKEY).LoadData();
 
+            ballOpened[BallType.SNIPER] = true;
+
             int count = new SaveLoadData<int>(SNIPERBALLCOUNTKEY).LoadData();
             for (int i = 0; i < count; i++)
             {
@@ -1164,6 +1170,8 @@ public class BallManager : MonoBehaviour {
             damageUpgradePrice[BallType.POISON] = new SaveLoadData<float>(POISONBALLDAMAGEUPGRADEPRICEKEY).LoadData();
             speedUpgradePrice[BallType.POISON] = new SaveLoadData<float>(POISONBALLSPEEDUPGRADEPRICEKEY).LoadData();
             newBallPrice[BallType.POISON] = new SaveLoadData<float>(POISONBALLNEWBALLPRICEKEY).LoadData();
+
+            ballOpened[BallType.POISON] = true;
 
             int count = new SaveLoadData<int>(POISONBALLCOUNTKEY).LoadData();
             for (int i = 0; i < count; i++)
@@ -1182,6 +1190,8 @@ public class BallManager : MonoBehaviour {
             speedUpgradePrice[BallType.DEMO] = new SaveLoadData<float>(DEMOBALLSPEEDUPGRADEPRICEKEY).LoadData();
             newBallPrice[BallType.DEMO] = new SaveLoadData<float>(DEMOBALLNEWBALLPRICEKEY).LoadData();
 
+            ballOpened[BallType.DEMO] = true;
+
             int count = new SaveLoadData<int>(DEMOBALLCOUNTKEY).LoadData();
             for (int i = 0; i < count; i++)
             {
@@ -1198,6 +1208,8 @@ public class BallManager : MonoBehaviour {
             damageUpgradePrice[BallType.CASH] = new SaveLoadData<float>(CASHBALLDAMAGEUPGRADEPRICEKEY).LoadData();
             speedUpgradePrice[BallType.CASH] = new SaveLoadData<float>(CASHBALLSPEEDUPGRADEPRICEKEY).LoadData();
             newBallPrice[BallType.CASH] = new SaveLoadData<float>(CASHBALLNEWBALLPRICEKEY).LoadData();
+
+            ballOpened[BallType.CASH] = true;
 
             int count = new SaveLoadData<int>(CASHBALLCOUNTKEY).LoadData();
             for (int i = 0; i < count; i++)
@@ -1216,6 +1228,8 @@ public class BallManager : MonoBehaviour {
             speedUpgradePrice[BallType.CRUSH] = new SaveLoadData<float>(CRUSHBALLSPEEDUPGRADEPRICEKEY).LoadData();
             newBallPrice[BallType.CRUSH] = new SaveLoadData<float>(CRUSHBALLNEWBALLPRICEKEY).LoadData();
 
+            ballOpened[BallType.CRUSH] = true;
+
             int count = new SaveLoadData<int>(CRUSHBALLCOUNTKEY).LoadData();
             for (int i = 0; i < count; i++)
             {
@@ -1232,6 +1246,8 @@ public class BallManager : MonoBehaviour {
             damageUpgradePrice[BallType.FIRE] = new SaveLoadData<float>(FIREBALLDAMAGEUPGRADEPRICEKEY).LoadData();
             speedUpgradePrice[BallType.FIRE] = new SaveLoadData<float>(FIREBALLSPEEDUPGRADEPRICEKEY).LoadData();
             newBallPrice[BallType.FIRE] = new SaveLoadData<float>(FIREBALLNEWBALLPRICEKEY).LoadData();
+
+            ballOpened[BallType.FIRE] = true;
 
             int count = new SaveLoadData<int>(FIREBALLCOUNTKEY).LoadData();
             for (int i = 0; i < count; i++)
