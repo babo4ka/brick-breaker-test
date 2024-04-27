@@ -492,13 +492,163 @@ public class BallManager : MonoBehaviour {
 
 
                 damageIncrement.Add(ballType, powerBaseStats[currentStage][ballType]);
-                //speedIncrement.Add(ballType, speedBaseStats[currentStage][ballType]);
 
                 damageUpgradePrice.Add(ballType, stagePrice[currentStage] == 0f ? 6f : stagePrice[currentStage]);
                 speedUpgradePrice.Add(ballType, stagePrice[currentStage] == 0f ? 6f : stagePrice[currentStage]);
                 newBallPrice.Add(ballType, stagePrice[currentStage] == 0f ? 6f :
                     stagePrice[currentStage] + (stagePrice[currentStage] * priceMultiplier));
 
+                List<SaveLoadData<float>> sldsFloat = null;
+                List<SaveLoadData<int>> sldsInt = null;
+
+                switch (ballType)
+                {
+                    case BallType.BASIC:
+                        sldsFloat = new()
+                        {
+                            new SaveLoadData<float>(BASICBALLDAMAGEUPGRADEPRICEKEY, damageUpgradePrice[ballType]),
+                            new SaveLoadData<float>(BASICBALLCURRENTDAMAGEKEY, currentDamage[ballType]),
+                            new SaveLoadData<float>(BASICBALLDAMAGEINCREMENTKEY, damageIncrement[ballType]),
+                            new SaveLoadData<float>(BASICBALLSPEEDUPGRADEPRICEKEY, speedUpgradePrice[ballType]),
+                            new SaveLoadData<float>(BASICBALLCURRENTSPEEDKEY, currentSpeed[ballType]),
+                            new SaveLoadData<float>(BASICBALLNEWBALLPRICEKEY, newBallPrice[ballType])
+                        };
+
+                        sldsInt = new()
+                        {
+                            new SaveLoadData<int>(BASICBALLCOUNTKEY, 1),
+                        };
+                        break;
+
+                    case BallType.SPLASH:
+                        sldsFloat = new List<SaveLoadData<float>>
+                        {
+                            new SaveLoadData<float>(SPLASHBALLDAMAGEUPGRADEPRICEKEY, damageUpgradePrice[ballType]),
+                            new SaveLoadData<float>(SPLASHBALLCURRENTDAMAGEKEY, currentDamage[ballType]),
+                            new SaveLoadData<float>(SPLASHBALLDAMAGEINCREMENTKEY, damageIncrement[ballType]),
+                            new SaveLoadData<float>(SPLASHBALLSPEEDUPGRADEPRICEKEY, speedUpgradePrice[ballType]),
+                            new SaveLoadData<float>(SPLASHBALLCURRENTSPEEDKEY, currentSpeed[ballType]),
+                            new SaveLoadData<float>(SPLASHBALLNEWBALLPRICEKEY, newBallPrice[ballType])
+                        };
+
+                        sldsInt = new List<SaveLoadData<int>>
+                        {
+                            new SaveLoadData<int>(SPLASHBALLCOUNTKEY, 1)
+                        };
+                        break;
+
+                    case BallType.SNIPER:
+                        sldsFloat = new List<SaveLoadData<float>>
+                        {
+                            new SaveLoadData<float>(SNIPERBALLDAMAGEUPGRADEPRICEKEY, damageUpgradePrice[ballType]),
+                            new SaveLoadData<float>(SNIPERBALLCURRENTDAMAGEKEY, currentDamage[ballType]),
+                            new SaveLoadData<float>(SNIPERBALLDAMAGEINCREMENTKEY, damageIncrement[ballType]),
+                            new SaveLoadData<float>(SNIPERBALLSPEEDUPGRADEPRICEKEY, speedUpgradePrice[ballType]),
+                            new SaveLoadData<float>(SNIPERBALLCURRENTSPEEDKEY, currentSpeed[ballType]),
+                            new SaveLoadData<float>(SNIPERBALLNEWBALLPRICEKEY, newBallPrice[ballType])
+                        };
+
+                        sldsInt = new List<SaveLoadData<int>>
+                        {
+                            new SaveLoadData<int>(SNIPERBALLCOUNTKEY, 1)
+                        };
+                        break;
+
+                    case BallType.POISON:
+                        sldsFloat = new List<SaveLoadData<float>>
+                        {
+                            new SaveLoadData<float>(POISONBALLDAMAGEUPGRADEPRICEKEY, damageUpgradePrice[ballType]),
+                            new SaveLoadData<float>(POISONBALLCURRENTDAMAGEKEY, currentDamage[ballType]),
+                            new SaveLoadData<float>(POISONBALLDAMAGEINCREMENTKEY, damageIncrement[ballType]),
+                            new SaveLoadData<float>(POISONBALLSPEEDUPGRADEPRICEKEY, speedUpgradePrice[ballType]),
+                            new SaveLoadData<float>(POISONBALLCURRENTSPEEDKEY, currentSpeed[ballType]),
+                            new SaveLoadData<float>(POISONBALLNEWBALLPRICEKEY, newBallPrice[ballType])
+                        };
+
+                        sldsInt = new List<SaveLoadData<int>>
+                        {
+                            new SaveLoadData<int>(POISONBALLCOUNTKEY, 1)
+                        };
+                        break;
+
+                    case BallType.DEMO:
+                        sldsFloat = new List<SaveLoadData<float>>
+                        {
+                            new SaveLoadData<float>(DEMOBALLDAMAGEUPGRADEPRICEKEY, damageUpgradePrice[ballType]),
+                            new SaveLoadData<float>(DEMOBALLCURRENTDAMAGEKEY, currentDamage[ballType]),
+                            new SaveLoadData<float>(DEMOBALLDAMAGEINCREMENTKEY, damageIncrement[ballType]),
+                            new SaveLoadData<float>(DEMOBALLSPEEDUPGRADEPRICEKEY, speedUpgradePrice[ballType]),
+                            new SaveLoadData<float>(DEMOBALLCURRENTSPEEDKEY, currentSpeed[ballType]),
+                            new SaveLoadData<float>(DEMOBALLNEWBALLPRICEKEY, newBallPrice[ballType])
+                        };
+
+                        sldsInt = new List<SaveLoadData<int>>
+                        {
+                            new SaveLoadData<int>(DEMOBALLCOUNTKEY, 1)
+                        };
+                        break;
+
+                    case BallType.CASH:
+                        sldsFloat = new List<SaveLoadData<float>>
+                        {
+                            new SaveLoadData<float>(CASHBALLDAMAGEUPGRADEPRICEKEY, damageUpgradePrice[ballType]),
+                            new SaveLoadData<float>(CASHBALLCURRENTDAMAGEKEY, currentDamage[ballType]),
+                            new SaveLoadData<float>(CASHBALLDAMAGEINCREMENTKEY, damageIncrement[ballType]),
+                            new SaveLoadData<float>(CASHBALLSPEEDUPGRADEPRICEKEY, speedUpgradePrice[ballType]),
+                            new SaveLoadData<float>(CASHBALLCURRENTSPEEDKEY, currentSpeed[ballType]),
+                            new SaveLoadData<float>(CASHBALLNEWBALLPRICEKEY, newBallPrice[ballType])
+                        };
+
+                        sldsInt = new List<SaveLoadData<int>>
+                        {
+                            new SaveLoadData<int>(CASHBALLCOUNTKEY, 1)
+                        };
+                        break;
+
+                    case BallType.CRUSH:
+                        sldsFloat = new List<SaveLoadData<float>>
+                        {
+                            new SaveLoadData<float>(CRUSHBALLDAMAGEUPGRADEPRICEKEY, damageUpgradePrice[ballType]),
+                            new SaveLoadData<float>(CRUSHBALLCURRENTDAMAGEKEY, currentDamage[ballType]),
+                            new SaveLoadData<float>(CRUSHBALLDAMAGEINCREMENTKEY, damageIncrement[ballType]),
+                            new SaveLoadData<float>(CRUSHBALLSPEEDUPGRADEPRICEKEY, speedUpgradePrice[ballType]),
+                            new SaveLoadData<float>(CRUSHBALLCURRENTSPEEDKEY, currentSpeed[ballType]),
+                            new SaveLoadData<float>(CRUSHBALLNEWBALLPRICEKEY, newBallPrice[ballType])
+                        };
+
+                        sldsInt = new List<SaveLoadData<int>>
+                        {
+                            new SaveLoadData<int>(CRUSHBALLCOUNTKEY, 1)
+                        };
+                        break;
+
+                    case BallType.FIRE:
+                        sldsFloat = new List<SaveLoadData<float>>
+                        {
+                            new SaveLoadData<float>(FIREBALLDAMAGEUPGRADEPRICEKEY, damageUpgradePrice[ballType]),
+                            new SaveLoadData<float>(FIREBALLCURRENTDAMAGEKEY, currentDamage[ballType]),
+                            new SaveLoadData<float>(FIREBALLDAMAGEINCREMENTKEY, damageIncrement[ballType]),
+                            new SaveLoadData<float>(FIREBALLSPEEDUPGRADEPRICEKEY, speedUpgradePrice[ballType]),
+                            new SaveLoadData<float>(FIREBALLCURRENTSPEEDKEY, currentSpeed[ballType]),
+                            new SaveLoadData<float>(FIREBALLNEWBALLPRICEKEY, newBallPrice[ballType])
+                        };
+
+                        sldsInt = new List<SaveLoadData<int>>
+                        {new SaveLoadData<int>(FIREBALLCOUNTKEY, 1)
+                        };
+                        break;
+                }
+
+                sldsInt.Add(new SaveLoadData<int>(CURRENTSTAGEKEY, currentStage));
+
+                foreach(SaveLoadData<float> sld in sldsFloat)
+                {
+                    sld.SaveData();
+                }
+                foreach(SaveLoadData<int> sld in sldsInt)
+                {
+                    sld.SaveData();
+                }
 
                 InstantiateBall(ballType);
 
@@ -666,6 +816,8 @@ public class BallManager : MonoBehaviour {
 
             currentDamage[type] += damageIncrement[type];
 
+            List<SaveLoadData<float>> slds = null;
+
             switch (type)
             {
                 case BallType.BASIC:
@@ -673,6 +825,12 @@ public class BallManager : MonoBehaviour {
                     {
                         bb.damage = currentDamage[type];
                     }
+                    slds = new()
+                    {
+                        new SaveLoadData<float>(BASICBALLDAMAGEUPGRADEPRICEKEY, damageUpgradePrice[type]),
+                        new SaveLoadData<float>(BASICBALLCURRENTDAMAGEKEY, currentDamage[type]),
+                        new SaveLoadData<float>(BASICBALLDAMAGEINCREMENTKEY, damageIncrement[type])
+                    };
                     break;
 
                 case BallType.SNIPER:
@@ -680,6 +838,12 @@ public class BallManager : MonoBehaviour {
                     {
                         sb.damage = currentDamage[type];
                     }
+                    slds = new List<SaveLoadData<float>>
+                    {
+                        new SaveLoadData<float>(SNIPERBALLDAMAGEUPGRADEPRICEKEY, damageUpgradePrice[type]),
+                        new SaveLoadData<float>(SNIPERBALLCURRENTDAMAGEKEY, currentDamage[type]),
+                        new SaveLoadData<float>(SNIPERBALLDAMAGEINCREMENTKEY, damageIncrement[type])
+                    };
                     break;
 
                 case BallType.SPLASH:
@@ -687,6 +851,12 @@ public class BallManager : MonoBehaviour {
                     {
                         sb.damage = currentDamage[type];
                     }
+                    slds = new()
+                    {
+                        new SaveLoadData<float>(SPLASHBALLDAMAGEUPGRADEPRICEKEY, damageUpgradePrice[type]),
+                        new SaveLoadData<float>(SPLASHBALLCURRENTDAMAGEKEY, currentDamage[type]),
+                        new SaveLoadData<float>(SPLASHBALLDAMAGEINCREMENTKEY, damageIncrement[type])
+                    };
                     break;
 
                 case BallType.POISON:
@@ -694,6 +864,12 @@ public class BallManager : MonoBehaviour {
                     {
                         pb.damage = currentDamage[type];
                     }
+                    slds = new List<SaveLoadData<float>>
+                    {
+                        new SaveLoadData<float>(POISONBALLDAMAGEUPGRADEPRICEKEY, damageUpgradePrice[type]),
+                        new SaveLoadData<float>(POISONBALLCURRENTDAMAGEKEY, currentDamage[type]),
+                        new SaveLoadData<float>(POISONBALLDAMAGEINCREMENTKEY, damageIncrement[type])
+                    };
                     break;
 
                 case BallType.DEMO:
@@ -701,6 +877,12 @@ public class BallManager : MonoBehaviour {
                     {
                         db.damage = currentDamage[type];
                     }
+                    slds = new List<SaveLoadData<float>>
+                    {
+                        new SaveLoadData<float>(DEMOBALLDAMAGEUPGRADEPRICEKEY, damageUpgradePrice[type]),
+                        new SaveLoadData<float>(DEMOBALLCURRENTDAMAGEKEY, currentDamage[type]),
+                        new SaveLoadData<float>(DEMOBALLDAMAGEINCREMENTKEY, damageIncrement[type])
+                    };
                     break;
 
                 case BallType.CRUSH:
@@ -708,6 +890,12 @@ public class BallManager : MonoBehaviour {
                     {
                         cb.damage = currentDamage[type];
                     }
+                    slds = new List<SaveLoadData<float>>
+                    {
+                        new SaveLoadData<float>(CRUSHBALLDAMAGEUPGRADEPRICEKEY, damageUpgradePrice[type]),
+                        new SaveLoadData<float>(CRUSHBALLCURRENTDAMAGEKEY, currentDamage[type]),
+                        new SaveLoadData<float>(CRUSHBALLDAMAGEINCREMENTKEY, damageIncrement[type])
+                    };
                     break;
 
                 case BallType.CASH:
@@ -715,6 +903,12 @@ public class BallManager : MonoBehaviour {
                     {
                         cb.damage = currentDamage[type];
                     }
+                    slds = new List<SaveLoadData<float>>
+                    {
+                        new SaveLoadData<float>(CASHBALLDAMAGEUPGRADEPRICEKEY, damageUpgradePrice[type]),
+                        new SaveLoadData<float>(CASHBALLCURRENTDAMAGEKEY, currentDamage[type]),
+                        new SaveLoadData<float>(CASHBALLDAMAGEINCREMENTKEY, damageIncrement[type])
+                    };
                     break;
 
                 case BallType.FIRE:
@@ -722,7 +916,17 @@ public class BallManager : MonoBehaviour {
                     {
                         fb.damage = currentDamage[type];
                     }
+                    slds = new List<SaveLoadData<float>>
+                    {
+                        new SaveLoadData<float>(FIREBALLDAMAGEUPGRADEPRICEKEY, damageUpgradePrice[type]),
+                        new SaveLoadData<float>(FIREBALLCURRENTDAMAGEKEY, currentDamage[type]),
+                        new SaveLoadData<float>(FIREBALLDAMAGEINCREMENTKEY, damageIncrement[type])
+                    };
                     break;
+            }
+            foreach (SaveLoadData<float> sld in slds)
+            {
+                sld.SaveData();
             }
         }
 
@@ -878,19 +1082,169 @@ public class BallManager : MonoBehaviour {
 
     private void Start()
     {
-        if (PlayerPrefs.HasKey(MAXBALLSKEY))
-        {
-            SaveLoadData<int> sld = new SaveLoadData<int>(MAXBALLSKEY);
-            maxBallsAllowed = sld.LoadData();
-        }
+        LoadData();
+
         cashManager = GetComponent<CashManager>();
         prestigeManager = GetComponent<PrestigeManager>();
         prestigeManager.ballsCountPrestiged += UpdateMaxBallsCount;
         OpenNewBall(BallType.BASIC);
     }
 
+    private void LoadData()
+    {
+        if (PlayerPrefs.HasKey(MAXBALLSKEY))
+        {
+            SaveLoadData<int> sld = new SaveLoadData<int>(MAXBALLSKEY);
+            maxBallsAllowed = sld.LoadData();
+        }
+
+        if(PlayerPrefs.HasKey(CURRENTSTAGEKEY))
+        {
+            SaveLoadData<int> sld = new SaveLoadData<int>(CURRENTSTAGEKEY);
+            currentStage = sld.LoadData();
+        }
+
+        if(PlayerPrefs.HasKey(BASICBALLCOUNTKEY))
+        {
+            currentDamage[BallType.BASIC] = new SaveLoadData<float>(BASICBALLCURRENTDAMAGEKEY).LoadData();
+            currentSpeed[BallType.BASIC] = new SaveLoadData<float>(BASICBALLCURRENTSPEEDKEY).LoadData();
+            damageIncrement[BallType.BASIC] = new SaveLoadData<float>(BASICBALLDAMAGEINCREMENTKEY).LoadData();
+            
+            damageUpgradePrice[BallType.BASIC] = new SaveLoadData<float>(BASICBALLDAMAGEUPGRADEPRICEKEY).LoadData();
+            speedUpgradePrice[BallType.BASIC] = new SaveLoadData<float>(BASICBALLSPEEDUPGRADEPRICEKEY).LoadData();
+            newBallPrice[BallType.BASIC] = new SaveLoadData<float>(BASICBALLNEWBALLPRICEKEY).LoadData();
+
+            int count = new SaveLoadData<int>(BASICBALLCOUNTKEY).LoadData();
+            for(int i=0; i<count; i++)
+            {
+                InstantiateBall(BallType.BASIC);
+            }
+        }
+
+        if (PlayerPrefs.HasKey(SPLASHBALLCOUNTKEY))
+        {
+            currentDamage[BallType.SPLASH] = new SaveLoadData<float>(SPLASHBALLCURRENTDAMAGEKEY).LoadData();
+            currentSpeed[BallType.SPLASH] = new SaveLoadData<float>(SPLASHBALLCURRENTSPEEDKEY).LoadData();
+            damageIncrement[BallType.SPLASH] = new SaveLoadData<float>(SPLASHBALLDAMAGEINCREMENTKEY).LoadData();
+
+            damageUpgradePrice[BallType.SPLASH] = new SaveLoadData<float>(SPLASHBALLDAMAGEUPGRADEPRICEKEY).LoadData();
+            speedUpgradePrice[BallType.SPLASH] = new SaveLoadData<float>(SPLASHBALLSPEEDUPGRADEPRICEKEY).LoadData();
+            newBallPrice[BallType.SPLASH] = new SaveLoadData<float>(SPLASHBALLNEWBALLPRICEKEY).LoadData();
+
+            int count = new SaveLoadData<int>(SPLASHBALLCOUNTKEY).LoadData();
+            for (int i = 0; i < count; i++)
+            {
+                InstantiateBall(BallType.SPLASH);
+            }
+        }
+
+        if (PlayerPrefs.HasKey(SNIPERBALLCOUNTKEY))
+        {
+            currentDamage[BallType.SNIPER] = new SaveLoadData<float>(SNIPERBALLCURRENTDAMAGEKEY).LoadData();
+            currentSpeed[BallType.SNIPER] = new SaveLoadData<float>(SNIPERBALLCURRENTSPEEDKEY).LoadData();
+            damageIncrement[BallType.SNIPER] = new SaveLoadData<float>(SNIPERBALLDAMAGEINCREMENTKEY).LoadData();
+
+            damageUpgradePrice[BallType.SNIPER] = new SaveLoadData<float>(SNIPERBALLDAMAGEUPGRADEPRICEKEY).LoadData();
+            speedUpgradePrice[BallType.SNIPER] = new SaveLoadData<float>(SNIPERBALLSPEEDUPGRADEPRICEKEY).LoadData();
+            newBallPrice[BallType.SNIPER] = new SaveLoadData<float>(SNIPERBALLNEWBALLPRICEKEY).LoadData();
+
+            int count = new SaveLoadData<int>(SNIPERBALLCOUNTKEY).LoadData();
+            for (int i = 0; i < count; i++)
+            {
+                InstantiateBall(BallType.SNIPER);
+            }
+        }
+
+        if (PlayerPrefs.HasKey(POISONBALLCOUNTKEY))
+        {
+            currentDamage[BallType.POISON] = new SaveLoadData<float>(POISONBALLCURRENTDAMAGEKEY).LoadData();
+            currentSpeed[BallType.POISON] = new SaveLoadData<float>(POISONBALLCURRENTSPEEDKEY).LoadData();
+            damageIncrement[BallType.POISON] = new SaveLoadData<float>(POISONBALLDAMAGEINCREMENTKEY).LoadData();
+
+            damageUpgradePrice[BallType.POISON] = new SaveLoadData<float>(POISONBALLDAMAGEUPGRADEPRICEKEY).LoadData();
+            speedUpgradePrice[BallType.POISON] = new SaveLoadData<float>(POISONBALLSPEEDUPGRADEPRICEKEY).LoadData();
+            newBallPrice[BallType.POISON] = new SaveLoadData<float>(POISONBALLNEWBALLPRICEKEY).LoadData();
+
+            int count = new SaveLoadData<int>(POISONBALLCOUNTKEY).LoadData();
+            for (int i = 0; i < count; i++)
+            {
+                InstantiateBall(BallType.POISON);
+            }
+        }
+
+        if (PlayerPrefs.HasKey(DEMOBALLCOUNTKEY))
+        {
+            currentDamage[BallType.DEMO] = new SaveLoadData<float>(DEMOBALLCURRENTDAMAGEKEY).LoadData();
+            currentSpeed[BallType.DEMO] = new SaveLoadData<float>(DEMOBALLCURRENTSPEEDKEY).LoadData();
+            damageIncrement[BallType.DEMO] = new SaveLoadData<float>(DEMOBALLDAMAGEINCREMENTKEY).LoadData();
+
+            damageUpgradePrice[BallType.DEMO] = new SaveLoadData<float>(DEMOBALLDAMAGEUPGRADEPRICEKEY).LoadData();
+            speedUpgradePrice[BallType.DEMO] = new SaveLoadData<float>(DEMOBALLSPEEDUPGRADEPRICEKEY).LoadData();
+            newBallPrice[BallType.DEMO] = new SaveLoadData<float>(DEMOBALLNEWBALLPRICEKEY).LoadData();
+
+            int count = new SaveLoadData<int>(DEMOBALLCOUNTKEY).LoadData();
+            for (int i = 0; i < count; i++)
+            {
+                InstantiateBall(BallType.DEMO);
+            }
+        }
+
+        if (PlayerPrefs.HasKey(CASHBALLCOUNTKEY))
+        {
+            currentDamage[BallType.CASH] = new SaveLoadData<float>(CASHBALLCURRENTDAMAGEKEY).LoadData();
+            currentSpeed[BallType.CASH] = new SaveLoadData<float>(CASHBALLCURRENTSPEEDKEY).LoadData();
+            damageIncrement[BallType.CASH] = new SaveLoadData<float>(CASHBALLDAMAGEINCREMENTKEY).LoadData();
+
+            damageUpgradePrice[BallType.CASH] = new SaveLoadData<float>(CASHBALLDAMAGEUPGRADEPRICEKEY).LoadData();
+            speedUpgradePrice[BallType.CASH] = new SaveLoadData<float>(CASHBALLSPEEDUPGRADEPRICEKEY).LoadData();
+            newBallPrice[BallType.CASH] = new SaveLoadData<float>(CASHBALLNEWBALLPRICEKEY).LoadData();
+
+            int count = new SaveLoadData<int>(CASHBALLCOUNTKEY).LoadData();
+            for (int i = 0; i < count; i++)
+            {
+                InstantiateBall(BallType.CASH);
+            }
+        }
+
+        if (PlayerPrefs.HasKey(CRUSHBALLCOUNTKEY))
+        {
+            currentDamage[BallType.CRUSH] = new SaveLoadData<float>(CRUSHBALLCURRENTDAMAGEKEY).LoadData();
+            currentSpeed[BallType.CRUSH] = new SaveLoadData<float>(CRUSHBALLCURRENTSPEEDKEY).LoadData();
+            damageIncrement[BallType.CRUSH] = new SaveLoadData<float>(CRUSHBALLDAMAGEINCREMENTKEY).LoadData();
+
+            damageUpgradePrice[BallType.CRUSH] = new SaveLoadData<float>(CRUSHBALLDAMAGEUPGRADEPRICEKEY).LoadData();
+            speedUpgradePrice[BallType.CRUSH] = new SaveLoadData<float>(CRUSHBALLSPEEDUPGRADEPRICEKEY).LoadData();
+            newBallPrice[BallType.CRUSH] = new SaveLoadData<float>(CRUSHBALLNEWBALLPRICEKEY).LoadData();
+
+            int count = new SaveLoadData<int>(CRUSHBALLCOUNTKEY).LoadData();
+            for (int i = 0; i < count; i++)
+            {
+                InstantiateBall(BallType.CRUSH);
+            }
+        }
+
+
+        if (PlayerPrefs.HasKey(FIREBALLCOUNTKEY))
+        {
+            currentDamage[BallType.FIRE] = new SaveLoadData<float>(FIREBALLCURRENTDAMAGEKEY).LoadData();
+            currentSpeed[BallType.FIRE] = new SaveLoadData<float>(FIREBALLCURRENTSPEEDKEY).LoadData();
+            damageIncrement[BallType.FIRE] = new SaveLoadData<float>(FIREBALLDAMAGEINCREMENTKEY).LoadData();
+            damageUpgradePrice[BallType.FIRE] = new SaveLoadData<float>(FIREBALLDAMAGEUPGRADEPRICEKEY).LoadData();
+            speedUpgradePrice[BallType.FIRE] = new SaveLoadData<float>(FIREBALLSPEEDUPGRADEPRICEKEY).LoadData();
+            newBallPrice[BallType.FIRE] = new SaveLoadData<float>(FIREBALLNEWBALLPRICEKEY).LoadData();
+
+            int count = new SaveLoadData<int>(FIREBALLCOUNTKEY).LoadData();
+            for (int i = 0; i < count; i++)
+            {
+                InstantiateBall(BallType.FIRE);
+            }
+        }
+
+    }
+
     public void ResetBalls()
     {
+        ResetData();
         currentStage = 0;
 
         currentDamage = new Dictionary<BallType, float>();
@@ -925,5 +1279,120 @@ public class BallManager : MonoBehaviour {
         };
 
         OpenNewBall(BallType.BASIC);
+    }
+
+    private void ResetData()
+    {
+        if (PlayerPrefs.HasKey(MAXBALLSKEY))
+        {
+            new SaveLoadData<int>(MAXBALLSKEY).RemoveData();
+            
+        }
+
+        if (PlayerPrefs.HasKey(CURRENTSTAGEKEY))
+        {
+            new SaveLoadData<int>(CURRENTSTAGEKEY).RemoveData();
+        }
+
+        if (PlayerPrefs.HasKey(BASICBALLCOUNTKEY))
+        {
+            new SaveLoadData<float>(BASICBALLCURRENTDAMAGEKEY).RemoveData();
+            new SaveLoadData<float>(BASICBALLCURRENTSPEEDKEY).RemoveData();
+            new SaveLoadData<float>(BASICBALLDAMAGEINCREMENTKEY).RemoveData();
+
+            new SaveLoadData<float>(BASICBALLDAMAGEUPGRADEPRICEKEY).RemoveData();
+            new SaveLoadData<float>(BASICBALLSPEEDUPGRADEPRICEKEY).RemoveData();
+            new SaveLoadData<float>(BASICBALLNEWBALLPRICEKEY).RemoveData();
+
+            new SaveLoadData<int>(BASICBALLCOUNTKEY).RemoveData();
+        }
+
+        if (PlayerPrefs.HasKey(SPLASHBALLCOUNTKEY))
+        {
+            new SaveLoadData<float>(SPLASHBALLCURRENTDAMAGEKEY).RemoveData();
+            new SaveLoadData<float>(SPLASHBALLCURRENTSPEEDKEY).RemoveData();
+            new SaveLoadData<float>(SPLASHBALLDAMAGEINCREMENTKEY).RemoveData();
+
+            new SaveLoadData<float>(SPLASHBALLDAMAGEUPGRADEPRICEKEY).RemoveData();
+            new SaveLoadData<float>(SPLASHBALLSPEEDUPGRADEPRICEKEY).RemoveData();
+            new SaveLoadData<float>(SPLASHBALLNEWBALLPRICEKEY).RemoveData();
+
+            new SaveLoadData<int>(SPLASHBALLCOUNTKEY).RemoveData();
+        }
+
+        if (PlayerPrefs.HasKey(SNIPERBALLCOUNTKEY))
+        {
+            new SaveLoadData<float>(SNIPERBALLCURRENTDAMAGEKEY).RemoveData();
+            new SaveLoadData<float>(SNIPERBALLCURRENTSPEEDKEY).RemoveData();
+            new SaveLoadData<float>(SNIPERBALLDAMAGEINCREMENTKEY).RemoveData();
+
+            new SaveLoadData<float>(SNIPERBALLDAMAGEUPGRADEPRICEKEY).RemoveData();
+            new SaveLoadData<float>(SNIPERBALLSPEEDUPGRADEPRICEKEY).RemoveData();
+            new SaveLoadData<float>(SNIPERBALLNEWBALLPRICEKEY).RemoveData();
+
+            new SaveLoadData<int>(SNIPERBALLCOUNTKEY).RemoveData();
+        }
+
+        if (PlayerPrefs.HasKey(POISONBALLCOUNTKEY))
+        {
+            new SaveLoadData<float>(POISONBALLCURRENTDAMAGEKEY).RemoveData();
+            new SaveLoadData<float>(POISONBALLCURRENTSPEEDKEY).RemoveData();
+            new SaveLoadData<float>(POISONBALLDAMAGEINCREMENTKEY).RemoveData();
+
+            new SaveLoadData<float>(POISONBALLDAMAGEUPGRADEPRICEKEY).RemoveData();
+            new SaveLoadData<float>(POISONBALLSPEEDUPGRADEPRICEKEY).RemoveData();
+            new SaveLoadData<float>(POISONBALLNEWBALLPRICEKEY).RemoveData();
+
+            new SaveLoadData<int>(POISONBALLCOUNTKEY).RemoveData();
+        }
+
+        if (PlayerPrefs.HasKey(DEMOBALLCOUNTKEY))
+        {
+            new SaveLoadData<float>(DEMOBALLCURRENTDAMAGEKEY).RemoveData();
+            new SaveLoadData<float>(DEMOBALLCURRENTSPEEDKEY).RemoveData();
+            new SaveLoadData<float>(DEMOBALLDAMAGEINCREMENTKEY).RemoveData();
+
+            new SaveLoadData<float>(DEMOBALLDAMAGEUPGRADEPRICEKEY).RemoveData();
+            new SaveLoadData<float>(DEMOBALLSPEEDUPGRADEPRICEKEY).RemoveData();
+            new SaveLoadData<float>(DEMOBALLNEWBALLPRICEKEY).RemoveData();
+
+            new SaveLoadData<int>(DEMOBALLCOUNTKEY).RemoveData();
+        }
+
+        if (PlayerPrefs.HasKey(CASHBALLCOUNTKEY))
+        {
+            new SaveLoadData<float>(CASHBALLCURRENTDAMAGEKEY).RemoveData();
+            new SaveLoadData<float>(CASHBALLCURRENTSPEEDKEY).RemoveData();
+            new SaveLoadData<float>(CASHBALLDAMAGEINCREMENTKEY).RemoveData();
+
+            new SaveLoadData<float>(CASHBALLDAMAGEUPGRADEPRICEKEY).RemoveData();
+            new SaveLoadData<float>(CASHBALLSPEEDUPGRADEPRICEKEY).RemoveData();
+            new SaveLoadData<float>(CASHBALLNEWBALLPRICEKEY).RemoveData();
+
+            new SaveLoadData<int>(CASHBALLCOUNTKEY).RemoveData();
+        }
+
+        if (PlayerPrefs.HasKey(CRUSHBALLCOUNTKEY))
+        {
+            new SaveLoadData<float>(CRUSHBALLCURRENTDAMAGEKEY).RemoveData();
+            new SaveLoadData<float>(CRUSHBALLCURRENTSPEEDKEY).RemoveData();
+            new SaveLoadData<float>(CRUSHBALLDAMAGEINCREMENTKEY).RemoveData();
+
+            new SaveLoadData<float>(CRUSHBALLDAMAGEUPGRADEPRICEKEY).RemoveData();
+            new SaveLoadData<float>(CRUSHBALLSPEEDUPGRADEPRICEKEY).RemoveData();
+            new SaveLoadData<float>(CRUSHBALLNEWBALLPRICEKEY).RemoveData();
+
+            new SaveLoadData<int>(CRUSHBALLCOUNTKEY).RemoveData();
+        }
+
+        if (PlayerPrefs.HasKey(FIREBALLCOUNTKEY))
+        {
+            new SaveLoadData<float>(FIREBALLCURRENTDAMAGEKEY).RemoveData();
+            new SaveLoadData<float>(FIREBALLCURRENTSPEEDKEY).RemoveData();
+            new SaveLoadData<float>(FIREBALLDAMAGEINCREMENTKEY).RemoveData();
+            new SaveLoadData<float>(FIREBALLDAMAGEUPGRADEPRICEKEY).RemoveData();
+            new SaveLoadData<float>(FIREBALLSPEEDUPGRADEPRICEKEY).RemoveData();
+            new SaveLoadData<float>(FIREBALLNEWBALLPRICEKEY).RemoveData();
+        }
     }
 }
