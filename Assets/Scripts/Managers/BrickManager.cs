@@ -347,17 +347,18 @@ public class BrickManager : MonoBehaviour {
 
         List<SaveLoadData<float>> slds = new List<SaveLoadData<float>>
         {
-            new SaveLoadData<float>(BASEBRHPKEY, _baseBrickHp),
-            new SaveLoadData<float>(BIGBRHPKEY, _bigBrickHp),
-            new SaveLoadData<float>(TRIBRHPKEY, _triangleBrickHp),
-            new SaveLoadData<float>(HEXBRHPKEY, _hexBrickHp),
+            new SaveLoadData<float>(BASEBRHPKEY),
+            new SaveLoadData<float>(BIGBRHPKEY),
+            new SaveLoadData<float>(TRIBRHPKEY),
+            new SaveLoadData<float>(HEXBRHPKEY),
 
-            new SaveLoadData<float>(HPMULKEY, hpMultiplier)
+            new SaveLoadData<float>(HPMULKEY)
         };
+
 
         foreach (SaveLoadData<float> sld in slds)
         {
-            sld.SaveData();
+            sld.RemoveData();
         }
     }
 

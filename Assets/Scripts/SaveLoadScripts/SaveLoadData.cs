@@ -75,4 +75,12 @@ public class SaveLoadData<DT>
         }
           
     }
+
+    public void RemoveData()
+    {
+        if (PlayerPrefs.HasKey(_name))
+        {
+            PlayerPrefs.DeleteKey(_name);
+        }
+    }
 }

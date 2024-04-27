@@ -7,12 +7,85 @@ using UnityEngine;
 
 public class BallManager : MonoBehaviour {
 
+    private const string MAXBALLSKEY = "MAXBALLSALLOWED";
+
+    private const string BASICBALLCOUNTKEY = "BASICBALLCOUNT";
+    private const string SPLASHBALLCOUNTKEY = "SPLASHALLCOUNT";
+    private const string SNIPERBALLCOUNTKEY = "SNIPERBALLCOUNT";
+    private const string POISONBALLCOUNTKEY = "POISONBALLCOUNT";
+    private const string DEMOBALLCOUNTKEY = "DEMOBALLCOUNT";
+    private const string CASHBALLCOUNTKEY = "CASHBALLCOUNT";
+    private const string CRUSHBALLCOUNTKEY = "CRUSHBALLCOUNT";
+    private const string FIREBALLCOUNTKEY = "FIREBALLCOUNT";
+
+    private const string BASICBALLCURRENTDAMAGEKEY = "BASICBALLCURRENTDAMAGE";
+    private const string SPLASHBALLCURRENTDAMAGEKEY = "SPLASHBALLCURRENTDAMAGE";
+    private const string SNIPERBALLCURRENTDAMAGEKEY = "SNIPERBALLCURRENTDAMAGE";
+    private const string POISONBALLCURRENTDAMAGEKEY = "POISONBALLCURRENTDAMAGE";
+    private const string DEMOBALLCURRENTDAMAGEKEY = "DEMOBALLCURRENTDAMAGE";
+    private const string CASHBALLCURRENTDAMAGEKEY = "CASHBALLCURRENTDAMAGE";
+    private const string CRUSHBALLCURRENTDAMAGEKEY = "CRUSHBALLCURRENTDAMAGE";
+    private const string FIREBALLCURRENTDAMAGEKEY = "FIREBALLCURRENTDAMAGE";
+
+    private const string BASICBALLCURRENTSPEEDKEY = "BASICBALLCURRENTSPEED";
+    private const string SPLASHBALLCURRENTSPEEDKEY = "SPLASHBALLCURRENTSPEED";
+    private const string SNIPERBALLCURRENTSPEEDKEY = "SNIPERBALLCURRENTSPEED";
+    private const string POISONBALLCURRENTSPEEDKEY = "POISONBALLCURRENTSPEED";
+    private const string DEMOBALLCURRENTSPEEDKEY = "DEMOBALLCURRENTSPEED";
+    private const string CASHBALLCURRENTSPEEDKEY = "CASHBALLCURRENTSPEED";
+    private const string CRUSHBALLCURRENTSPEEDKEY = "CRUSHBALLCURRENTSPEED";
+    private const string FIREBALLCURRENTSPEEDKEY = "FIREBALLCURRENTSPEED";
+
+    private const string BASICBALLDAMAGEINCREMENTKEY = "BASICBALLDAMAGEINCREMENT";
+    private const string SPLASHBALLDAMAGEINCREMENTKEY = "SPLASHBALLDAMAGEINCREMENT";
+    private const string SNIPERBALLDAMAGEINCREMENTKEY = "SNIPERBALLDAMAGEINCREMENT";
+    private const string POISONBALLDAMAGEINCREMENTKEY = "POISONBALLDAMAGEINCREMENT";
+    private const string DEMOBALLDAMAGEINCREMENTKEY = "DEMOBALLDAMAGEINCREMENT";
+    private const string CASHBALLDAMAGEINCREMENTKEY = "CASHBALLDAMAGEINCREMENT";
+    private const string CRUSHBALLDAMAGEINCREMENTKEY = "CRUSHBALLDAMAGEINCREMENT";
+    private const string FIREBALLDAMAGEINCREMENTKEY = "FIREBALLDAMAGEINCREMENT";
+
+    private const string BASICBALLNEWBALLPRICEKEY = "BASICBALLNEWBALLPRICE";
+    private const string BASICBALLDAMAGEUPGRADEPRICEKEY = "BASICBALLDAMAGEUPGRADEPRICE";
+    private const string BASICBALLSPEEDUPGRADEPRICEKEY = "BASICBALLSPEEDUPGRADEPRICE";
+
+    private const string SPLASHBALLNEWBALLPRICEKEY = "SPLASHBALLNEWBALLPRICE";
+    private const string SPLASHBALLDAMAGEUPGRADEPRICEKEY = "SPLASHBALLDAMAGEUPGRADEPRICE";
+    private const string SPLASHBALLSPEEDUPGRADEPRICEKEY = "SPLASHBALLSPEEDUPGRADEPRICE";
+
+    private const string SNIPERBALLNEWBALLPRICEKEY = "SNIPERBALLNEWBALLPRICE";
+    private const string SNIPERBALLDAMAGEUPGRADEPRICEKEY = "SNIPERBALLDAMAGEUPGRADEPRICE";
+    private const string SNIPERBALLSPEEDUPGRADEPRICEKEY = "SNIPERBALLSPEEDUPGRADEPRICE";
+
+    private const string POISONBALLNEWBALLPRICEKEY = "POISONBALLNEWBALLPRICE";
+    private const string POISONBALLDAMAGEUPGRADEPRICEKEY = "POISONBALLDAMAGEUPGRADEPRICE";
+    private const string POISONBALLSPEEDUPGRADEPRICEKEY = "POISONBALLSPEEDUPGRADEPRICE";
+
+    private const string DEMOBALLNEWBALLPRICEKEY = "DEMOBALLNEWBALLPRICE";
+    private const string DEMOBALLDAMAGEUPGRADEPRICEKEY = "DEMOBALLDAMAGEUPGRADEPRICE";
+    private const string DEMOBALLSPEEDUPGRADEPRICEKEY = "DEMOBALLSPEEDUPGRADEPRICE";
+
+    private const string CASHBALLNEWBALLPRICEKEY = "CASHBALLNEWBALLPRICE";
+    private const string CASHBALLDAMAGEUPGRADEPRICEKEY = "CASHBALLDAMAGEUPGRADEPRICE";
+    private const string CASHBALLSPEEDUPGRADEPRICEKEY = "CASHBALLSPEEDUPGRADEPRICE";
+
+    private const string CRUSHBALLNEWBALLPRICEKEY = "CRUSHBALLNEWBALLPRICE";
+    private const string CRUSHBALLDAMAGEUPGRADEPRICEKEY = "CRUSHBALLDAMAGEUPGRADEPRICE";
+    private const string CRUSHBALLSPEEDUPGRADEPRICEKEY = "CRUSHBALLSPEEDUPGRADEPRICE";
+
+    private const string FIREBALLNEWBALLPRICEKEY = "FIREBALLNEWBALLPRICE";
+    private const string FIREBALLDAMAGEUPGRADEPRICEKEY = "FIREBALLDAMAGEUPGRADEPRICE";
+    private const string FIREBALLSPEEDUPGRADEPRICEKEY = "FIREBALLSPEEDUPGRADEPRICE";
+
+    private const string CURRENTSTAGEKEY = "CURRENTSTAGE";
+
+
     [SerializeField]
     private TMP_Text ballsCountText;
 
     private CashManager cashManager;
     private PrestigeManager prestigeManager;
-    private int maxBallsAllowed;
+    private int maxBallsAllowed = 50;
 
     #region Balls prefabs
     [SerializeField]
@@ -91,6 +164,8 @@ public class BallManager : MonoBehaviour {
     private void UpdateMaxBallsCount(int count)
     {
         maxBallsAllowed += count;
+        SaveLoadData<int> sld = new SaveLoadData<int>(MAXBALLSKEY, maxBallsAllowed);
+        sld.SaveData();
     }
     #endregion
 
@@ -329,6 +404,65 @@ public class BallManager : MonoBehaviour {
                 newBallPrice[type] += price * priceMultiplier;
                 InstantiateBall(type);
 
+                switch (type)
+                {
+                    case BallType.BASIC:
+                        SaveLoadData<float> sldPrice = new SaveLoadData<float>(BASICBALLNEWBALLPRICEKEY, newBallPrice[type]);
+                        sldPrice.SaveData();
+                        SaveLoadData<int> sldCount = new SaveLoadData<int>(BASICBALLCOUNTKEY, BallsCount(type));
+                        sldCount.SaveData();
+                        break;
+
+                    case BallType.SPLASH:
+                        SaveLoadData<float> sldSplashBallPrice = new SaveLoadData<float>(SPLASHBALLNEWBALLPRICEKEY, newBallPrice[type]);
+                        sldSplashBallPrice.SaveData();
+                        SaveLoadData<int> sldSplashBallCount = new SaveLoadData<int>(SPLASHBALLCOUNTKEY, BallsCount(type));
+                        sldSplashBallCount.SaveData();
+                        break;
+
+                    case BallType.SNIPER:
+                        SaveLoadData<float> sldSniperBallPrice = new SaveLoadData<float>(SNIPERBALLNEWBALLPRICEKEY, newBallPrice[type]);
+                        sldSniperBallPrice.SaveData();
+                        SaveLoadData<int> sldSniperBallCount = new SaveLoadData<int>(SNIPERBALLCOUNTKEY, BallsCount(type));
+                        sldSniperBallCount.SaveData();
+                        break;
+
+                    case BallType.POISON:
+                        SaveLoadData<float> sldPoisonBallPrice = new SaveLoadData<float>(POISONBALLNEWBALLPRICEKEY, newBallPrice[type]);
+                        sldPoisonBallPrice.SaveData();
+                        SaveLoadData<int> sldPoisonBallCount = new SaveLoadData<int>(POISONBALLCOUNTKEY, BallsCount(type));
+                        sldPoisonBallCount.SaveData();
+                        break;
+
+                    case BallType.DEMO:
+                        SaveLoadData<float> sldDemoBallPrice = new SaveLoadData<float>(DEMOBALLNEWBALLPRICEKEY, newBallPrice[type]);
+                        sldDemoBallPrice.SaveData();
+                        SaveLoadData<int> sldDemoBallCount = new SaveLoadData<int>(DEMOBALLCOUNTKEY, BallsCount(type));
+                        sldDemoBallCount.SaveData();
+                        break;
+
+                    case BallType.CASH:
+                        SaveLoadData<float> sldCashBallPrice = new SaveLoadData<float>(CASHBALLNEWBALLPRICEKEY, newBallPrice[type]);
+                        sldCashBallPrice.SaveData();
+                        SaveLoadData<int> sldCashBallCount = new SaveLoadData<int>(CASHBALLCOUNTKEY, BallsCount(type));
+                        sldCashBallCount.SaveData();
+                        break;
+
+                    case BallType.CRUSH:
+                        SaveLoadData<float> sldCrushBallPrice = new SaveLoadData<float>(CRUSHBALLNEWBALLPRICEKEY, newBallPrice[type]);
+                        sldCrushBallPrice.SaveData();
+                        SaveLoadData<int> sldCrushBallCount = new SaveLoadData<int>(CRUSHBALLCOUNTKEY, BallsCount(type));
+                        sldCrushBallCount.SaveData();
+                        break;
+
+                    case BallType.FIRE:
+                        SaveLoadData<float> sldFireBallPrice = new SaveLoadData<float>(FIREBALLNEWBALLPRICEKEY, newBallPrice[type]);
+                        sldFireBallPrice.SaveData();
+                        SaveLoadData<int> sldFireBallCount = new SaveLoadData<int>(FIREBALLCOUNTKEY, BallsCount(type));
+                        sldFireBallCount.SaveData();
+                        break;
+                }
+
                 ballsCountText.text = $"{AllBallsCount()}/{maxBallsAllowed}";
             }
         }
@@ -358,7 +492,7 @@ public class BallManager : MonoBehaviour {
 
 
                 damageIncrement.Add(ballType, powerBaseStats[currentStage][ballType]);
-                speedIncrement.Add(ballType, speedBaseStats[currentStage][ballType]);
+                //speedIncrement.Add(ballType, speedBaseStats[currentStage][ballType]);
 
                 damageUpgradePrice.Add(ballType, stagePrice[currentStage] == 0f ? 6f : stagePrice[currentStage]);
                 speedUpgradePrice.Add(ballType, stagePrice[currentStage] == 0f ? 6f : stagePrice[currentStage]);
@@ -400,16 +534,13 @@ public class BallManager : MonoBehaviour {
 
             if(type == BallType.DEMO)
             {
-                //speedIncrement[type] *= demoBallSpeedIncrementMultiplier;
                 currentSpeed[type] += demoBallSpeedIncrementMultiplier;
             }
             else
             {
-                currentSpeed[type] += allBallsDamageIncrementMultiplier;
-                //speedIncrement[type] *= allBallsSpeedIncrementMultiplier;
+                currentSpeed[type] += allBallsSpeedIncrementMultiplier;
             }
 
-            //currentSpeed[type] += speedIncrement[type];
 
             switch (type)
             {
@@ -418,6 +549,10 @@ public class BallManager : MonoBehaviour {
                     {
                         bb.speed = currentSpeed[type];
                     }
+                    SaveLoadData<float> sldUpPrice = new SaveLoadData<float>(BASICBALLSPEEDUPGRADEPRICEKEY, speedUpgradePrice[type]);
+                    sldUpPrice.SaveData();
+                    SaveLoadData<float> sldSpeed = new SaveLoadData<float>(BASICBALLCURRENTSPEEDKEY, currentSpeed[type]);
+                    sldSpeed.SaveData();
                     break;
 
                 case BallType.SNIPER:
@@ -425,6 +560,10 @@ public class BallManager : MonoBehaviour {
                     {
                         sb.speed = currentSpeed[type];
                     }
+                    SaveLoadData<float> sldSniperUpPrice = new SaveLoadData<float>(SNIPERBALLSPEEDUPGRADEPRICEKEY, speedUpgradePrice[type]);
+                    sldSniperUpPrice.SaveData();
+                    SaveLoadData<float> sldSniperSpeed = new SaveLoadData<float>(SNIPERBALLCURRENTSPEEDKEY, currentSpeed[type]);
+                    sldSniperSpeed.SaveData();
                     break;
 
                 case BallType.SPLASH:
@@ -432,6 +571,10 @@ public class BallManager : MonoBehaviour {
                     {
                         sb.speed = currentSpeed[type];
                     }
+                    SaveLoadData<float> sldSplashUpPrice = new SaveLoadData<float>(SPLASHBALLSPEEDUPGRADEPRICEKEY, speedUpgradePrice[type]);
+                    sldSplashUpPrice.SaveData();
+                    SaveLoadData<float> sldSplashSpeed = new SaveLoadData<float>(SPLASHBALLCURRENTSPEEDKEY, currentSpeed[type]);
+                    sldSplashSpeed.SaveData();
                     break;
 
                 case BallType.POISON:
@@ -439,6 +582,10 @@ public class BallManager : MonoBehaviour {
                     {
                         pb.speed = currentSpeed[type];
                     }
+                    SaveLoadData<float> sldPoisonUpPrice = new SaveLoadData<float>(POISONBALLSPEEDUPGRADEPRICEKEY, speedUpgradePrice[type]);
+                    sldPoisonUpPrice.SaveData();
+                    SaveLoadData<float> sldPoisonSpeed = new SaveLoadData<float>(POISONBALLCURRENTSPEEDKEY, currentSpeed[type]);
+                    sldPoisonSpeed.SaveData();
                     break;
 
                 case BallType.DEMO:
@@ -446,6 +593,10 @@ public class BallManager : MonoBehaviour {
                     {
                         db.speed = currentSpeed[type];
                     }
+                    SaveLoadData<float> sldDemoUpPrice = new SaveLoadData<float>(DEMOBALLSPEEDUPGRADEPRICEKEY, speedUpgradePrice[type]);
+                    sldDemoUpPrice.SaveData();
+                    SaveLoadData<float> sldDemoSpeed = new SaveLoadData<float>(DEMOBALLCURRENTSPEEDKEY, currentSpeed[type]);
+                    sldDemoSpeed.SaveData();
                     break;
 
                 case BallType.CRUSH:
@@ -453,6 +604,10 @@ public class BallManager : MonoBehaviour {
                     {
                         cb.speed = currentSpeed[type];
                     }
+                    SaveLoadData<float> sldCrushUpPrice = new SaveLoadData<float>(CRUSHBALLSPEEDUPGRADEPRICEKEY, speedUpgradePrice[type]);
+                    sldCrushUpPrice.SaveData();
+                    SaveLoadData<float> sldCrushSpeed = new SaveLoadData<float>(CRUSHBALLCURRENTSPEEDKEY, currentSpeed[type]);
+                    sldCrushSpeed.SaveData();
                     break;
 
                 case BallType.CASH:
@@ -460,6 +615,10 @@ public class BallManager : MonoBehaviour {
                     {
                         cb.speed = currentSpeed[type];
                     }
+                    SaveLoadData<float> sldCashUpPrice = new SaveLoadData<float>(CASHBALLSPEEDUPGRADEPRICEKEY, speedUpgradePrice[type]);
+                    sldCashUpPrice.SaveData();
+                    SaveLoadData<float> sldCashSpeed = new SaveLoadData<float>(CASHBALLCURRENTSPEEDKEY, currentSpeed[type]);
+                    sldCashSpeed.SaveData();
                     break;
 
                 case BallType.FIRE:
@@ -467,6 +626,10 @@ public class BallManager : MonoBehaviour {
                     {
                         fb.speed = currentSpeed[type];
                     }
+                    SaveLoadData<float> sldFireUpPrice = new SaveLoadData<float>(FIREBALLSPEEDUPGRADEPRICEKEY, speedUpgradePrice[type]);
+                    sldFireUpPrice.SaveData();
+                    SaveLoadData<float> sldFireSpeed = new SaveLoadData<float>(FIREBALLCURRENTSPEEDKEY, currentSpeed[type]);
+                    sldFireSpeed.SaveData();
                     break;
             }
         }
@@ -715,7 +878,11 @@ public class BallManager : MonoBehaviour {
 
     private void Start()
     {
-        maxBallsAllowed = 50;
+        if (PlayerPrefs.HasKey(MAXBALLSKEY))
+        {
+            SaveLoadData<int> sld = new SaveLoadData<int>(MAXBALLSKEY);
+            maxBallsAllowed = sld.LoadData();
+        }
         cashManager = GetComponent<CashManager>();
         prestigeManager = GetComponent<PrestigeManager>();
         prestigeManager.ballsCountPrestiged += UpdateMaxBallsCount;

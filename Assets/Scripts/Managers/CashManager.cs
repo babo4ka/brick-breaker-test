@@ -6,6 +6,7 @@ using UnityEngine;
 public class CashManager : MonoBehaviour {
 
     private const string SOFTCASHKEY = "softCash";
+    private const string SOFTCASHTOTALKEY = "softCashTotal";
     private const string HARDCASHKEY = "hardCash";
 
     private BrickManager brickManager;
@@ -126,6 +127,7 @@ public class CashManager : MonoBehaviour {
         _softCashAmount = 0f;
         _totalSoftCashEarned = 0f;
         SoftCashUpdated();
+        ResetSoftCashFromBase();
     }
 
     public bool SpendHardCash(int amount)
@@ -142,7 +144,17 @@ public class CashManager : MonoBehaviour {
     private void SaveSoftCash()
     {
         SaveLoadData<float> sld = new SaveLoadData<float>(SOFTCASHKEY, _softCashAmount);
+        SaveLoadData<float> sldTotal = new SaveLoadData<float>(SOFTCASHTOTALKEY, _totalSoftCashEarned);
         sld.SaveData();
+        sldTotal.SaveData();
+    }
+
+    private void ResetSoftCashFromBase()
+    {
+        SaveLoadData<float> sld = new SaveLoadData<float>(SOFTCASHKEY);
+        SaveLoadData<float> sldTotal = new SaveLoadData<float>(SOFTCASHTOTALKEY);
+        sld.RemoveData();
+        sldTotal.RemoveData();
     }
 
     private void LoadSoftCash()
@@ -150,8 +162,11 @@ public class CashManager : MonoBehaviour {
         if (PlayerPrefs.HasKey(SOFTCASHKEY))
         {
             SaveLoadData<float> sld = new SaveLoadData<float>(SOFTCASHKEY);
+            SaveLoadData<float> sldTotal = new SaveLoadData<float>(SOFTCASHTOTALKEY);
             float sc = sld.LoadData();
+            float total = sldTotal.LoadData();
             _softCashAmount = sc;
+            _totalSoftCashEarned = total;
             SoftCashUpdated();
         }
     }
