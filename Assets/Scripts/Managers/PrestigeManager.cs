@@ -6,6 +6,12 @@ using UnityEngine;
 public class PrestigeManager : MonoBehaviour
 {
 
+    private const string TOTALPRESTIGEDKEY = "totalPrestiged";
+    private const string PRESTIGECASHKEY = "prestigeCashKey";
+    private const string NEXTLEVELPRICEKEY = "nextLevelPrice";
+    private const string PRESTIGEMULKEY = "prestigeMulKey";
+
+
     #region Delegates
     public delegate void Prestiged();
     public Prestiged prestiged;
@@ -73,9 +79,10 @@ public class PrestigeManager : MonoBehaviour
     public void AddLevelToPrestigeBonus(BallType ballType, PrestigeBonusType prestigeBonusType)
     {
         if(_prestigeCash >= ballPrestiges[ballType].GetPrestigeBonusPrice(prestigeBonusType)){
-            //проверка цены еще будет
             _prestigeCash -= ballPrestiges[ballType].GetPrestigeBonusPrice(prestigeBonusType);
             ballPrestiges[ballType].AddLevelToBonus(prestigeBonusType);
+            SaveLoadData<int> sldCash = new SaveLoadData<int>(PRESTIGECASHKEY, _prestigeCash);
+            sldCash.SaveData();
         }
         
     }
@@ -98,11 +105,21 @@ public class PrestigeManager : MonoBehaviour
         _prestigeCash += amount;
         totalPrestiged += amount;
 
+        SaveLoadData<int> sldCash = new SaveLoadData<int>(PRESTIGECASHKEY, _prestigeCash);
+        SaveLoadData<int> sldTotal = new SaveLoadData<int>(TOTALPRESTIGEDKEY, totalPrestiged);
+        sldCash.SaveData();
+        sldTotal.SaveData();
+
         while(totalPrestiged >= nextLevelPrice)
         {
             nextLevelPrice = (int)Math.Truncate(nextLevelPrice * 1.5f);
             _prestigeMultiplier *= 1.2f;
             ballsCountPrestiged?.Invoke(5);
+
+            SaveLoadData<int> sldPrice = new SaveLoadData<int>(NEXTLEVELPRICEKEY, nextLevelPrice);
+            SaveLoadData<float> sldMul = new SaveLoadData<float>(PRESTIGEMULKEY, _prestigeMultiplier);
+            sldPrice.SaveData();
+            sldMul.SaveData();
         }
     }
 
@@ -126,6 +143,7 @@ public class PrestigeManager : MonoBehaviour
 
     void Start()
     {
+        LoadData();
         gameManager = GetComponent<GameManager>();
         cashManager = GetComponent<CashManager>();
 
@@ -136,5 +154,33 @@ public class PrestigeManager : MonoBehaviour
         ballPrestiges[BallType.DEMO].updatePrestigeBonus += PrestigeBonusUpdate;
         ballPrestiges[BallType.CASH].updatePrestigeBonus += PrestigeBonusUpdate;
         ballPrestiges[BallType.FIRE].updatePrestigeBonus += PrestigeBonusUpdate;
+    }
+
+    private void LoadData()
+    {
+        if (PlayerPrefs.HasKey(TOTALPRESTIGEDKEY))
+        {
+            SaveLoadData<int> sld = new SaveLoadData<int>(TOTALPRESTIGEDKEY);
+            totalPrestiged = sld.LoadData();
+        }
+
+        if (PlayerPrefs.HasKey(PRESTIGECASHKEY))
+        {
+            SaveLoadData<int> sld = new SaveLoadData<int>(PRESTIGECASHKEY);
+            _prestigeCash = sld.LoadData();
+        }
+
+        if (PlayerPrefs.HasKey(NEXTLEVELPRICEKEY))
+        {
+            SaveLoadData<int> sld = new SaveLoadData<int>(NEXTLEVELPRICEKEY);
+            nextLevelPrice = sld.LoadData();
+        }
+
+        if (PlayerPrefs.HasKey(PRESTIGEMULKEY))
+        {
+            SaveLoadData<float> sld = new SaveLoadData<float>(PRESTIGEMULKEY);
+            _prestigeMultiplier = sld.LoadData();
+        }
+
     }
 }
