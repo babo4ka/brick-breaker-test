@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpeedBuffCard : Card
 {
-    public SpeedBuffCard(int level) : base(level)
+    public SpeedBuffCard(int level, int count) : base(level, count)
     {
     }
 

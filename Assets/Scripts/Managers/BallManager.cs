@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class BallManager : MonoBehaviour {
 
+
+    #region Player prefs keys
     private const string MAXBALLSKEY = "MAXBALLSALLOWED";
 
     private const string BASICBALLCOUNTKEY = "BASICBALLCOUNT";
@@ -78,7 +80,7 @@ public class BallManager : MonoBehaviour {
     private const string FIREBALLSPEEDUPGRADEPRICEKEY = "FIREBALLSPEEDUPGRADEPRICE";
 
     private const string CURRENTSTAGEKEY = "CURRENTSTAGE";
-
+    #endregion
 
     [SerializeField]
     private TMP_Text ballsCountText;

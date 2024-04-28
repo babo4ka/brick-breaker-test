@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpeedCard : Card
 {
-    public SpeedCard(int level) : base(level)
+    public SpeedCard(int level, int count) : base(level, count)
     {
     }
 

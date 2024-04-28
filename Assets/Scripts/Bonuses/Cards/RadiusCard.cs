@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RadiusCard : Card
 {
-    public RadiusCard(int level) : base(level)
+    public RadiusCard(int level, int count) : base(level, count)
     {
     }
 

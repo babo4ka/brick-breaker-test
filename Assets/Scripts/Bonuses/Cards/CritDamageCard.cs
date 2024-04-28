@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CritDamageCard : Card
 {
-    public CritDamageCard(int level) : base(level)
+    public CritDamageCard(int level, int count) : base(level, count)
     {
     }
 

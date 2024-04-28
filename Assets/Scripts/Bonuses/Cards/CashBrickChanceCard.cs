@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CashBrickChanceCard : Card
 {
-    public CashBrickChanceCard(int level) : base(level)
+    public CashBrickChanceCard(int level, int count) : base(level, count)
     {
     }
 

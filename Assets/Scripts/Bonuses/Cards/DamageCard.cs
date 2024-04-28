@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DamageCard : Card
 {
-    public DamageCard(int level) : base(level)
+    public DamageCard(int level, int count) : base(level, count)
     {
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StageCashCard : Card
 {
-    public StageCashCard(int level) : base(level)
+    public StageCashCard(int level, int count) : base(level, count)
     {
     }
 

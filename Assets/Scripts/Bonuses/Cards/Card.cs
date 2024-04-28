@@ -37,11 +37,11 @@ public abstract class Card : Bonus
     }
 
 
-    public Card(int level)
+    public Card(int level, int count)
     {
         OnCreate(level);
         _level = level;
-        _count = 0;
+        _count = count;
     }
 
     public abstract void OnCreate(int level);

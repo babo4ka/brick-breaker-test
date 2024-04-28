@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PassiveIncomeMulCard : Card
 {
-    public PassiveIncomeMulCard(int level) : base(level)
+    public PassiveIncomeMulCard(int level, int count) : base(level, count)
     {
     }
 
