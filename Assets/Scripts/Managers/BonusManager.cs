@@ -35,6 +35,19 @@ public class BonusManager : MonoBehaviour
     private const string DAMAGEBUFFCARDCOUNTKEY = "damageBuffCardCount";
     private const string CASHMULTBUFFCARDCOUNTKEY = "cashmultBuffCardCount";
     private const string PASSIVEINCOMEMULCARDCOUNTKEY = "passiveIncomeCardCount";
+
+    private const string BALLDAMAGECARDACTIVEKEY = "ballDamageCardActive";
+    private const string BALLSPEEDCARDACTIVEKEY = "ballSpeedCardActive";
+    private const string CRITDAMAGECARDACTIVEKEY = "critDamageCardActive";
+    private const string CASHCARDACTIVEKEY = "cashCardActive";
+    private const string CASHBRICKCARDACTIVEKEY = "cashBrickCardActive";
+    private const string CASHBRICKCHANCECARDACTIVEKEY = "cashBrickChanceCardActive";
+    private const string RADIUSCARDACTIVEKEY = "radiusCardActive";
+    private const string STAGECASHCARDACTIVEKEY = "stageCashCardActive";
+    private const string SPEEDBUFFCARDACTIVEKEY = "speedBuffCardActive";
+    private const string DAMAGEBUFFCARDACTIVEKEY = "damageBuffCardActive";
+    private const string CASHMULTBUFFCARDACTIVEKEY = "cashmultBuffCardActive";
+    private const string PASSIVEINCOMEMULCARDACTIVEKEY = "passiveIncomeCardActive";
     #endregion
 
     private CashManager cashManager;
@@ -209,9 +222,48 @@ public class BonusManager : MonoBehaviour
         {
             if (!activeCards.Contains(type))
             {
-                activeCards.Add(type);
-                updateCard?.Invoke(type, new BonusStats<float>(true, cards[type].value));
-                updateActiveCardsCount?.Invoke(activeCards.Count);
+                AddCardToActivePool(type);
+
+                switch (type)
+                {
+                    case CardType.BALLDAMAGE:
+                        new SaveLoadData<int>(BALLDAMAGECARDACTIVEKEY, 1).SaveData();
+                        break;
+                    case CardType.BALLSPEED:
+                        new SaveLoadData<int>(BALLSPEEDCARDACTIVEKEY, 1).SaveData();
+                        break;
+                    case CardType.CRITDAMAGE:
+                        new SaveLoadData<int>(CRITDAMAGECARDACTIVEKEY, 1).SaveData();
+                        break;
+                    case CardType.CASH:
+                        new SaveLoadData<int>(CASHCARDACTIVEKEY, 1).SaveData();
+                        break;
+                    case CardType.CASHBRICK:
+                        new SaveLoadData<int>(CASHBRICKCARDACTIVEKEY, 1).SaveData();
+                        break;
+                    case CardType.CASHBRICKCHANCE:
+                        new SaveLoadData<int>(CASHBRICKCHANCECARDACTIVEKEY, 1).SaveData();
+                        break;
+                    case CardType.RADIUS:
+                        new SaveLoadData<int>(RADIUSCARDACTIVEKEY, 1).SaveData();
+                        break;
+                    case CardType.STAGECASH:
+                        new SaveLoadData<int>(STAGECASHCARDACTIVEKEY, 1).SaveData();
+                        break;
+                    case CardType.SPEEDBUFF:
+                        new SaveLoadData<int>(SPEEDBUFFCARDACTIVEKEY, 1).SaveData();
+                        break;
+                    case CardType.DAMAGEBUFF:
+                        new SaveLoadData<int>(DAMAGEBUFFCARDACTIVEKEY, 1).SaveData();
+                        break;
+                    case CardType.CASHMULTBUFF:
+                        new SaveLoadData<int>(CASHMULTBUFFCARDACTIVEKEY, 1).SaveData();
+                        break;
+                    case CardType.PASSIVEINCOMEMUL:
+                        new SaveLoadData<int>(PASSIVEINCOMEMULCARDACTIVEKEY, 1).SaveData();
+                        break;
+                }
+
                 return true;
             }
             return false;
@@ -219,11 +271,59 @@ public class BonusManager : MonoBehaviour
         return false;
     }
 
+    private void AddCardToActivePool(CardType type)
+    {
+        activeCards.Add(type);
+        updateCard?.Invoke(type, new BonusStats<float>(true, cards[type].value));
+        updateActiveCardsCount?.Invoke(activeCards.Count);
+    }
+
+
     public void DeactivateCard(CardType type)
     {
         activeCards.Remove(type);
         updateCard?.Invoke(type, new BonusStats<float>(false, cards[type].value));
         updateActiveCardsCount?.Invoke(activeCards.Count);
+
+        switch(type)
+        {
+            case CardType.BALLDAMAGE:
+                new SaveLoadData<int>(BALLDAMAGECARDACTIVEKEY).RemoveData();
+                break;
+            case CardType.BALLSPEED:
+                new SaveLoadData<int>(BALLSPEEDCARDACTIVEKEY).RemoveData();
+                break;
+            case CardType.CRITDAMAGE:
+                new SaveLoadData<int>(CRITDAMAGECARDACTIVEKEY).RemoveData();
+                break;
+            case CardType.CASH:
+                new SaveLoadData<int>(CASHCARDACTIVEKEY).RemoveData();
+                break;
+            case CardType.CASHBRICK:
+                new SaveLoadData<int>(CASHBRICKCARDACTIVEKEY).RemoveData();
+                break;
+            case CardType.CASHBRICKCHANCE:
+                new SaveLoadData<int>(CASHBRICKCHANCECARDACTIVEKEY).RemoveData();
+                break;
+            case CardType.RADIUS:
+                new SaveLoadData<int>(RADIUSCARDACTIVEKEY).RemoveData();
+                break;
+            case CardType.STAGECASH:
+                new SaveLoadData<int>(STAGECASHCARDACTIVEKEY).RemoveData();
+                break;
+            case CardType.SPEEDBUFF:
+                new SaveLoadData<int>(SPEEDBUFFCARDACTIVEKEY).RemoveData();
+                break;
+            case CardType.DAMAGEBUFF:
+                new SaveLoadData<int>(DAMAGEBUFFCARDACTIVEKEY).RemoveData();
+                break;
+            case CardType.CASHMULTBUFF:
+                new SaveLoadData<int>(CASHMULTBUFFCARDACTIVEKEY).RemoveData();
+                break;
+            case CardType.PASSIVEINCOMEMUL:
+                new SaveLoadData<int>(PASSIVEINCOMEMULCARDACTIVEKEY).RemoveData();
+                break;
+        }
     }
 
 
@@ -444,6 +544,56 @@ public class BonusManager : MonoBehaviour
         {
             cards.Add(CardType.PASSIVEINCOMEMUL, new PassiveIncomeMulCard(new SaveLoadData<int>(PASSIVEINCOMEMULCARDLEVELKEY).LoadData(),
                 new SaveLoadData<int>(PASSIVEINCOMEMULCARDCOUNTKEY).LoadData()));
+        }
+
+
+        if(PlayerPrefs.HasKey(BALLDAMAGECARDACTIVEKEY))
+        {
+            AddCardToActivePool(CardType.BALLDAMAGE);
+        }
+        if (PlayerPrefs.HasKey(BALLSPEEDCARDACTIVEKEY))
+        {
+            AddCardToActivePool(CardType.BALLSPEED);
+        }
+        if (PlayerPrefs.HasKey(CRITDAMAGECARDACTIVEKEY))
+        {
+            AddCardToActivePool(CardType.CRITDAMAGE);
+        }
+        if (PlayerPrefs.HasKey(CASHCARDACTIVEKEY))
+        {
+            AddCardToActivePool(CardType.CASH);
+        }
+        if (PlayerPrefs.HasKey(CASHBRICKCARDACTIVEKEY))
+        {
+            AddCardToActivePool(CardType.CASHBRICK);
+        }
+        if (PlayerPrefs.HasKey(CASHBRICKCHANCECARDACTIVEKEY))
+        {
+            AddCardToActivePool(CardType.CASHBRICKCHANCE);
+        }
+        if (PlayerPrefs.HasKey(RADIUSCARDACTIVEKEY))
+        {
+            AddCardToActivePool(CardType.RADIUS);
+        }
+        if (PlayerPrefs.HasKey(STAGECASHCARDACTIVEKEY))
+        {
+            AddCardToActivePool(CardType.STAGECASH);
+        }
+        if (PlayerPrefs.HasKey(SPEEDBUFFCARDACTIVEKEY))
+        {
+            AddCardToActivePool(CardType.SPEEDBUFF);
+        }
+        if (PlayerPrefs.HasKey(DAMAGEBUFFCARDACTIVEKEY))
+        {
+            AddCardToActivePool(CardType.DAMAGEBUFF);
+        }
+        if (PlayerPrefs.HasKey(CASHMULTBUFFCARDACTIVEKEY))
+        {
+            AddCardToActivePool(CardType.CASHMULTBUFF);
+        }
+        if (PlayerPrefs.HasKey(PASSIVEINCOMEMULCARDACTIVEKEY))
+        {
+            AddCardToActivePool(CardType.PASSIVEINCOMEMUL);
         }
     }
 }
